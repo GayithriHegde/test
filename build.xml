@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<project name="asms-services" default="war">
+
+	<path id="compile.classpath">
+		<fileset dir="lib">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="init">
+		<mkdir dir="build/ant_classes"/>
+		<mkdir dir="dist" />
+	</target>
+	
+	<target name="compile" depends="init" >
+		<javac destdir="build/ant_classes" debug="true" srcdir="src" includeantruntime="false">
+			<classpath refid="compile.classpath"/>
+		</javac>
+		<copy todir="build/ant_classes">
+   			 <fileset dir="src/main/resources" includes="**"/>
+		</copy>
+	</target>
+	
+	<target name="war" depends="compile">
+		<!-- <war destfile="dist/asms-services.war" webxml="src/main/webapp/WEB-INF/web.xml">-->
+			<war destfile="d:/apache-tomcat-8.5.14/apache-tomcat-8.5.14/webapps/asms-services.war" webxml="src/main/webapp/WEB-INF/web.xml">
+			<fileset dir="src/main/webapp"/>
+			<lib dir="lib"/>
+			<classes dir="build/ant_classes"/>
+		</war>
+	</target>
+	
+	<target name="clean">
+		<delete dir="dist" />
+		<delete dir="build" />
+	</target>
+	</project>
+	

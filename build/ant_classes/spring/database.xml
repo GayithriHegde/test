@@ -1,0 +1,170 @@
+<beans:beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<beans:property name="driverClassName" value="${hibernate.connection.driver_class}" />
+		<beans:property name="url" value="${hibernate.connection.url}" />
+
+		<beans:property name="connectionProperties"
+			value="useUnicode=yes;characterEncoding=utf8;" />
+		<beans:property name="username" value="${hibernate.connection.username}" />
+		<beans:property name="password" value="${hibernate.connection.password}" />
+
+	</beans:bean>
+
+	<!-- Hibernate 4 SessionFactory Bean definition -->
+	<beans:bean id="hibernate4AnnotatedSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="annotatedClasses">
+			<beans:list>
+				<beans:value>com.asms.multitenancy.entity.SuperAdmin</beans:value>
+				<beans:value>com.asms.multitenancy.entity.Tenant</beans:value>
+				<beans:value>com.asms.CountryMgmt.Entity.Country</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.School</beans:value>
+
+
+				<beans:value>com.asms.usermgmt.entity.management.Management
+				</beans:value>
+
+				<beans:value>com.asms.rolemgmt.entity.Role</beans:value>
+				<beans:value>com.asms.rolemgmt.entity.SubRole</beans:value>
+
+				<beans:value>com.asms.usermgmt.entity.User</beans:value>
+
+				<beans:value>com.asms.usermgmt.entity.student.Student</beans:value>
+				<beans:value>com.asms.usermgmt.entity.student.Parent</beans:value>
+				<beans:value>com.asms.usermgmt.entity.student.StudentAddress
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.student.StudentPreviousInfo
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.student.Sibling</beans:value>
+				<beans:value>com.asms.usermgmt.entity.student.StudentDocuments
+				</beans:value>
+
+				<beans:value>com.asms.schoolmgmt.entity.Class</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.Section</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.AdditionalSubjects
+				</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.AcademicYear</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.ClassSubjects</beans:value>
+
+				<beans:value>com.asms.usermgmt.entity.StudentType</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.BoardMaster</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.WeaklyHoliday</beans:value>
+
+				<beans:value>com.asms.usermgmt.entity.nonTeachingStaff.Address
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.nonTeachingStaff.NonTeachingStaff
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.nonTeachingStaff.StaffDocuments
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.nonTeachingStaff.StaffPreviousInformation
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.nonTeachingStaff.StaffStatutory
+				</beans:value>
+
+				<beans:value>com.asms.usermgmt.entity.teachingStaff.TeachingStaff
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.teachingStaff.Address1
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.teachingStaff.StaffDocuments1
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.teachingStaff.StaffPreviousInformation1
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.teachingStaff.StaffStatutory1
+				</beans:value>
+				<beans:value>com.asms.usermgmt.entity.teachingStaff.TeachingSubjects
+				</beans:value>
+
+
+				<beans:value>com.asms.CountryMgmt.Entity.Country</beans:value>
+				<beans:value>com.asms.CountryMgmt.Entity.StateEntity</beans:value>
+				<beans:value>com.asms.CountryMgmt.Entity.District</beans:value>
+				<beans:value>com.asms.CountryMgmt.Entity.Tehsil</beans:value>
+				<beans:value>com.asms.CountryMgmt.Entity.Village</beans:value>
+				<beans:value>com.asms.CountryMgmt.Entity.SubDivision</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.BoardSubjectMaster
+				</beans:value>
+				<beans:value>com.asms.usermgmt.service.QualificationType
+				</beans:value>
+				<beans:value>com.asms.usermgmt.service.ReligionTypes</beans:value>
+				<beans:value>com.asms.usermgmt.service.CasteTypes</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.ClassGroup</beans:value>
+
+				<beans:value>com.asms.schoolmgmt.entity.ClassSubjects</beans:value>
+				<beans:value>com.asms.multitenancy.entity.Trust</beans:value>
+				<beans:value>com.asms.multitenancy.entity.Activity</beans:value>
+				<beans:value>com.asms.multitenancy.entity.DefaultActivities
+				</beans:value>
+				<beans:value>com.asms.multitenancy.entity.DefaultActivities
+				</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.SchoolBoard</beans:value>
+				<beans:value>com.asms.usermgmt.entity.Admin</beans:value>
+				<beans:value>com.asms.usermgmt.entity.Privilege	</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.Breaks</beans:value>
+				<beans:value>com.asms.schoolmgmt.entity.TimeTable</beans:value>
+				<beans:value>com.asms.lessonmgmt.entity.LessonPlan</beans:value>
+				<beans:value>com.asms.lessonmgmt.entity.PeriodLessanPlan</beans:value>
+				<beans:value>com.asms.messagemgmt.entity.Message</beans:value>
+				<beans:value>com.asms.messagemgmt.entity.MessageReceiver</beans:value>
+				<beans:value>com.asms.curriculumplan.entity.CurriculumPlan</beans:value>
+				<beans:value>com.asms.curriculumplan.entity.Unit</beans:value>
+				<beans:value>com.asms.attendance.entity.StudentAttendance</beans:value>
+				<beans:value>com.asms.attendance.entity.StaffAttendance</beans:value>
+				<beans:value>com.asms.calendarMgmt.entity.Calendar</beans:value>
+				<beans:value>com.asms.examination.entity.Examination</beans:value>
+				<beans:value>com.asms.examination.entity.ExaminationDetails</beans:value>
+				<beans:value>com.asms.examination.entity.Marks</beans:value>
+				<beans:value>com.asms.examination.entity.MarksMaster</beans:value>
+				
+				<beans:value>com.asms.feemgmt.entity.FeeCategory</beans:value>
+				<beans:value>com.asms.feemgmt.entity.PaymentType</beans:value>
+				<beans:value>com.asms.feemgmt.entity.FeeMaster</beans:value>
+				<beans:value>com.asms.feemgmt.entity.PaymentMode</beans:value>
+				<beans:value>com.asms.feemgmt.entity.FeeStructure</beans:value>
+				<beans:value>com.asms.feemgmt.entity.OtherFee</beans:value>
+				<beans:value>com.asms.feemgmt.entity.TutionFee</beans:value>
+				<beans:value>com.asms.feemgmt.entity.InstallmentAmount</beans:value>
+			
+				
+				
+				<beans:value>com.asms.usermgmt.entity.akacartUser.AkacartUser</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="connection.provider_class">${connection.provider_class}</beans:prop>
+				<beans:prop key="hibernate.current_session_context_class">${hibernate.current_session_context_class}</beans:prop>
+				<beans:prop key="hibernate.autoReconnect">${hibernate.autoReconnect}</beans:prop>
+				<beans:prop key="hibernate.show_sql">${hibernate.show_sql}</beans:prop>
+				<beans:prop key="hibernate.connection.useUnicode">${hibernate.connection.useUnicode}</beans:prop>
+				<beans:prop key="hibernate.connection.characterEncoding">${hibernate.connection.characterEncoding}</beans:prop>
+				<beans:prop key="hibernate.c3p0.min_size">${hibernate.c3p0.min_size}</beans:prop>
+				<beans:prop key="hibernate.c3p0.max_size">${hibernate.c3p0.max_size}</beans:prop>
+				<beans:prop key="hibernate.c3p0.timeout">${hibernate.c3p0.timeout}</beans:prop>
+				<beans:prop key="hibernate.c3p0.max_statements">${hibernate.c3p0.max_statements}</beans:prop>
+				<beans:prop key="hibernate.c3p0.idle_test_period">${hibernate.c3p0.idle_test_period}</beans:prop>
+
+
+				<beans:prop key="hibernate.connection.driver_class">${hibernate.connection.driver_class}</beans:prop>
+				<beans:prop key="hibernate.connection.password">${hibernate.connection.password}</beans:prop>
+				<beans:prop key="hibernate.connection.url">${hibernate.connection.url}</beans:prop>
+				<beans:prop key="hibernate.connection.username">${hibernate.connection.username}</beans:prop>
+				<beans:prop key="hibernate.dialect">${hibernate.dialect}</beans:prop>
+
+				<beans:prop key="hibernate.multiTenancy">SCHEMA</beans:prop>
+				<beans:prop key="hibernate.multi_tenant_connection_provider">com.asms.common.helper.MultiTenantConnectionProviderImpl
+				</beans:prop>
+
+				<beans:prop key="hibernate.temp.use_jdbc_metadata_defaults">false</beans:prop>
+
+
+
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+
+</beans:beans>
