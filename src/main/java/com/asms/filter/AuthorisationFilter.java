@@ -59,7 +59,7 @@ public class AuthorisationFilter implements Filter {
 			// skip login flow for authorization header check as only after login requests
 			// are checked for authorization header
 			logger.info(".....path info..." + pathInfo);
-			if (pathInfo.contains("login") || pathInfo.contains("country") || pathInfo.contains("state") || pathInfo.contains("district")
+			if (pathInfo.contains("login") || pathInfo.contains("country") || pathInfo.contains("image-upload") || pathInfo.contains("state") || pathInfo.contains("district")
 					|| pathInfo.contains("village") || pathInfo.contains("tehsil") || pathInfo.contains("subDivision") ||  pathInfo.contains("trust/register") ||  pathInfo.contains("trusts") || pathInfo.contains("boards")){
 				logger.info(".....    enetring if...for no authorisation header check...");
 				chain.doFilter(request, response);

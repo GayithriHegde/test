@@ -1,5 +1,7 @@
 package com.asms.schoolmgmt.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -9,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -19,6 +23,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.MDC;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +46,7 @@ import com.asms.schoolmgmt.entity.AcademicYear;
 import com.asms.schoolmgmt.entity.AdditionalSubjects;
 import com.asms.schoolmgmt.entity.Class;
 import com.asms.schoolmgmt.entity.ClassSubjects;
+import com.asms.schoolmgmt.entity.School;
 import com.asms.schoolmgmt.entity.Section;
 import com.asms.schoolmgmt.entity.SetupSchoolDetails;
 import com.asms.schoolmgmt.helper.SchoolValidator;
@@ -54,9 +62,9 @@ import com.asms.usermgmt.auth.PrivilegesManager;
 import com.asms.usermgmt.entity.User;
 import com.asms.usermgmt.helper.PrincipalUser;
 
-
 import com.asms.usermgmt.response.GetUserResponse;
-import com.asms.usermgmt.response.RegistrationResponse;
+import com.sun.media.jfxmedia.logging.Logger;
+import com.asms.schoolmgmt.response.RegistrationResponse;
 
 /*
  * SchoolMgmtService.java handles school registration, update , get and delete 
@@ -83,10 +91,11 @@ public class SchoolMgmtService extends BaseService {
 	@Resource(name = "asmsdbProperties")
 	private Properties dbProperties;
 
-//	@Autowired
-//	private ExceptionHandler exceptionHandler;
+	// @Autowired
+	// private ExceptionHandler exceptionHandler;
 
-	//private static final Logger logger = LoggerFactory.getLogger(SchoolMgmtService.class);
+	// private static final Logger logger =
+	// LoggerFactory.getLogger(SchoolMgmtService.class);
 
 	/*
 	 * api : /school/names request type :GET
@@ -104,17 +113,14 @@ public class SchoolMgmtService extends BaseService {
 	public Response getNamesOfBoard(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse) {
 
 		try {
-		//	FailureResponse failureResponse = new FailureResponse();
+			// FailureResponse failureResponse = new FailureResponse();
 			// get bundles for error messages
-		
 
-				List<String> boardObject = schoolMgmtDao.getNames();
+			List<String> boardObject = schoolMgmtDao.getNames();
 
-				GetUserResponse getUserResponse = new GetUserResponse();
-				getUserResponse.setBoardNames(boardObject);
-				return Response.status(Status.OK).entity(getUserResponse).build();
-
-			
+			GetUserResponse getUserResponse = new GetUserResponse();
+			getUserResponse.setBoardNames(boardObject);
+			return Response.status(Status.OK).entity(getUserResponse).build();
 
 		} catch (AsmsException ex) {
 			// construct failure response
@@ -144,44 +150,42 @@ public class SchoolMgmtService extends BaseService {
 			// validator.validateUserDetails(userRequest, messages);
 			HttpSession session = hRequest.getSession();
 			Object userObject = session.getAttribute("ap_user");
-			User user = (User)userObject;
+			User user = (User) userObject;
 			if (null != user && user.getRoleObject().getRoleName().equalsIgnoreCase(Constants.role_super_admin)) {
 
 				// create schema
 				String schema = multitenancyDao.createTenantId(userRequest.getSchoolDetails().getRegistrationCode(),
-						userRequest.getSchoolDetails().getName());
+						userRequest.getSchoolDetails().getName(), userRequest.getSchoolDetails().getSubDomain());
 				boolean result = multitenancyDao.createSchema(schema);
-				
-					if (result) {
-						SchoolDetails school = userRequest.getSchoolDetails();
-						schoolMgmtDao.createSchool(school, schema);
-						return Response.status(Status.OK).entity(rReponse).build();
-					}
-				
-				 else {
+
+				if (result) {
+					SchoolDetails school = userRequest.getSchoolDetails();
+					School schoolObj = (School) schoolMgmtDao.createSchool(school, schema);
+					rReponse.setDomain(school.getSubDomain());
+					rReponse.setSchoolId(schoolObj.getSerialNo());
+					return Response.status(Status.OK).entity(rReponse).build();
+				}
+
+				else {
 					FailureResponse failureResponse = new FailureResponse();
 					failureResponse.setCode(Integer.parseInt(messages.getString("NOT_AUTHORIZED_CODE")));
 					failureResponse.setErrorDescription(messages.getString("NOT_AUTHORIZED"));
 					return Response.status(200).entity(failureResponse).build();
-				
-		
-			        }
+
+				}
+			} else {
+				FailureResponse failureResponse = new FailureResponse();
+				failureResponse.setCode(Integer.parseInt(messages.getString("NOT_AUTHORIZED_CODE")));
+				failureResponse.setErrorDescription(messages.getString("NOT_AUTHORIZED"));
+				return Response.status(200).entity(failureResponse).build();
 			}
-					 else {
-						FailureResponse failureResponse = new FailureResponse();
-						failureResponse.setCode(Integer.parseInt(messages.getString("NOT_AUTHORIZED_CODE")));
-						failureResponse.setErrorDescription(messages.getString("NOT_AUTHORIZED"));
-						return Response.status(200).entity(failureResponse).build();
-					}
-			
 
 		} catch (AsmsException ex) {
 			// construct failure response
 			FailureResponse failureResponse = new FailureResponse(ex);
 			return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
 		}
-		
-		
+
 	}
 
 	// setup school code goes here
@@ -356,7 +360,6 @@ public class SchoolMgmtService extends BaseService {
 		}
 	}
 
-	
 	/*
 	 * api : /school/sections request type :GET
 	 * 
@@ -692,26 +695,29 @@ public class SchoolMgmtService extends BaseService {
 			return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
 		}
 	}
+
 	@Path("/AdditionalSubjects")
 	@GET
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public Response getsubject(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse,
-			@QueryParam("sectionName") String section,@QueryParam("className")String name,@QueryParam("tenantId") String tenant) {
+			@QueryParam("sectionName") String section, @QueryParam("className") String name,
+			@QueryParam("tenantId") String tenant) {
 		ResourceBundle messages;
 		try {
 			FailureResponse failureResponse = new FailureResponse();
 			// get bundles for error messages
 			messages = AsmsHelper.getMessageFromBundle();
 			// validate request
-			schoolValidator.validateAdditionalSubjectsRequest( name, section, messages);
+			schoolValidator.validateAdditionalSubjectsRequest(name, section, messages);
 			// validate user details
 			// validator.validateUserDetails(userRequest, messages);
 			HttpSession session = hRequest.getSession();
 			User user = (User) session.getAttribute("ap_user");
 
 			if (null != user) {
-				 List<AdditionalSubjects> additionalsubjectsName= schoolMgmtDao.getAdditionalSubjects(name, section ,tenant);
+				List<AdditionalSubjects> additionalsubjectsName = schoolMgmtDao.getAdditionalSubjects(name, section,
+						tenant);
 
 				GetUserResponse getUserResponse = new GetUserResponse();
 				getUserResponse.setAdditionalSubjects(additionalsubjectsName);
@@ -727,43 +733,100 @@ public class SchoolMgmtService extends BaseService {
 			return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
 		}
 	}
+
 	@Path("/subjectsAndAdditionalsubjects")
 	@GET
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-	public Response getsubjectsAndAdditionalsubjects(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse,
-			@QueryParam("sectionName") String section,@QueryParam("className")String name,@QueryParam("tenantId") String tenant) {
+	public Response getsubjectsAndAdditionalsubjects(@Context HttpServletRequest hRequest,
+			@Context HttpServletResponse hResponse, @QueryParam("sectionName") String section,
+			@QueryParam("className") String name, @QueryParam("tenantId") String tenant) {
 
 		try {
 			FailureResponse failureResponse = new FailureResponse();
 			// get bundles for error messages
-		//	if (null != name && null != section) 
-			
-				
-				HttpSession session = hRequest.getSession();
+			// if (null != name && null != section)
+
+			HttpSession session = hRequest.getSession();
 			User user = (User) session.getAttribute("ap_user");
 
 			if (null != user && null != name && null != section) {
-				 List<SubjectDetails> SubjectDetailsName= schoolMgmtDao.getsubjectsAndAdditionalsubjects(name, section ,tenant);
+				List<SubjectDetails> SubjectDetailsName = schoolMgmtDao.getsubjectsAndAdditionalsubjects(name, section,
+						tenant);
 
 				GetUserResponse getUserResponse = new GetUserResponse();
 				getUserResponse.setSubjectDetails(SubjectDetailsName);
-			
+
 				return Response.status(Status.OK).entity(getUserResponse).build();
 
-				} else {
+			} else {
 				return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
 			}
 
-			
-		
-		}catch (AsmsException ex) {
+		} catch (AsmsException ex) {
 			// construct failure response
 			FailureResponse failureResponse = new FailureResponse(ex);
 			return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
 		}
 	}
-	
 
+	/*@POST
+	@Path("/image-upload-not-working")
+	// @POST
+	// @Path("/upload/{fileName}")
+	@Consumes("application/x-www-form-urlencoded; charset=UTF-8")
+	@Produces("application/json")
+	public Response uploadFile(@FormParam("data") String content, @QueryParam("id") int schoolId,
+			@QueryParam("name") String name, @QueryParam("sub_domain") String domain) {
+		SchoolSuccessResponse schoolSuccessResponse = new SchoolSuccessResponse();
+		FailureResponse failureResponse = new FailureResponse();
+
+		try {
+			// String image_source = properties.getProperty("image_source");
+			if (schoolId > 0) {
+				schoolMgmtDao.uploadFile(content, schoolId, name, domain);
+				// else if ("s3".equalsIgnoreCase(image_source) ||
+				// "imgix".equalsIgnoreCase(image_source)) {
+				// userMgmtDao.uploadFileToS3(content, name, userId, type);
+				// }
+				return Response.status(Status.OK).entity(schoolSuccessResponse).build();
+			} else {
+				return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
+			}
+
+		} catch (AsmsException ex) {
+
+			return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
+		}
+	}*/
+
+	@POST
+	@Path("/image-upload")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Produces("application/json")
+	public Response uploadFile(@FormDataParam("uploadfile") InputStream fis,
+			@FormDataParam("uploadfile") FormDataContentDisposition fdcd, @QueryParam("id") int schoolId,
+			@QueryParam("sub_domain") String domain) throws AsmsException,IOException {
+		SchoolSuccessResponse schoolSuccessResponse = new SchoolSuccessResponse();
+		FailureResponse failureResponse = new FailureResponse();
+		try {
+			// String image_source = properties.getProperty("image_source");
+			if (schoolId > 0) {
+				schoolMgmtDao.uploadFile(fis, schoolId, fdcd.getFileName(), domain);
+				// else if ("s3".equalsIgnoreCase(image_source) ||
+				// "imgix".equalsIgnoreCase(image_source)) {
+				// userMgmtDao.uploadFileToS3(content, name, userId, type);
+				// }
+				return Response.status(Status.OK).entity(schoolSuccessResponse).build();
+			} else {
+				return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
+			}
+
+		} catch (AsmsException ex) {
+
+			return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
+		}
+
+	}
 
 }

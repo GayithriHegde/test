@@ -1,5 +1,14 @@
 package com.asms.schoolmgmt.dao;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +23,12 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.FileImageOutputStream;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -29,6 +44,7 @@ import com.asms.Exception.AsmsException;
 import com.asms.Exception.ExceptionHandler;
 import com.asms.common.helper.AsmsHelper;
 import com.asms.common.helper.Constants;
+import com.asms.common.helper.FileUtility;
 import com.asms.common.mail.EmailSender;
 import com.asms.feemgmt.dao.FeeMgmtDao;
 
@@ -63,6 +79,7 @@ import com.asms.usermgmt.entity.Admin;
 import com.asms.usermgmt.entity.User;
 import com.asms.usermgmt.entity.teachingStaff.TeachingStaff;
 import com.asms.usermgmt.entity.teachingStaff.TeachingSubjects;
+import org.apache.commons.codec.binary.Base64;
 
 @Service
 @Component
@@ -86,15 +103,18 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 	private UserMgmtDao userMgmtDao;
 	@Autowired
 	private EmailSender emailSender;
-	//@Autowired
-	//private EmailSender emailSender;
-//	@Autowired
-//	private EmailSender emailSender;
-	
+	// @Autowired
+	// private EmailSender emailSender;
+	// @Autowired
+	// private EmailSender emailSender;
+
 	@Autowired
 	private FeeMgmtDao feeMgmtDao;
 
 	ResourceBundle messages;
+
+	@Resource(name = "asmsProperties")
+	private Properties properties;
 
 	/*
 	 * Method : getUserRole : gets the user role from database input : String
@@ -338,7 +358,7 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 	 * request.SchoolDetails)
 	 */
 	@Override
-	public void createSchool(SchoolDetails schoolDetails, String schema) throws AsmsException {
+	public School createSchool(SchoolDetails schoolDetails, String schema) throws AsmsException {
 
 		try {
 			School school = new School();
@@ -346,16 +366,15 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 			if (schoolDetails.getTrustId() > 0) {
 				school.setTrustId(schoolDetails.getTrustId());
 			}
-			if (null != schoolDetails.getNewTrustName() && !schoolDetails.getNewTrustName().isEmpty()){
+			if (null != schoolDetails.getNewTrustName() && !schoolDetails.getNewTrustName().isEmpty()) {
 				Trust trust = new Trust();
 				trust.setAddress(schoolDetails.getTrustAddress());
 				trust.setName(schoolDetails.getNewTrustName());
 				trust.setrNo(schoolDetails.getTrustRegistrationNumber());
-				multitenancyDao.insertTrust(trust,dbProperties.getProperty("default_schema"));
+				multitenancyDao.insertTrust(trust, dbProperties.getProperty("default_schema"));
 				school.setTrustId(trust.getSerialNo());
 			}
 
-			
 			school.setName(schoolDetails.getName());
 			school.setAffiliationId(schoolDetails.getAffiliationId());
 			school.setRegistrationCode(schoolDetails.getRegistrationCode());
@@ -381,7 +400,6 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 			school.setGpsLatitude(schoolDetails.getGpsLatitude());
 			school.setGpsLongitude(schoolDetails.getGpsLongitude());
 			school.setBoardName(schoolDetails.getBoardDetails());
-		
 
 			Admin admin = createAdmin(school);
 
@@ -389,11 +407,16 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 			emailSender.send("", school.getContactPersonEmailId(), "asmstest123@gmail.com", "School Registered",
 					"Your School Registered" + ":" + school.getContactPersonEmailId() + ":" + admin.getUserPassword(),
 					"text/html");
+			return school;
 		} catch (Exception e) {
-			logger.error("Error while registering school", e);
-		}
+			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
 
-		// return null;
+					+ "insertSchool()" + "   ", e);
+
+			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+					messages.getString("SYSTEM_EXCEPTION"));
+		}
 
 	}
 
@@ -1416,6 +1439,7 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<SubjectDetails> getsubjectsAndAdditionalsubjects(String className, String sectionName, String tenantId)
 			throws AsmsException {
@@ -1462,6 +1486,86 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void uploadFile(InputStream fis, int id, String name, String domain) throws AsmsException, IOException {
+		String serverFilename = null;
+		String sessionId = (String) MDC.get("sessionId");
+		Session session = null;
+		Transaction tx = null;
+
+		// String imageDataBytes =
+		// imageString.substring(imageString.indexOf(",") + 1);
+		String serverPath = properties.getProperty("images_path_on_server");
+
+		if (null == serverPath || serverPath.isEmpty()) {
+			throw exceptionHandler.constructAsmsException(messages.getString("SERVER_IMAGE_PATH_EMPTY_CODE"),
+					messages.getString("SERVER_IMAGE_PATH_EMPTY_MSG"));
+		}
+		
+		String ext = FileUtility.getExtension(name);
+
+		serverFilename = serverPath + id + "." + ext;
+
+		BufferedImage sourceImage = ImageIO.read(fis);
+		double ratio = (double) sourceImage.getWidth() / sourceImage.getHeight();
+		int height = sourceImage.getHeight();
+		int width = sourceImage.getWidth();
+		if (width < 1) {
+			width = (int) (height * ratio + 0.4);
+		} else if (height < 1) {
+			height = (int) (width / ratio + 0.4);
+		}
+		Image scaled = sourceImage.getScaledInstance(width, height, Image.SCALE_AREA_AVERAGING);
+		BufferedImage bufferedScaled = new BufferedImage(scaled.getWidth(null), scaled.getHeight(null),
+				BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2d = bufferedScaled.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g2d.drawImage(scaled, 0, 0, width, height, null);
+		File dest = new File(serverFilename);
+		dest.createNewFile();
+
+		ImageWriter writer = null;
+		FileImageOutputStream output = null;
+		try {
+			writer = ImageIO.getImageWritersByFormatName("jpg").next();
+			ImageWriteParam param = writer.getDefaultWriteParam();
+			param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+			param.setCompressionQuality(0.6f);
+			output = new FileImageOutputStream(dest);
+			writer.setOutput(output);
+			IIOImage iioImage = new IIOImage(bufferedScaled, null, null);
+			writer.write(null, iioImage, param);
+
+			String schema = multitenancyDao.getSchemaByDomain(domain);
+			if (null == schema) {
+				throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
+						messages.getString("TENANT_INVALID_CODE_MSG"));
+			}
+
+			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+			tx = session.beginTransaction();
+			// updating path in database
+			School school = (School) session.load(School.class, id);
+			school.setLogo(serverFilename);
+			session.update(school);
+			tx.commit();
+		} catch (Exception e) {
+			if (session.isOpen()) {
+				session.close();
+			}
+			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
+					+ "uploadFile()" + "   ", e);
+			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+					messages.getString("SYSTEM_EXCEPTION"));
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+
 	}
 
 }

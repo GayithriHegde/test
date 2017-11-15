@@ -155,7 +155,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 	}
 
 	@Override
-	public String createTenantId(String id, String name) throws AsmsException {
+	public String createTenantId(String id, String name, String subDomain) throws AsmsException {
 
 		Session session = null;
 		Transaction tx = null;
@@ -164,6 +164,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			Tenant tenant = new Tenant();
 			tenant.setTenantId("id" + "_" + name);
 			tenant.setName(name);
+			tenant.setSubDomain(subDomain);
 			session = sessionFactory.withOptions().tenantIdentifier(dbProperties.getProperty("default_schema"))
 					.openSession();
 			tx = session.beginTransaction();
@@ -228,6 +229,44 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
 					+ "getSchema()" + "   ", e);
+			if ((e instanceof AsmsException)) {
+				throw this.exceptionHandler.constructAsmsException(((AsmsException) e).getCode(),
+						((AsmsException) e).getDescription());
+			}
+			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+					messages.getString("SYSTEM_EXCEPTION"));
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+	}
+	
+	
+	
+	@Override
+	public String getSchemaByDomain(String domain) throws AsmsException {
+		Session session = null;
+		try {
+			session = sessionFactory.withOptions().tenantIdentifier(dbProperties.getProperty("default_schema"))
+					.openSession();
+			String hql = "from Tenant U where U.subDomain=?";
+			Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, domain).uniqueResult();
+			session.close();
+			if (null == tenant) {
+				throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
+						messages.getString("TENANT_INVALID_CODE_MSG"));
+
+			}
+			return tenant.getName();
+
+		} catch (Exception e) {
+			if (session.isOpen()) {
+				session.close();
+			}
+			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
+					+ "getSchemaByDomain()" + "   ", e);
 			if ((e instanceof AsmsException)) {
 				throw this.exceptionHandler.constructAsmsException(((AsmsException) e).getCode(),
 						((AsmsException) e).getDescription());

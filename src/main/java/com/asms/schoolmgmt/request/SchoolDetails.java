@@ -67,6 +67,8 @@ public class SchoolDetails {
 	
 	private String trustAddress;
 	
+	private String subDomain;
+	
 	private int trustId;
 
 
@@ -306,6 +308,14 @@ public class SchoolDetails {
 
 	public void setNewTrustName(String newTrustName) {
 		this.newTrustName = newTrustName;
+	}
+
+	public String getSubDomain() {
+		return subDomain;
+	}
+
+	public void setSubDomain(String subDomain) {
+		this.subDomain = subDomain;
 	}
 	
 	

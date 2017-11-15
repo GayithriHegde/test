@@ -833,6 +833,9 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				role.setRoleName(Constants.role_super_admin);
 				User user = new User();
 				user.setRoleObject(role);
+				
+				user.setEmail(admin.getUsername());
+				user.setUserPassword(admin.getPassword());
 
 				httpSession.setAttribute("ap_user", user);
 				loginResponse = new LoginResponse();

@@ -59,13 +59,6 @@ public class AuthenticationService {
 			}else{
 				return false;
 			}
-		}else if(user instanceof SuperAdmin) {
-			SuperAdmin user2 = (SuperAdmin)user;
-			if (email.equalsIgnoreCase(((SuperAdmin) user).getUsername()) && password.equalsIgnoreCase(user2.getPassword())) {
-				return true;
-			}else{
-				return false;
-			}
 		} else {
 			return false;
 		}

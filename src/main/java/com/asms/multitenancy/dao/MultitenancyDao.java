@@ -24,7 +24,7 @@ public interface MultitenancyDao {
 	 * @return
 	 * @throws AsmsException
 	 */
-	public String createTenantId(String id,String name) throws AsmsException;
+	public String createTenantId(String id,String name, String subDomain) throws AsmsException;
 	
 	
 
@@ -62,4 +62,8 @@ public interface MultitenancyDao {
 	public boolean updateSchema(String name) throws AsmsException;
 	
 	public void insertTrust(Trust trust, String schema) throws AsmsException;
+	
+	public String getSchemaByDomain(String tenantId) throws AsmsException;
+
+
 }

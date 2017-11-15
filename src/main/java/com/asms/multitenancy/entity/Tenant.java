@@ -41,6 +41,10 @@ public class Tenant
 	
 	@Column(name= "name")
 	private String name;
+	
+	
+	@Column(name = "sub_domain")
+	private String subDomain;
 
 	public String getName() {
 		return name;
@@ -64,6 +68,14 @@ public class Tenant
 
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	public String getSubDomain() {
+		return subDomain;
+	}
+
+	public void setSubDomain(String subDomain) {
+		this.subDomain = subDomain;
 	}
 	
 	

@@ -163,6 +163,11 @@ public class SchoolValidator {
 			throw exceptionHandler.constructAsmsException(messages.getString("SCHOOL_BOARD_NULL_CODE"),
 					messages.getString("SCHOOL_BOARD_NULL_MSG"));
 		}
+		
+		if (null == details.getSubDomain() || details.getSubDomain().isEmpty()) {
+			throw exceptionHandler.constructAsmsException(messages.getString("SCHOOL_SUB_DOMAIN_NULL_CODE"),
+					messages.getString("SCHOOL_SUB_DOMAIN_NULL_MSG"));
+		}
 
 		// validate for lattitude
 
