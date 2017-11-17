@@ -556,7 +556,7 @@ public class UserMgmtService extends BaseService {
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public Response login(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse,
-			@QueryParam("tenantId") String id, UserDetails userDetails) {
+			@QueryParam("domain") String domain, UserDetails userDetails) {
 		FailureResponse failureResponse = new FailureResponse();
 		// get the error code and description from resource bundles
 		ResourceBundle messages = AsmsHelper.getMessageFromBundle();
@@ -566,7 +566,7 @@ public class UserMgmtService extends BaseService {
 			// validate user details
 			validator.validateUserDetails(userDetails, messages);
 
-			loginResponse = userMgmtDao.authenticate(hRequest, hResponse, id, userDetails.getEmail(),
+			loginResponse = userMgmtDao.authenticate(hRequest, hResponse, domain, userDetails.getEmail(),
 					userDetails.getUserPassword());
 			if (loginResponse != null) {
 				HttpSession session = hRequest.getSession();
