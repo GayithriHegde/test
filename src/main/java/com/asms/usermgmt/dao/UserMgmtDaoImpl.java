@@ -90,7 +90,7 @@ import com.asms.usermgmt.service.UserMgmtService;
 public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	private int initialValue = 20;
-	private float percentage = 100.00f;
+	//private float percentage = 100.00f;
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -3588,11 +3588,11 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	@Override
 	public void createAkacartUser(AkacartUserDetails akacartUserDetails, String userId, String tenant)
 			throws AsmsException {
-		Session session = null;
+		//Session session = null;
 		AkacartUser akacartuser = new AkacartUser();
 		String schema = multitenancyDao.getSchema(tenant);
 		if (null != schema) {
-			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+			//session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 
 			akacartuser.setUserId(akacartUserDetails.getUserId());
 			akacartuser.setAkakartAccess(akacartUserDetails.isAkakartAccess());

@@ -19,12 +19,10 @@ import com.asms.common.helper.AsmsHelper;
 
 
 import com.asms.schoolmgmt.entity.SetupSchoolDetails;
-import com.asms.schoolmgmt.request.AdditionalSubjectsDetails;
 import com.asms.schoolmgmt.request.GroupDetails;
 import com.asms.schoolmgmt.request.SchoolDetails;
 import com.asms.schoolmgmt.request.TimeTableOnchangeDetails;
 import com.asms.schoolmgmt.request.UserRequest;
-import com.sun.research.ws.wadl.Request;
 
 @Component
 public class SchoolValidator {

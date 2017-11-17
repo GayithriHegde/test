@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.asms.filter.AuthorisationFilter;
-import com.asms.multitenancy.entity.SuperAdmin;
 import com.asms.usermgmt.dao.UserMgmtDao;
 import com.asms.usermgmt.entity.User;
 

@@ -1088,7 +1088,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 	private MessageReceiver getmessageReceiverObject(int messageId, User user, String schema) throws AsmsException {
 
 		Session session = null;
-		Transaction tx = null;
+//		Transaction tx = null;
 		MessageReceiver mr = null;
 
 		try {

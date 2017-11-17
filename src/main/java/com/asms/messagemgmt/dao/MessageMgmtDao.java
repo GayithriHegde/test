@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.asms.Exception.AsmsException;
 import com.asms.messagemgmt.entity.Message;
-import com.asms.messagemgmt.entity.MessageReceiver;
 import com.asms.messagemgmt.request.BroadCasteSearchTypesDetails;
 import com.asms.messagemgmt.response.MessageDetails;
 import com.asms.usermgmt.entity.User;

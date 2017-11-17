@@ -1,11 +1,9 @@
 package com.asms.schoolmgmt.dao;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,7 +77,6 @@ import com.asms.usermgmt.entity.Admin;
 import com.asms.usermgmt.entity.User;
 import com.asms.usermgmt.entity.teachingStaff.TeachingStaff;
 import com.asms.usermgmt.entity.teachingStaff.TeachingSubjects;
-import org.apache.commons.codec.binary.Base64;
 
 @Service
 @Component
@@ -1494,7 +1491,7 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 	@Override
 	public void uploadFile(InputStream fis, int id, String name, String domain) throws AsmsException, IOException {
 		String serverFilename = null;
-		String sessionId = (String) MDC.get("sessionId");
+		//String sessionId = (String) MDC.get("sessionId");
 		Session session = null;
 		Transaction tx = null;
 

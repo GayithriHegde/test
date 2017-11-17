@@ -102,7 +102,7 @@ public class LoggingHandler {
 
 			String className = joinPoint.getSignature().getDeclaringTypeName();
 			String methodName = joinPoint.getSignature().getName();
-			String returnValue = this.getValue(Arrays.toString(joinPoint.getArgs()));
+			//String returnValue = this.getValue(Arrays.toString(joinPoint.getArgs()));
 			Object result = joinPoint.proceed();
 			long elapsedTime = System.currentTimeMillis() - start;
 			log.debug("SessionId: " + MDC.get("sessionId") + "   " + "Method: " + className + methodName + "   "

@@ -28,7 +28,6 @@ import com.asms.usermgmt.entity.management.Management;
 import com.asms.usermgmt.entity.nonTeachingStaff.NonTeachingStaff;
 import com.asms.usermgmt.entity.student.Student;
 import com.asms.usermgmt.entity.teachingStaff.TeachingStaff;
-import com.asms.usermgmt.request.UserBasicDetails;
 
 
 //reports implementation goes here
@@ -119,7 +118,6 @@ public class ReportsDaoImpl implements ReportsGenDao {
 
 	@Override
 	public void getAllUsers(String year, String tenant) throws AsmsException {
-		// TODO Auto-generated method stub
 		messages = AsmsHelper.getMessageFromBundle();
 
 		String[] columns = new String[] { "SINO","Staff Name", "Staff Type", "Staff Id", "Gender", "Qualification",
