@@ -74,5 +74,12 @@ public class AsmsHelper {
 		Date date = new Date();
 		return dateFormat.format(date);
 	}
+	
+	public static String generateToken(String email){
+		String token = null;
+		
+		
+		return token;
+	}
 
 }

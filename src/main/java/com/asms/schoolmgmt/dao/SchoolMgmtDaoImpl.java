@@ -400,12 +400,25 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 			school.setGpsLatitude(schoolDetails.getGpsLatitude());
 			school.setGpsLongitude(schoolDetails.getGpsLongitude());
 			school.setBoardName(schoolDetails.getBoardDetails());
+			
+			String password = "";
+			
+			if (school.getName().length() >= 4) {
+				password = password + school.getName().substring(0, 4);
+			} else {
+				password = school.getName();
+			}
+			if (school.getContactPersonName().length() >= 4) {
+				password = password + school.getContactPersonName().substring(0, 4);
+			} else {
+				password = password + school.getContactPersonName();
+			}
 
-			Admin admin = createAdmin(school);
+			Admin admin = createAdmin(school,password);
 
 			insertSchool(school, admin, schema);
 			emailSender.send("", school.getContactPersonEmailId(), "asmstest123@gmail.com", "School Registered",
-					"Your School Registered" + ":" + school.getContactPersonEmailId() + ":" + admin.getUserPassword(),
+					"Your School Registered" + ":" + school.getContactPersonEmailId() + ":" + password,
 					"text/html");
 			return school;
 		} catch (Exception e) {
@@ -469,10 +482,9 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 
 	}
 
-	private Admin createAdmin(School school) throws AsmsException {
+	private Admin createAdmin(School school, String password) throws AsmsException {
 
 		Admin admin = new Admin();
-		String password = null;
 		admin.setCreatedOn(new Date());
 		admin.setEmail(school.getContactPersonEmailId());
 		admin.setIsNew("true");
@@ -480,16 +492,7 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 		admin.setStatus("Complete");
 		admin.setUserId(generateUserId());
 
-		if (school.getName().length() >= 4) {
-			password = password + school.getName().substring(0, 4);
-		} else {
-			password = school.getName();
-		}
-		if (school.getContactPersonName().length() >= 4) {
-			password = password + school.getContactPersonName().substring(0, 4);
-		} else {
-			password = password + school.getContactPersonName();
-		}
+	
 		String generatedSecuredPasswordHash = BCrypt.hashpw(password.trim(), BCrypt.gensalt(10));
 		admin.setUserPassword(generatedSecuredPasswordHash);
 		admin.setSchoolId(school.getSerialNo());

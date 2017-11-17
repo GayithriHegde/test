@@ -36,7 +36,7 @@ public interface UserMgmtDao {
 
 	public SubRole getSubRoleObject(String roleName, String schema) throws AsmsException;
 
-	LoginResponse authenticate(HttpServletRequest request, HttpServletResponse response, String id, String email,
+	LoginResponse authenticate(HttpServletRequest request, HttpServletResponse response, String domain, String email,
 			String password) throws AsmsException;
 
 	LoginResponse authenticateAkaperiUser(HttpServletRequest request, HttpServletResponse response, String email, String password)

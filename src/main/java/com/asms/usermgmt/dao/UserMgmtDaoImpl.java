@@ -833,7 +833,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				role.setRoleName(Constants.role_super_admin);
 				User user = new User();
 				user.setRoleObject(role);
-				
+
 				user.setEmail(admin.getUsername());
 				user.setUserPassword(admin.getPassword());
 
@@ -852,12 +852,10 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 
 	}
-	
-	
-	
+
 	@Override
-	public LoginResponse authenticate(HttpServletRequest request, HttpServletResponse response, String id, String email,
-			String password) throws AsmsException {
+	public LoginResponse authenticate(HttpServletRequest request, HttpServletResponse response, String domain,
+			String email, String password) throws AsmsException {
 		Session session = null;
 		LoginResponse loginResponse = null;
 
@@ -866,8 +864,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			String hql;
 			session = sessionFactory.withOptions().tenantIdentifier(dbProperties.getProperty("default_schema"))
 					.openSession();
-			hql = "from Tenant U where U.tenantId=?";
-			Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, id).uniqueResult();
+			hql = "from Tenant U where U.subDomain=?";
+			Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, domain).uniqueResult();
 			session.close();
 			if (null == tenant) {
 				logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -877,9 +875,9 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 			} else {
 				session = sessionFactory.withOptions().tenantIdentifier(tenant.getName()).openSession();
-				hql = "from User U where U.email=? and U.userPassword=?";
-				User user = (User) session.createQuery(hql).setParameter(0, email).setParameter(1, password)
-						.setMaxResults(1).uniqueResult();
+				hql = "from User U where U.email=? ";
+				User user = (User) session.createQuery(hql).setParameter(0, email)
+						.uniqueResult();
 
 				loginResponse = new LoginResponse();
 
@@ -931,13 +929,22 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					return loginResponse;
 
 				} else {
-					HttpSession httpSession = request.getSession(false);
-					httpSession.setAttribute("ap_user", user);
-					// user = (User)httpSession.getAttribute("ap_user");
-					loginResponse.setParent(false);
-					loginResponse.setPrivileges(new ArrayList<Privilege>(user.getPrivileges()));
-					loginResponse.setNew(user.getIsNew());
-					return loginResponse;
+
+					boolean isPasswaordSame = BCrypt.checkpw(password, user.getUserPassword());
+					if (isPasswaordSame) {
+						HttpSession httpSession = request.getSession(false);
+						httpSession.setAttribute("ap_user", user);
+						// user = (User)httpSession.getAttribute("ap_user");
+						loginResponse.setParent(false);
+						loginResponse.setPrivileges(new ArrayList<Privilege>(user.getPrivileges()));
+						loginResponse.setNew(user.getIsNew());
+						return loginResponse;
+					} else {
+						logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: "
+								+ this.getClass().getName() + "." + "authenticate()" + "   ", "Authentication failed");
+						throw exceptionHandler.constructAsmsException(messages.getString("AUTHENTICATION_FAILED_CODE"),
+								messages.getString("AUTHENTICATION_FAILED_MSG"));
+					}
 				}
 
 			}
