@@ -66,11 +66,7 @@ public class Validator {
 
 		}
 		
-		if (null == request.getUserDetails().getAdmissionForYear() ||  request.getUserDetails().getAdmissionForYear().isEmpty()) {
-			throw exceptionHandler.constructAsmsException(messages.getString("ADMISSION_YEAR_NULL_CODE"),
-					messages.getString("ADMISSION_YEAR_NULL_MSG"));
-
-		}
+	
 		if (null == request.getUserDetails()) {
 			throw exceptionHandler.constructAsmsException(messages.getString("USER_OBJECT_NULL_CODE"),
 					messages.getString("USER_OBJECT_NULL"));
@@ -347,9 +343,6 @@ public class Validator {
 			throw exceptionHandler.constructAsmsException(messages.getString("TEACHING_STAFF_CASTE_CATEGORY_NULL_CODE"),
 					messages.getString("TEACHING_STAFF_CASTE_CATEGORY_NULL_MSG"));
 
-		if ((null == teachingStaffDetails.getPhoto()) || (teachingStaffDetails.getPhoto().isEmpty()))
-			throw exceptionHandler.constructAsmsException(messages.getString("TEACHING_STAFF_PHOTO_NULL_CODE"),
-					messages.getString("TEACHING_STAFF_PHOTO_NULL_MSG"));
 		
 		if (null == teachingStaffDetails.getBloodGroup() || teachingStaffDetails.getBloodGroup().isEmpty())
 			throw exceptionHandler.constructAsmsException(messages.getString("TEACHING_STAFF_BLOODGROUP_NULL_CODE"),
@@ -369,11 +362,9 @@ public class Validator {
 		 * messages.getString("TEACHING_STAFF_SUBJECTS_HANDLED_NULL_MSG"));
 		 */
 
-		if ((null == teachingStaffDetails.getMaritalStatus()) || (teachingStaffDetails.getMaritalStatus().isEmpty()))
-			throw exceptionHandler.constructAsmsException(messages.getString("TEACHING_STAFF_MARITAL_STATUS_NULL_CODE"),
-					messages.getString("TEACHING_STAFF_MARITAL_STATUS_NULL_MSG"));
+	
 
-		List<TeachingSubjectDetails> subjectDetailsList = teachingStaffDetails.getTeachingSubjectDetailsList();
+	/*	List<TeachingSubjectDetails> subjectDetailsList = teachingStaffDetails.getTeachingSubjectDetailsList();
 
 		for (int i = 0; i < subjectDetailsList.size(); i++) {
 
@@ -394,7 +385,7 @@ public class Validator {
 			if (null == subjectDetails.getSectionName() || subjectDetails.getSectionName().isEmpty())
 				throw exceptionHandler.constructAsmsException(messages.getString("SECTION_NULL_CODE"),
 						messages.getString("SECTION_NULL_MSG"));
-		}
+		}*/
 
 	}
 

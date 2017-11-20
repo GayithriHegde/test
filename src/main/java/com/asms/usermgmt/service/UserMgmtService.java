@@ -450,7 +450,7 @@ public class UserMgmtService extends BaseService {
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public Response register(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse,
-			UserRequest userRequest, @QueryParam("tenantId") String tenant) {
+			UserRequest userRequest, @QueryParam("domain") String domain) {
 		RegistrationResponse rReponse = new RegistrationResponse();
 		ResourceBundle messages;
 		try {
@@ -471,7 +471,7 @@ public class UserMgmtService extends BaseService {
 				UserDetails userDetails = userRequest.getUserDetails();
 				userDetails.setRole(userRequest.getUserRole());
 				userDetails.setSubRole(userRequest.getSubRole());
-				rReponse = userMgmtDao.registerUser(userDetails, user, tenant);
+				rReponse = userMgmtDao.registerUser(userDetails, user, domain);
 				rReponse.setIsNew("true");
 				// rReponse.setUserId(userid);
 				// rReponse.setProgressPercentage(20);

@@ -26,7 +26,7 @@ import com.asms.usermgmt.service.ReligionTypes;
 public interface UserMgmtDao {
 	public String getUserRole(String email, String tenant) throws AsmsException;
 
-	public RegistrationResponse registerUser(UserDetails userDetails, User user, String tenant) throws AsmsException;
+	public RegistrationResponse registerUser(UserDetails userDetails, User user, String domain) throws AsmsException;
 
 	public User getUser(String email, String tenant) throws AsmsException;
 

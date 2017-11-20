@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -74,8 +75,33 @@ public class User {
 	@ManyToOne
 	@JoinColumn(name = "role_id")
 	private Role roleObject;
+	
+	
+	@Transient
+	private String sessionToken;
+	
+	@Transient
+	private String domain;
+	
+	
 
 	
+	public String getSessionToken() {
+		return sessionToken;
+	}
+
+	public void setSessionToken(String sessionToken) {
+		this.sessionToken = sessionToken;
+	}
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "sub_role_id")
 	private SubRole subRoleObject;	

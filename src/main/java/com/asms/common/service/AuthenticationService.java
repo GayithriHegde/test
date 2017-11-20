@@ -51,6 +51,7 @@ public class AuthenticationService {
 		final StringTokenizer tokenizer = new StringTokenizer(usernameAndPassword, ":");
 		final String email = tokenizer.nextToken();
 		final String password = tokenizer.nextToken();
+		
 		if (user instanceof User) {
 			User user1 = (User)user;
 			if (email.equalsIgnoreCase(user1.getEmail()) && password.equalsIgnoreCase(user1.getUserPassword())) {

@@ -6,8 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.UUID;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class AsmsHelper {
+
+	
 
 	public static final ResourceBundle getMessageFromBundle() {
 		Locale currentLocale = new Locale("en", "US");
@@ -74,12 +78,38 @@ public class AsmsHelper {
 		Date date = new Date();
 		return dateFormat.format(date);
 	}
-	
-	public static String generateToken(String email){
-		String token = null;
-		
-		
+
+	public static String generateToken(String email, String domain) {
+
+		long currentTime = System.currentTimeMillis();
+		// need this to store in session
+		String uuid = UUID.randomUUID().toString().toUpperCase();
+		String token = uuid + "|" + email + "|" + domain + "|" + currentTime;
+		token = generateHashString(token);
+
 		return token;
+	}
+
+	public static boolean checkToken(String token, String sessionToken) {
+	
+			if (checkPassword(token, sessionToken)) {
+				return true;
+
+			} else {
+				return false;
+			}
+
+		
+
+	}
+	
+	
+	public static String generateHashString(String string){
+		return BCrypt.hashpw(string.trim(), BCrypt.gensalt(10));
+	}
+	
+	public static boolean checkPassword(String password, String hashedPassword){
+		return BCrypt.checkpw(password, hashedPassword);
 	}
 
 }

@@ -668,8 +668,7 @@ public class EntityCreator {
 		teachingStaff.setCasteCategory(teachingStaffDetails.getCasteCategory());
 		teachingStaff.setPhoto(teachingStaffDetails.getPhoto());
 		teachingStaff.setMaritalStatus(teachingStaffDetails.getMaritalStatus());
-		teachingStaff.setSpouseName(teachingStaffDetails.getSpouseName());
-		teachingStaff.setSpouseContactNo(teachingStaffDetails.getSpouseContactNo());
+		
 		teachingStaff.setBloodGroup(teachingStaffDetails.getBloodGroup());
 		
 		// hard coded values
@@ -685,7 +684,7 @@ public class EntityCreator {
 		 * teachingStaff details completed or not
 		 */
 
-		teachingStaff.setAcStatus("Incomplete");
+	
 
 		return teachingStaff;
 	}
@@ -726,9 +725,7 @@ public class EntityCreator {
 			tDetails.setCasteCategory(teachingStaff.getCasteCategory());
 			tDetails.setPhoto(teachingStaff.getPhoto());
 			tDetails.setMaritalStatus(teachingStaff.getMaritalStatus());
-			tDetails.setSpouseName(teachingStaff.getSpouseName());
 			tDetails.setBloodGroup(teachingStaff.getBloodGroup());
-			tDetails.setSpouseContactNo(teachingStaff.getSpouseContactNo());
 			tDetails.setCreatedByWadmin(teachingStaff.getCreatedByWadmin());
 			tDetails.setCreationTime(dateFormat.format(teachingStaff.getCreationTime()));
 

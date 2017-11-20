@@ -20,7 +20,6 @@ import org.jboss.logging.MDC;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -166,11 +165,11 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	@Override
-	public User getUser(String email, String tenant) throws AsmsException {
+	public User getUser(String email, String domain) throws AsmsException {
 		Session session = null;
 		try {
 			messages = AsmsHelper.getMessageFromBundle();
-			String schema = multitenancyDao.getSchema(tenant);
+			String schema = multitenancyDao.getSchemaByDomain(domain);
 			if (null != schema) {
 				session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 				String hql = "from User U where U.email=?";
@@ -468,10 +467,10 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 *
 	 */
 	@Override
-	public RegistrationResponse registerUser(UserDetails userDetails, User user, String tenant) throws AsmsException {
+	public RegistrationResponse registerUser(UserDetails userDetails, User user, String domain) throws AsmsException {
 		RegistrationResponse rReponse = new RegistrationResponse();
 		try {
-			String schema = multitenancyDao.getSchema(tenant);
+			String schema = multitenancyDao.getSchemaByDomain(domain);
 			if (null == schema) {
 				throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
 						messages.getString("TENANT_INVALID_CODE_MSG"));
@@ -480,7 +479,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			School school = schoolMgmtDao.getSchool(schema);
 			String userid = generateUserId();
 			String email = userDetails.getEmail();
-			User userFromDB = getUser(email, tenant);
+			User userFromDB = getUser(email, domain);
 			if (null == userFromDB) {
 
 				if (userDetails.getRole().equalsIgnoreCase(Constants.role_student)) {
@@ -493,7 +492,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						student.setRoleObject(role);
 						student.setSubRoleObject(sRole);
 						student.setStatus("incomplete");
-						student.setUserPassword(userDetails.getUserPassword());
+						student.setUserPassword(generatePassword(student.getStudentFirstName(), student.getStudentLastName()));
 						student.setSchoolId(school.getSerialNo());
 						student.setAdmissionForYear(userDetails.getAdmissionForYear());
 						createDefaultPrivileges(Constants.role_student, student);
@@ -565,7 +564,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						management.setEmail(userDetails.getEmail());
 						management.setRoleObject(role);
 						management.setSubRoleObject(sRole);
-						management.setUserPassword(userDetails.getUserPassword());
+						management.setUserPassword(generatePassword(management.getMngmtFirstName(), management.getMngmtLastName()));
 						management.setSchoolId(school.getSerialNo());
 						management.setAdmissionForYear(userDetails.getAdmissionForYear());
 						createDefaultPrivileges(Constants.role_management, management);
@@ -585,15 +584,14 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					if (null != role && null != sRole) {
 						TeachingStaff teachingStaff = entityCreator
 								.createTeachingStaff(userDetails.getTeachingStaffDetails(), user);
-
-						teachingStaff.setUserPassword(userDetails.getUserPassword());
 						teachingStaff.setUserId(userid);
-						teachingStaff.setEmail(userDetails.getEmail());
 						teachingStaff.setRoleObject(role);
 						teachingStaff.setSubRoleObject(sRole);
 						teachingStaff.setSchoolId(school.getSerialNo());
-						teachingStaff.setAdmissionForYear(userDetails.getAdmissionForYear());
-						teachingStaff.setTeachingSubjects((getTeachingSubjects(userDetails, teachingStaff, schema)));
+						teachingStaff.setAdmissionForYear(AsmsHelper.getCurrentAcademicYear());
+						teachingStaff.setEmail(userDetails.getEmail());
+						teachingStaff.setUserId(generatePassword(teachingStaff.getFirstName(), teachingStaff.getLastName()));
+						//teachingStaff.setTeachingSubjects((getTeachingSubjects(userDetails, teachingStaff, schema)));
 						createDefaultPrivileges(Constants.role_teaching_staff, teachingStaff);
 						insertTeachingStaff(teachingStaff, schema);
 
@@ -611,7 +609,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						NonTeachingStaff nonTeachingStaff = entityCreator
 								.createNonTeachingStaff(userDetails.getNonTeachingStaffDetails(), user);
 
-						nonTeachingStaff.setUserPassword(generatePassword(Constants.role_non_teaching_staff));
+						nonTeachingStaff.setUserPassword(generatePassword(nonTeachingStaff.getFirstName() , nonTeachingStaff.getLastName()));
 						nonTeachingStaff.setUserId(userid);
 						nonTeachingStaff.setEmail(userDetails.getEmail());
 						nonTeachingStaff.setRoleObject(role);
@@ -700,9 +698,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 */
 
 	// generate default encrypted password
-	private String generatePassword(String role) {
-		// return BCrypt.hashpw(role + "123", BCrypt.gensalt(10));
-		return role + "123";
+	private String generatePassword(String firstName, String lastName) {
+		return AsmsHelper.generateHashString(firstName + lastName);
 	}
 
 	// generate userid
@@ -862,6 +859,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		try {
 
 			String hql;
+			messages = AsmsHelper.getMessageFromBundle();
 			session = sessionFactory.withOptions().tenantIdentifier(dbProperties.getProperty("default_schema"))
 					.openSession();
 			hql = "from Tenant U where U.subDomain=?";
@@ -930,14 +928,19 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 				} else {
 
-					boolean isPasswaordSame = BCrypt.checkpw(password, user.getUserPassword());
+					boolean isPasswaordSame = AsmsHelper.checkPassword(password, user.getUserPassword());
 					if (isPasswaordSame) {
 						HttpSession httpSession = request.getSession(false);
+						
+						// set in session
+						user.setDomain(domain);
 						httpSession.setAttribute("ap_user", user);
+						
 						// user = (User)httpSession.getAttribute("ap_user");
 						loginResponse.setParent(false);
 						loginResponse.setPrivileges(new ArrayList<Privilege>(user.getPrivileges()));
 						loginResponse.setNew(user.getIsNew());
+						loginResponse.setAuthToken(user.getUserPassword());
 						return loginResponse;
 					} else {
 						logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: "
@@ -1034,7 +1037,9 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			tx = session.beginTransaction();
 
 			session.save(teachingStaff);
-
+			TeachingStaff t = (TeachingStaff) session.load(TeachingStaff.class, teachingStaff.getSerialNo());
+			t.setStaffId("Teacher" + teachingStaff.getSerialNo());
+			session.update(t);
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
@@ -2658,7 +2663,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		if (null != teachingStaffDetails.getDesignation() || !teachingStaffDetails.getDesignation().isEmpty()) {
 			teachingStaff.setDesignation(teachingStaffDetails.getDesignation());
 		}
-		if (null != teachingStaffDetails.getFirstName() || !teachingStaffDetails.getFirstName().isEmpty()) {
+		/*	if (null != teachingStaffDetails.getFirstName() || !teachingStaffDetails.getFirstName().isEmpty()) {
 			teachingStaff.setFirstName(teachingStaffDetails.getFirstName());
 		}
 		if (null != teachingStaffDetails.getMiddleName() || !teachingStaffDetails.getMiddleName().isEmpty()) {
@@ -2698,7 +2703,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 		if (null != teachingStaffDetails.getAcStatus() || !teachingStaffDetails.getAcStatus().isEmpty()) {
 			teachingStaff.setAcStatus(teachingStaffDetails.getAcStatus());
-		}
+		}*/
 
 	}
 
@@ -3788,5 +3793,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 
 	}
+	
+
 
 }

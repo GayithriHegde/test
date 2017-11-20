@@ -33,8 +33,6 @@ public class TeachingStaffDetails {
 	private String casteCategory;
 	private String photo;
 	private String maritalStatus;
-	private String spouseName;
-	private int spouseContactNo;
 	private String createdByWadmin;
 	private String creationTime;
 	private String acStatus;
@@ -164,21 +162,7 @@ public class TeachingStaffDetails {
 		this.maritalStatus = maritalStatus;
 	}
 
-	public String getSpouseName() {
-		return spouseName;
-	}
-
-	public void setSpouseName(String spouseName) {
-		this.spouseName = spouseName;
-	}
-
-	public int getSpouseContactNo() {
-		return spouseContactNo;
-	}
-
-	public void setSpouseContactNo(int spouseContactNo) {
-		this.spouseContactNo = spouseContactNo;
-	}
+	
 
 	public String getCreatedByWadmin() {
 		return createdByWadmin;

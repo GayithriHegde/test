@@ -59,6 +59,9 @@ public class TeachingStaff extends User {
 	@OneToMany(mappedBy="teachingObject", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<TimeTable> timeTables = new HashSet<TimeTable>();
 	
+	
+	@Column(name = "t_staff_id")
+	private String staffId;
 
 	@Column(name = "t_staff_designation")
 	private String designation;
@@ -335,6 +338,14 @@ public class TeachingStaff extends User {
 
 	public void setBloodGroup(String bloodGroup) {
 		this.bloodGroup = bloodGroup;
+	}
+
+	public String getStaffId() {
+		return staffId;
+	}
+
+	public void setStaffId(String staffId) {
+		this.staffId = staffId;
 	}
 
 	

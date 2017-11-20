@@ -1222,7 +1222,7 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 			for (User u : users) {
 				details = new TeacherDetails();
 				TeachingStaff t = (TeachingStaff) u;
-				details.setName(t.getFirstName() + " " + t.getLastName());
+				//details.setName(t.getFirstName() + " " + t.getLastName());
 				details.setUserId(t.getSerialNo());
 				teachers.add(details);
 			}
@@ -1376,8 +1376,8 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 				}
 				if (teacherBusy == false) {
 					td = new TeacherDetails();
-					td.setName(tso.getTeachingObject().getFirstName() + " " + tso.getTeachingObject().getMiddleName()
-							+ " " + tso.getTeachingObject().getLastName());
+					//td.setName(tso.getTeachingObject().getFirstName() + " " + tso.getTeachingObject().getMiddleName()
+							//+ " " + tso.getTeachingObject().getLastName());
 					td.setUserId(tso.getTeachingObject().getSerialNo());
 					teachers.add(td);
 				}

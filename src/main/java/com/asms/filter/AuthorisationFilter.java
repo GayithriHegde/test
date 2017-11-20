@@ -19,7 +19,9 @@ import org.slf4j.LoggerFactory;
 //import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import com.asms.common.helper.AsmsHelper;
 import com.asms.common.service.AuthenticationService;
+import com.asms.usermgmt.entity.User;
 
 public class AuthorisationFilter implements Filter {
 
@@ -64,8 +66,17 @@ public class AuthorisationFilter implements Filter {
 				chain.doFilter(request, response);
 			} else {
 				logger.info(".....    enetring else...for authorisation header check...");
-				AuthenticationService authenticationService = new AuthenticationService();
 				Object user = session.getAttribute("ap_user");
+				boolean result = false;
+				User user1 = null;
+				if (user instanceof User) {
+					 user1 = (User)user;
+					 result = true;
+				}else{
+					result = false;
+				}
+				AuthenticationService authenticationService = new AuthenticationService();
+				
 				boolean authenticationStatus = authenticationService.authenticate(authCredentials, user);
 				if (authenticationStatus) {
 					chain.doFilter(request, response);
@@ -81,6 +92,9 @@ public class AuthorisationFilter implements Filter {
 						out.flush();
 					}
 				}
+				
+				
+	
 			}
 		}
 

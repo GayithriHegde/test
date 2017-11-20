@@ -59,6 +59,8 @@ public class LoginResponse extends SuccessResponse{
 	private boolean isMother;
 	
 	private String isNew;
+	
+	private String authToken;
 
 	public String getRole() {
 		return role;
@@ -74,6 +76,22 @@ public class LoginResponse extends SuccessResponse{
 
 	public void setNew(String isNew) {
 		this.isNew = isNew;
+	}
+
+	public String getIsNew() {
+		return isNew;
+	}
+
+	public void setIsNew(String isNew) {
+		this.isNew = isNew;
+	}
+
+	public String getAuthToken() {
+		return authToken;
+	}
+
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
 	}
 	
 	

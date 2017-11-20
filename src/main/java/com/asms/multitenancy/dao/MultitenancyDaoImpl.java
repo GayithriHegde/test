@@ -159,7 +159,13 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 
 		Session session = null;
 		Transaction tx = null;
+		ResourceBundle messages = AsmsHelper.getMessageFromBundle();
 		try {
+			
+			// check if domain is alreaddy there
+			String schema = getSchemaByDomain(subDomain);
+			if(null == schema){
+			
 			name = id + "_" + name;
 			Tenant tenant = new Tenant();
 			tenant.setTenantId("id" + "_" + name);
@@ -174,6 +180,10 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			tx.commit();
 			session.close();
 			return tenant.getName();
+			}else{
+				throw exceptionHandler.constructAsmsException(messages.getString("DOMAIN_EXISTS_CODE"),
+						messages.getString("DOMAIN_EXISTS_MSG"));
+			}
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
@@ -185,7 +195,10 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 
 					+ "createTenantId()" + "   ", ex);
 
-			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			if ((ex instanceof AsmsException)) {
+				throw this.exceptionHandler.constructAsmsException(((AsmsException) ex).getCode(),
+						((AsmsException) ex).getDescription());
+			}
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 
@@ -254,12 +267,11 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			String hql = "from Tenant U where U.subDomain=?";
 			Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, domain).uniqueResult();
 			session.close();
-			if (null == tenant) {
-				throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
-						messages.getString("TENANT_INVALID_CODE_MSG"));
-
-			}
+			if(null != tenant){
 			return tenant.getName();
+			}else{
+				return null;
+			}
 
 		} catch (Exception e) {
 			if (session.isOpen()) {
