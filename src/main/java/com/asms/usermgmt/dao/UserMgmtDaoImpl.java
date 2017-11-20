@@ -63,6 +63,7 @@ import com.asms.usermgmt.entity.teachingStaff.TeachingSubjects;
 import com.asms.usermgmt.helper.EntityCreator;
 import com.asms.usermgmt.request.ChangePasswordDetails;
 import com.asms.usermgmt.request.TeachingSubjectDetails;
+import com.asms.usermgmt.request.UserBasicDetails;
 import com.asms.usermgmt.request.UserDetails;
 import com.asms.usermgmt.request.AkacartUserDetails.AkacartUserDetails;
 import com.asms.usermgmt.request.nonTeachingStaff.AddressDetails;
@@ -78,6 +79,7 @@ import com.asms.usermgmt.request.teachingStaff.StaffPreviousInformationDetails1;
 import com.asms.usermgmt.request.teachingStaff.StaffStatutoryDetails1;
 import com.asms.usermgmt.request.teachingStaff.TeachingStaffDetails;
 import com.asms.usermgmt.response.LoginResponse;
+import com.asms.usermgmt.response.ParentLoginResponse;
 import com.asms.usermgmt.response.RegistrationResponse;
 import com.asms.usermgmt.service.CasteTypes;
 import com.asms.usermgmt.service.QualificationType;
@@ -89,7 +91,7 @@ import com.asms.usermgmt.service.UserMgmtService;
 public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	private int initialValue = 20;
-	//private float percentage = 100.00f;
+	// private float percentage = 100.00f;
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -203,8 +205,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -247,8 +248,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -428,6 +428,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	}
 
+	@SuppressWarnings("unused")
 	private List<TeachingSubjects> getTeachingSubjects(UserDetails details, TeachingStaff tStaff, String tenant)
 			throws AsmsException {
 
@@ -492,7 +493,13 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						student.setRoleObject(role);
 						student.setSubRoleObject(sRole);
 						student.setStatus("incomplete");
-						student.setUserPassword(generatePassword(student.getStudentFirstName(), student.getStudentLastName()));
+
+						student.setUserPassword(AsmsHelper.hashPassword(
+								generatePassword(student.getStudentFirstName(), student.getStudentLastName())));
+
+						student.setUserPassword(
+								generatePassword(student.getStudentFirstName(), student.getStudentLastName()));
+
 						student.setSchoolId(school.getSerialNo());
 						student.setAdmissionForYear(userDetails.getAdmissionForYear());
 						createDefaultPrivileges(Constants.role_student, student);
@@ -564,7 +571,13 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						management.setEmail(userDetails.getEmail());
 						management.setRoleObject(role);
 						management.setSubRoleObject(sRole);
-						management.setUserPassword(generatePassword(management.getMngmtFirstName(), management.getMngmtLastName()));
+
+						management.setUserPassword(AsmsHelper.hashPassword(
+								generatePassword(management.getMngmtFirstName(), management.getMngmtLastName())));
+
+						management.setUserPassword(
+								generatePassword(management.getMngmtFirstName(), management.getMngmtLastName()));
+
 						management.setSchoolId(school.getSerialNo());
 						management.setAdmissionForYear(userDetails.getAdmissionForYear());
 						createDefaultPrivileges(Constants.role_management, management);
@@ -584,16 +597,22 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					if (null != role && null != sRole) {
 						TeachingStaff teachingStaff = entityCreator
 								.createTeachingStaff(userDetails.getTeachingStaffDetails(), user);
+
+						teachingStaff.setUserPassword(AsmsHelper.hashPassword(
+								generatePassword(teachingStaff.getFirstName(), teachingStaff.getLastName())));
+
 						teachingStaff.setUserId(userid);
 						teachingStaff.setRoleObject(role);
 						teachingStaff.setSubRoleObject(sRole);
 						teachingStaff.setSchoolId(school.getSerialNo());
 						teachingStaff.setAdmissionForYear(AsmsHelper.getCurrentAcademicYear());
 						teachingStaff.setEmail(userDetails.getEmail());
-						teachingStaff.setUserId(generatePassword(teachingStaff.getFirstName(), teachingStaff.getLastName()));
+						teachingStaff
+								.setUserId(generatePassword(teachingStaff.getFirstName(), teachingStaff.getLastName()));
 						teachingStaff.setAccountStatus("InComplete");
 						teachingStaff.setIsNew("true");
-						//teachingStaff.setTeachingSubjects((getTeachingSubjects(userDetails, teachingStaff, schema)));
+						// teachingStaff.setTeachingSubjects((getTeachingSubjects(userDetails,
+						// teachingStaff, schema)));
 						createDefaultPrivileges(Constants.role_teaching_staff, teachingStaff);
 						insertTeachingStaff(teachingStaff, schema);
 
@@ -611,7 +630,12 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						NonTeachingStaff nonTeachingStaff = entityCreator
 								.createNonTeachingStaff(userDetails.getNonTeachingStaffDetails(), user);
 
-						nonTeachingStaff.setUserPassword(generatePassword(nonTeachingStaff.getFirstName() , nonTeachingStaff.getLastName()));
+						nonTeachingStaff.setUserPassword(AsmsHelper.hashPassword(
+								generatePassword(nonTeachingStaff.getFirstName(), nonTeachingStaff.getLastName())));
+
+						nonTeachingStaff.setUserPassword(
+								generatePassword(nonTeachingStaff.getFirstName(), nonTeachingStaff.getLastName()));
+
 						nonTeachingStaff.setUserId(userid);
 						nonTeachingStaff.setEmail(userDetails.getEmail());
 						nonTeachingStaff.setRoleObject(role);
@@ -647,10 +671,10 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * <<<<<<< HEAD Method : insertUser : inserts User entity into database
-	 * input : user return : void ======= Method : insertStudent : inserts
-	 * Student entity into database input : student return : void >>>>>>> branch
-	 * 'master' of https://github.com/akaperi/asms-services
+	 * <<<<<<< HEAD Method : insertUser : inserts User entity into database input :
+	 * user return : void ======= Method : insertStudent : inserts Student entity
+	 * into database input : student return : void >>>>>>> branch 'master' of
+	 * https://github.com/akaperi/asms-services
 	 *
 	 */
 
@@ -694,14 +718,28 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method : insertStudent : inserts Student entity into database input :
-	 * student return : void
+	 * Method : insertStudent : inserts Student entity into database input : student
+	 * return : void
 	 *
 	 */
 
 	// generate default encrypted password
+
 	private String generatePassword(String firstName, String lastName) {
-		return AsmsHelper.generateHashString(firstName + lastName);
+		String password = "";
+
+		if (firstName.length() >= 4) {
+			password = password + firstName.substring(0, 4);
+		} else {
+			password = firstName;
+		}
+		if (lastName.length() >= 4) {
+			password = password + lastName.substring(0, 4);
+		} else {
+			password = password + lastName;
+		}
+		return password;
+
 	}
 
 	// generate userid
@@ -763,8 +801,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#insertManagement(com.asms.usermgmt.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertManagement(com.asms.usermgmt.
 	 * entity.Management)
 	 */
 	private void insertManagement(Management management, String schema) throws AsmsException {
@@ -876,8 +913,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			} else {
 				session = sessionFactory.withOptions().tenantIdentifier(tenant.getName()).openSession();
 				hql = "from User U where U.email=? ";
-				User user = (User) session.createQuery(hql).setParameter(0, email)
-						.uniqueResult();
+				User user = (User) session.createQuery(hql).setParameter(0, email).uniqueResult();
 
 				loginResponse = new LoginResponse();
 
@@ -886,22 +922,24 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 					// check if user there in parent table
 
+					ParentLoginResponse parentLoginResponse = new ParentLoginResponse();
+
 					hql = "from Parent P where P.fEmail=? and P.fpassword=?";
 					parent = (Parent) session.createQuery(hql).setParameter(0, email).setParameter(1, password)
-							.setMaxResults(1).uniqueResult();
+							.uniqueResult();
 					if (null != parent) {
-						loginResponse.setParent(true);
-						loginResponse.setFather(true);
-					}
+						parentLoginResponse.setParent(true);
+						parentLoginResponse.setFather(true);
+					} else {
 
-					// parent not null
+						hql = "from Parent P where P.mEmail=? and P.mpassword=?";
+						parent = (Parent) session.createQuery(hql).setParameter(0, email).setParameter(1, password)
+								.uniqueResult();
+						if (null != parent) {
+							parentLoginResponse.setParent(true);
+							parentLoginResponse.setMother(true);
+						}
 
-					hql = "from Parent P where P.mEmail=? and P.mpassword=?";
-					parent = (Parent) session.createQuery(hql).setParameter(0, email).setParameter(1, password)
-							.setMaxResults(1).uniqueResult();
-					if (null != parent) {
-						loginResponse.setParent(true);
-						loginResponse.setMother(true);
 					}
 
 					session.close();
@@ -922,22 +960,24 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 					HttpSession httpSession = request.getSession(false);
 					httpSession.setAttribute("ap_user", user);
-					// user = (User)httpSession.getAttribute("ap_user");
 					loginResponse.setParent(true);
 					loginResponse.setPrivileges(new ArrayList<Privilege>(user.getPrivileges()));
+					List<UserBasicDetails> sDetails = getStudentFromParent(parent, tenant.getName());
+					parentLoginResponse.setStudentDetails(sDetails);
 					loginResponse.setNew(user.getIsNew());
-					return loginResponse;
+
+					return parentLoginResponse;
 
 				} else {
 
 					boolean isPasswaordSame = AsmsHelper.checkPassword(password, user.getUserPassword());
 					if (isPasswaordSame) {
 						HttpSession httpSession = request.getSession(false);
-						
+
 						// set in session
 						user.setDomain(domain);
 						httpSession.setAttribute("ap_user", user);
-						
+
 						// user = (User)httpSession.getAttribute("ap_user");
 						loginResponse.setParent(false);
 						loginResponse.setPrivileges(new ArrayList<Privilege>(user.getPrivileges()));
@@ -1026,8 +1066,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#insertTeachingStaff(com.asms.usermgmt.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertTeachingStaff(com.asms.usermgmt.
 	 * entity.TeachingStaff)
 	 */
 	private void insertTeachingStaff(TeachingStaff teachingStaff, String schema) throws AsmsException {
@@ -1205,6 +1244,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void insertStudentSiblings(List<Sibling> si, String schema) throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
@@ -1412,28 +1452,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
 
 			}
-			/*
-			 * if (null != sDetails.getSiblingDetails()) { List<Sibling> si =
-			 * entityCreator.createSibling(sDetails.getSiblingDetails(), user);
-			 * for (int i = 0; i < si.size(); i++) {
-			 * si.get(i).setStudentObject((Student) studentUser);
-			 * insertStudentSiblings(si, schema);
-			 * 
-			 * initialValue = 1 + 1; Student s = (Student) studentUser;
-			 * 
-			 * if (null != s.getStudentPreviousInfo()) { initialValue =
-			 * initialValue + 1; } if (null != s.getParentObject()) {
-			 * initialValue = initialValue + 1; }
-			 * 
-			 * if (null != s.getStudentAddress()) { initialValue = initialValue
-			 * + 1; } if (null != s.getStudentDocuments()) { initialValue =
-			 * initialValue + 1; }
-			 * 
-			 * if (initialValue == 6) { s.setStatus("Complete"); }
-			 * 
-			 * rReponse.setProgressPercentage(calulateRegistrationProgress(
-			 * initialValue, 6)); } }
-			 */
+
 			if (null != sDetails.getPreviousDetails()) {
 				StudentPreviousInfo si;
 				try {
@@ -1826,8 +1845,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails(com.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails(com.
 	 * asms.usermgmt.entity.StaffPreviousInformation)
 	 */
 	private void insertPreviousInformationDetails(StaffPreviousInformation staffPreviousInformation, String schema)
@@ -1916,8 +1934,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	/*
 	 * Method: search ->This Method is used to search Userdetails Based On
-	 * role,admissionNo firstName , lastName. input : role , admissionNo
-	 * firstName , lastName. Returns : List Of UserDetails(List<UserDetails>)
+	 * role,admissionNo firstName , lastName. input : role , admissionNo firstName ,
+	 * lastName. Returns : List Of UserDetails(List<UserDetails>)
 	 * 
 	 */
 	@Override
@@ -2043,8 +2061,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method: searchForPrivileges ->This Method is used to search Userds Based
-	 * On role,subrole Returns : List Of UserDetails(List<UserDetails>)
+	 * Method: searchForPrivileges ->This Method is used to search Userds Based On
+	 * role,subrole Returns : List Of UserDetails(List<UserDetails>)
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -2218,8 +2236,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails1(com.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails1(com.
 	 * asms.usermgmt.entity.teachingStaff.StaffPreviousInformation1)
 	 */
 	private void insertPreviousInformationDetails1(StaffPreviousInformation1 staffPreviousInformation, String schema)
@@ -2308,8 +2325,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#updateUser(com.asms.usermgmt.request.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#updateUser(com.asms.usermgmt.request.
 	 * UserDetails, com.asms.usermgmt.entity.User)
 	 */
 	@Override
@@ -2343,9 +2359,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					if (null != userDetails.getEmail()) {
 						student.setEmail(userDetails.getEmail());
 					}
-					if (null != userDetails.getUserPassword()) {
-						student.setUserPassword(userDetails.getUserPassword());
-					}
+
 					updateStudentDetails(student, userDetails.getStudentDetails());
 					updateStudentDetails(student, userDetails.getStudentDetails());
 				}
@@ -2387,9 +2401,6 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				if (null != userDetails.getNonTeachingStaffDetails()) {
 					if (null != userDetails.getEmail()) {
 						nonTeachingStaff.setEmail(userDetails.getEmail());
-					}
-					if (null != userDetails.getUserPassword()) {
-						nonTeachingStaff.setUserPassword(userDetails.getUserPassword());
 					}
 
 					updateNonTeachingStaffDetails(nonTeachingStaff, userDetails.getNonTeachingStaffDetails());
@@ -2433,9 +2444,6 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				if (null != userDetails.getTeachingStaffDetails()) {
 					if (null != userDetails.getEmail()) {
 						teachingStaff.setEmail(userDetails.getEmail());
-					}
-					if (null != userDetails.getUserPassword()) {
-						teachingStaff.setUserPassword(userDetails.getUserPassword());
 					}
 
 					updateTeachingStaffDetails(teachingStaff, userDetails.getTeachingStaffDetails());
@@ -2482,9 +2490,6 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				Management management = (Management) session.load(Management.class, userObject.getSerialNo());
 				if (null != userDetails.getEmail()) {
 					management.setEmail(userDetails.getEmail());
-				}
-				if (null != userDetails.getUserPassword()) {
-					management.setUserPassword(userDetails.getUserPassword());
 				}
 
 				if (null != userDetails.getManagementDetails().getTrustId()
@@ -2584,8 +2589,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method: updateStudentDetails ->This Method is used to update
-	 * StudentDetails. input : . Returns : no return Type
+	 * Method: updateStudentDetails ->This Method is used to update StudentDetails.
+	 * input : . Returns : no return Type
 	 * 
 	 */
 	private void updateStudentDetails(Student student, StudentDetails studentDetails) {
@@ -2656,8 +2661,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	/*
 	 * Method: updateTeachingStaffDetails ->This Method is used to update
-	 * TeachingStaffDetails. input : TeachingStaff, TeachingStaffDetails.
-	 * Returns : No ReturnType
+	 * TeachingStaffDetails. input : TeachingStaff, TeachingStaffDetails. Returns :
+	 * No ReturnType
 	 * 
 	 */
 	private void updateTeachingStaffDetails(TeachingStaff teachingStaff, TeachingStaffDetails teachingStaffDetails) {
@@ -2665,53 +2670,52 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		if (null != teachingStaffDetails.getDesignation() || !teachingStaffDetails.getDesignation().isEmpty()) {
 			teachingStaff.setDesignation(teachingStaffDetails.getDesignation());
 		}
-		/*	if (null != teachingStaffDetails.getFirstName() || !teachingStaffDetails.getFirstName().isEmpty()) {
-			teachingStaff.setFirstName(teachingStaffDetails.getFirstName());
-		}
-		if (null != teachingStaffDetails.getMiddleName() || !teachingStaffDetails.getMiddleName().isEmpty()) {
-			teachingStaff.setMiddleName(teachingStaffDetails.getMiddleName());
-		}
-		if (null != teachingStaffDetails.getLastName() || !teachingStaffDetails.getLastName().isEmpty()) {
-			teachingStaff.setLastName(teachingStaffDetails.getLastName());
-		}
-
-		if (null != teachingStaffDetails.getGender() || !teachingStaffDetails.getGender().isEmpty()) {
-			teachingStaff.setGender(teachingStaffDetails.getGender());
-		}
-		if (0 < teachingStaffDetails.getContactNo()) {
-			teachingStaff.setContactNo(teachingStaffDetails.getContactNo());
-		}
-
-		if (null != teachingStaffDetails.getQualification() || !teachingStaffDetails.getQualification().isEmpty()) {
-			teachingStaff.setQualification(teachingStaffDetails.getQualification());
-		}
-		if (null != teachingStaffDetails.getReligion() || !teachingStaffDetails.getReligion().isEmpty()) {
-			teachingStaff.setReligion(teachingStaffDetails.getReligion());
-		}
-		if (null != teachingStaffDetails.getPhoto() || !teachingStaffDetails.getPhoto().isEmpty()) {
-			teachingStaff.setPhoto(teachingStaffDetails.getPhoto());
-		}
-		if (null != teachingStaffDetails.getMaritalStatus() || !teachingStaffDetails.getMaritalStatus().isEmpty()) {
-			teachingStaff.setMaritalStatus(teachingStaffDetails.getMaritalStatus());
-		}
-		if (null != teachingStaffDetails.getSpouseName() || !teachingStaffDetails.getSpouseName().isEmpty()) {
-			teachingStaff.setSpouseName(teachingStaffDetails.getSpouseName());
-		}
-		if (0 < teachingStaffDetails.getSpouseContactNo()) {
-			teachingStaff.setSpouseContactNo(teachingStaffDetails.getSpouseContactNo());
-		}
-		if (null != teachingStaffDetails.getCasteCategory() || !teachingStaffDetails.getCasteCategory().isEmpty()) {
-			teachingStaff.setCasteCategory(teachingStaffDetails.getCasteCategory());
-		}
-		if (null != teachingStaffDetails.getAcStatus() || !teachingStaffDetails.getAcStatus().isEmpty()) {
-			teachingStaff.setAcStatus(teachingStaffDetails.getAcStatus());
-		}*/
+		/*
+		 * if (null != teachingStaffDetails.getFirstName() ||
+		 * !teachingStaffDetails.getFirstName().isEmpty()) {
+		 * teachingStaff.setFirstName(teachingStaffDetails.getFirstName()); } if (null
+		 * != teachingStaffDetails.getMiddleName() ||
+		 * !teachingStaffDetails.getMiddleName().isEmpty()) {
+		 * teachingStaff.setMiddleName(teachingStaffDetails.getMiddleName()); } if (null
+		 * != teachingStaffDetails.getLastName() ||
+		 * !teachingStaffDetails.getLastName().isEmpty()) {
+		 * teachingStaff.setLastName(teachingStaffDetails.getLastName()); }
+		 * 
+		 * if (null != teachingStaffDetails.getGender() ||
+		 * !teachingStaffDetails.getGender().isEmpty()) {
+		 * teachingStaff.setGender(teachingStaffDetails.getGender()); } if (0 <
+		 * teachingStaffDetails.getContactNo()) {
+		 * teachingStaff.setContactNo(teachingStaffDetails.getContactNo()); }
+		 * 
+		 * if (null != teachingStaffDetails.getQualification() ||
+		 * !teachingStaffDetails.getQualification().isEmpty()) {
+		 * teachingStaff.setQualification(teachingStaffDetails.getQualification()); } if
+		 * (null != teachingStaffDetails.getReligion() ||
+		 * !teachingStaffDetails.getReligion().isEmpty()) {
+		 * teachingStaff.setReligion(teachingStaffDetails.getReligion()); } if (null !=
+		 * teachingStaffDetails.getPhoto() ||
+		 * !teachingStaffDetails.getPhoto().isEmpty()) {
+		 * teachingStaff.setPhoto(teachingStaffDetails.getPhoto()); } if (null !=
+		 * teachingStaffDetails.getMaritalStatus() ||
+		 * !teachingStaffDetails.getMaritalStatus().isEmpty()) {
+		 * teachingStaff.setMaritalStatus(teachingStaffDetails.getMaritalStatus()); } if
+		 * (null != teachingStaffDetails.getSpouseName() ||
+		 * !teachingStaffDetails.getSpouseName().isEmpty()) {
+		 * teachingStaff.setSpouseName(teachingStaffDetails.getSpouseName()); } if (0 <
+		 * teachingStaffDetails.getSpouseContactNo()) {
+		 * teachingStaff.setSpouseContactNo(teachingStaffDetails.getSpouseContactNo());
+		 * } if (null != teachingStaffDetails.getCasteCategory() ||
+		 * !teachingStaffDetails.getCasteCategory().isEmpty()) {
+		 * teachingStaff.setCasteCategory(teachingStaffDetails.getCasteCategory()); } if
+		 * (null != teachingStaffDetails.getAcStatus() ||
+		 * !teachingStaffDetails.getAcStatus().isEmpty()) {
+		 * teachingStaff.setAcStatus(teachingStaffDetails.getAcStatus()); }
+		 */
 
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -2777,8 +2781,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -2790,15 +2793,14 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * private void updatesiblingDetails(List<Sibling> sibling, SiblingDetails
 	 * details) { if (null != details.getName()) { ((Sibling)
 	 * sibling).setName(details.getName()); } if (null != details.getGender()) {
-	 * ((Sibling) sibling).setGender(details.getGender()); } if
-	 * (details.getAge() > 0) { ((Sibling) sibling).setAge(details.getAge()); }
-	 * if (null != details.getSchool()) { ((Sibling)
-	 * sibling).setSchool(details.getSchool()); } }
+	 * ((Sibling) sibling).setGender(details.getGender()); } if (details.getAge() >
+	 * 0) { ((Sibling) sibling).setAge(details.getAge()); } if (null !=
+	 * details.getSchool()) { ((Sibling) sibling).setSchool(details.getSchool()); }
+	 * }
 	 */
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -2826,8 +2828,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -2856,8 +2857,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	/*
 	 * Method: updateTeachingStaffAddressDetails ->This Method is used to update
-	 * TeachingStaffAddressDetails. input : Address1, AddressDetails. Returns :
-	 * no return Type
+	 * TeachingStaffAddressDetails. input : Address1, AddressDetails. Returns : no
+	 * return Type
 	 * 
 	 */
 	private void updateTeachingStaffAddressDetails(Address1 address1, AddressDetails addressDetails) {
@@ -2893,8 +2894,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method: updateTeachingStaffDocumentsDetails ->This Method is used to
-	 * update TeachingStaffDocumentsDetails. input : StaffDocuments1,
+	 * Method: updateTeachingStaffDocumentsDetails ->This Method is used to update
+	 * TeachingStaffDocumentsDetails. input : StaffDocuments1,
 	 * StaffDocumentsDetails1. Returns : no return Type
 	 * 
 	 */
@@ -2952,8 +2953,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method: updateTeachingStaffStatutoryDetails ->This Method is used to
-	 * update TeachingStaffStatutoryDetails. input : StaffStatutory1,
+	 * Method: updateTeachingStaffStatutoryDetails ->This Method is used to update
+	 * TeachingStaffStatutoryDetails. input : StaffStatutory1,
 	 * StaffStatutoryDetails1. Returns : no return Type
 	 * 
 	 */
@@ -3050,8 +3051,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3109,8 +3109,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3150,8 +3149,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3181,8 +3179,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3220,8 +3217,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3595,11 +3591,12 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	@Override
 	public void createAkacartUser(AkacartUserDetails akacartUserDetails, String userId, String tenant)
 			throws AsmsException {
-		//Session session = null;
+		// Session session = null;
 		AkacartUser akacartuser = new AkacartUser();
 		String schema = multitenancyDao.getSchema(tenant);
 		if (null != schema) {
-			//session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+			// session =
+			// sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 
 			akacartuser.setUserId(akacartUserDetails.getUserId());
 			akacartuser.setAkakartAccess(akacartUserDetails.isAkakartAccess());
@@ -3795,7 +3792,96 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 
 	}
-	
 
+	@SuppressWarnings("unused")
+	private boolean isUserStatusComplete(User user) {
+		if (Constants.role_admin.equalsIgnoreCase(user.getRoleObject().getRoleName())) {
+			return true;
+		} else if (Constants.role_student.equalsIgnoreCase(user.getRoleObject().getRoleName())) {
+			Student st = (Student) user;
+			if (Constants.user_status.Complete.toString().equalsIgnoreCase(st.getAccountStatus())) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (Constants.role_management.equalsIgnoreCase(user.getRoleObject().getRoleName())) {
+			Management m = (Management) user;
+			if (Constants.user_status.Complete.toString().equalsIgnoreCase(m.getAccountStatus())) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (Constants.role_teaching_staff.equalsIgnoreCase(user.getRoleObject().getRoleName())) {
+			TeachingStaff ts = (TeachingStaff) user;
+			if (Constants.user_status.Complete.toString().equalsIgnoreCase(ts.getAccountStatus())) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (Constants.role_non_teaching_staff.equalsIgnoreCase(user.getRoleObject().getRoleName())) {
+			NonTeachingStaff nts = (NonTeachingStaff) user;
+			if (Constants.user_status.Complete.toString().equalsIgnoreCase(nts.getAccountStatus())) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+
+	}
+
+	/*
+	 * Method : getStudentFromParent : return : StudentDetails
+	 *
+	 */
+
+	@SuppressWarnings({ "unchecked", "unused" })
+	private List<UserBasicDetails> getStudentFromParent(Parent parent, String schema) throws AsmsException {
+
+		Session session = null;
+		List<StudentDetails> studentDetails = null;
+		//Sibling sibling = null;
+
+		try {
+			messages = AsmsHelper.getMessageFromBundle();
+
+			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+
+			Student studentObject = parent.getStudentObject();
+			Sibling sibling = studentObject.getSibling();
+			int siblingId = sibling.getSiblingId();
+			String hql = "from Sibling S where S.siblingId=?";
+			List<Sibling> siblings = (List<Sibling>) session.createQuery(hql).setParameter(0, siblingId).list();
+			session.close();
+			List<User> users = new ArrayList<User>();
+
+			for (Sibling sibling1 : siblings) {
+				Student stuObject = sibling1.getStudentObject();
+				users.add(stuObject);
+				
+			}
+			return entityCreator.createUserBasicDetails(users);
+
+		} catch (Exception e) {
+			if (session.isOpen()) {
+				session.close();
+			}
+			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
+					+ "getStudentByStudentId()" + "   ", e);
+			if (e instanceof AsmsException) {
+				throw exceptionHandler.constructAsmsException(((AsmsException) e).getCode(),
+						((AsmsException) e).getDescription());
+			} else {
+				throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+						messages.getString("SYSTEM_EXCEPTION"));
+			}
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
+
+	}
 
 }
