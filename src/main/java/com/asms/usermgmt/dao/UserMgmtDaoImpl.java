@@ -591,6 +591,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						teachingStaff.setAdmissionForYear(AsmsHelper.getCurrentAcademicYear());
 						teachingStaff.setEmail(userDetails.getEmail());
 						teachingStaff.setUserId(generatePassword(teachingStaff.getFirstName(), teachingStaff.getLastName()));
+						teachingStaff.setAccountStatus("InComplete");
+						teachingStaff.setIsNew("true");
 						//teachingStaff.setTeachingSubjects((getTeachingSubjects(userDetails, teachingStaff, schema)));
 						createDefaultPrivileges(Constants.role_teaching_staff, teachingStaff);
 						insertTeachingStaff(teachingStaff, schema);
