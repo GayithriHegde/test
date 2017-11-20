@@ -96,4 +96,6 @@ public class Constants {
 		dashboard, mailbox
 	}
 
+	public enum user_status {Complete, InComplete};
+
 }
