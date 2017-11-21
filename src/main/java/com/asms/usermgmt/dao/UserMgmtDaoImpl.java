@@ -494,8 +494,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						student.setSubRoleObject(sRole);
 						student.setStatus("incomplete");
 
-						student.setUserPassword(AsmsHelper.hashPassword(
-								generatePassword(student.getStudentFirstName(), student.getStudentLastName())));
+					
 
 						student.setUserPassword(
 								generatePassword(student.getStudentFirstName(), student.getStudentLastName()));
@@ -572,8 +571,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						management.setRoleObject(role);
 						management.setSubRoleObject(sRole);
 
-						management.setUserPassword(AsmsHelper.hashPassword(
-								generatePassword(management.getMngmtFirstName(), management.getMngmtLastName())));
+					
 
 						management.setUserPassword(
 								generatePassword(management.getMngmtFirstName(), management.getMngmtLastName()));
@@ -598,8 +596,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						TeachingStaff teachingStaff = entityCreator
 								.createTeachingStaff(userDetails.getTeachingStaffDetails(), user);
 
-						teachingStaff.setUserPassword(AsmsHelper.hashPassword(
-								generatePassword(teachingStaff.getFirstName(), teachingStaff.getLastName())));
+						
 
 						teachingStaff.setUserId(userid);
 						teachingStaff.setRoleObject(role);
@@ -630,8 +627,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						NonTeachingStaff nonTeachingStaff = entityCreator
 								.createNonTeachingStaff(userDetails.getNonTeachingStaffDetails(), user);
 
-						nonTeachingStaff.setUserPassword(AsmsHelper.hashPassword(
-								generatePassword(nonTeachingStaff.getFirstName(), nonTeachingStaff.getLastName())));
+						
 
 						nonTeachingStaff.setUserPassword(
 								generatePassword(nonTeachingStaff.getFirstName(), nonTeachingStaff.getLastName()));
@@ -726,21 +722,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	// generate default encrypted password
 
 	private String generatePassword(String firstName, String lastName) {
-		String password = "";
-
-		if (firstName.length() >= 4) {
-			password = password + firstName.substring(0, 4);
-		} else {
-			password = firstName;
-		}
-		if (lastName.length() >= 4) {
-			password = password + lastName.substring(0, 4);
-		} else {
-			password = password + lastName;
-		}
-		return password;
-
-	}
+		  return AsmsHelper.generateHashString(firstName + lastName);
+		 }
 
 	// generate userid
 	private String generateUserId() {
