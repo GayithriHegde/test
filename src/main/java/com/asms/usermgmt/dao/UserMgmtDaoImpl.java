@@ -480,170 +480,176 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 			}
 			School school = schoolMgmtDao.getSchool(schema);
-			String userid = generateUserId();
-			String email = userDetails.getEmail();
-			User userFromDB = getUser(email, domain);
-			if (null == userFromDB) {
+			if (null != userDetails.getUserId()) {
+					updateUser(userDetails, user, domain);
+					rReponse.setUserId(userDetails.getUserId());
+					return rReponse;
+			} else {
+				String userid = generateUserId();
+				String email = userDetails.getEmail();
+				User userFromDB = getUser(email, domain);
+				if (null == userFromDB) {
 
-				if (userDetails.getRole().equalsIgnoreCase(Constants.role_student)) {
-					Role role = getRoleObject(userDetails.getRole(), schema);
-					SubRole sRole = getSubRoleObject(userDetails.getSubRole(), schema);
-					if (null != role && null != sRole) {
-						Student student = entityCreator.createStudent(userDetails.getStudentDetails(), user);
-						student.setUserId(userid);
-						student.setEmail(userDetails.getEmail());
-						student.setRoleObject(role);
-						student.setSubRoleObject(sRole);
-						student.setStatus("incomplete");
+					if (userDetails.getRole().equalsIgnoreCase(Constants.role_student)) {
+						Role role = getRoleObject(userDetails.getRole(), schema);
+						SubRole sRole = getSubRoleObject(userDetails.getSubRole(), schema);
+						if (null != role && null != sRole) {
+							Student student = entityCreator.createStudent(userDetails.getStudentDetails(), user);
+							student.setUserId(userid);
+							student.setEmail(userDetails.getEmail());
+							student.setRoleObject(role);
+							student.setSubRoleObject(sRole);
+							student.setStatus("incomplete");
 
-						student.setUserPassword(
-								generatePassword(student.getStudentFirstName(), student.getStudentLastName()));
+							student.setUserPassword(
+									generatePassword(student.getStudentFirstName(), student.getStudentLastName()));
 
-						student.setSchoolId(school.getSerialNo());
-						student.setAdmissionForYear(userDetails.getAdmissionForYear());
-						createDefaultPrivileges(Constants.role_student, student);
+							student.setSchoolId(school.getSerialNo());
+							student.setAdmissionForYear(userDetails.getAdmissionForYear());
+							createDefaultPrivileges(Constants.role_student, student);
 
-						// attach sibling
-						Sibling elderSiblingObject = null;
-						if (null != userDetails.getStudentDetails().getSiblingDetails()) {
-							int studentId = userDetails.getStudentDetails().getSiblingDetails().getStudent_id();
-							if (studentId > 0) {
-								List<Sibling> siblings = getSiblings(studentId, schema);
-								if (null == siblings || siblings.isEmpty()) {
-									// create sibling_id
-									int siblingId = studentId;
+							// attach sibling
+							Sibling elderSiblingObject = null;
+							if (null != userDetails.getStudentDetails().getSiblingDetails()) {
+								int studentId = userDetails.getStudentDetails().getSiblingDetails().getStudent_id();
+								if (studentId > 0) {
+									List<Sibling> siblings = getSiblings(studentId, schema);
+									if (null == siblings || siblings.isEmpty()) {
+										// create sibling_id
+										int siblingId = studentId;
 
-									// for elder student
-									Student elderSibling = getStudentByStudentId(studentId, schema);
-									if (null != elderSibling) {
-										elderSiblingObject = new Sibling();
-										elderSiblingObject.setSiblingId(siblingId);
-										elderSiblingObject.setStudentObject(elderSibling);
+										// for elder student
+										Student elderSibling = getStudentByStudentId(studentId, schema);
+										if (null != elderSibling) {
+											elderSiblingObject = new Sibling();
+											elderSiblingObject.setSiblingId(siblingId);
+											elderSiblingObject.setStudentObject(elderSibling);
 
-										// for new student
+											// for new student
+											Sibling newSibling = new Sibling();
+											newSibling.setStudentObject(student);
+											newSibling.setSiblingId(siblingId);
+											student.setSibling(newSibling);
+										}
+
+									} else {
+										Student elderSibling = getStudentByStudentId(studentId, schema);
 										Sibling newSibling = new Sibling();
 										newSibling.setStudentObject(student);
-										newSibling.setSiblingId(siblingId);
+										newSibling.setSiblingId(elderSibling.getSibling().getSiblingId());
 										student.setSibling(newSibling);
 									}
 
 								} else {
-									Student elderSibling = getStudentByStudentId(studentId, schema);
-									Sibling newSibling = new Sibling();
-									newSibling.setStudentObject(student);
-									newSibling.setSiblingId(elderSibling.getSibling().getSiblingId());
-									student.setSibling(newSibling);
+									Object e = null;
+									// log
+									logger.error("Session Id: " + MDC.get("studentId") + "   " + "Method: "
+											+ this.getClass().getName() + "." + "getSibling()" + "   ", e);
+									// throw
+									// exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
+									// messages.getString("TENANT_INVALID_CODE_MSG"));
+
 								}
-
-							} else {
-								Object e = null;
-								// log
-								logger.error("Session Id: " + MDC.get("studentId") + "   " + "Method: "
-										+ this.getClass().getName() + "." + "getSibling()" + "   ", e);
-								// throw
-								// exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
-								// messages.getString("TENANT_INVALID_CODE_MSG"));
-
 							}
+
+							// SiblingDetails sd =
+							// userDetails.getStudentDetails().getSiblingDetails();
+
+							insertStudent(student, elderSiblingObject, schema);
+
+							rReponse.setProgressPercentage(initialValue);
+							rReponse.setUserId(userid);
+
+						} else {
+
+							logger.debug("role not matched ");
 						}
 
-						// SiblingDetails sd =
-						// userDetails.getStudentDetails().getSiblingDetails();
+					} else if (userDetails.getRole().equalsIgnoreCase(Constants.role_management)) {
+						Role role = getRoleObject(userDetails.getRole(), schema);
+						SubRole sRole = getSubRoleObject(userDetails.getSubRole(), schema);
+						if (null != role && null != sRole) {
+							Management management = entityCreator.createManagement(userDetails.getManagementDetails(),
+									user);
+							management.setUserId(userid);
+							management.setEmail(userDetails.getEmail());
+							management.setRoleObject(role);
+							management.setSubRoleObject(sRole);
 
-						insertStudent(student, elderSiblingObject, schema);
+							management.setUserPassword(
+									generatePassword(management.getMngmtFirstName(), management.getMngmtLastName()));
 
-						rReponse.setProgressPercentage(initialValue);
-						rReponse.setUserId(userid);
+							management.setSchoolId(school.getSerialNo());
+							management.setAdmissionForYear(userDetails.getAdmissionForYear());
+							createDefaultPrivileges(Constants.role_management, management);
+							insertManagement(management, schema);
 
-					} else {
+							rReponse.setProgressPercentage(100);
+							rReponse.setUserId(userid);
 
-						logger.debug("role not matched ");
+						} else {
+							logger.debug("role not matched");
+
+						}
+
+					} else if (userDetails.getRole().equalsIgnoreCase(Constants.role_teaching_staff)) {
+						Role role = getRoleObject(userDetails.getRole(), schema);
+						SubRole sRole = getSubRoleObject(userDetails.getSubRole(), schema);
+						if (null != role && null != sRole) {
+							TeachingStaff teachingStaff = entityCreator
+									.createTeachingStaff(userDetails.getTeachingStaffDetails(), user);
+							teachingStaff.setUserId(userid);
+							teachingStaff.setRoleObject(role);
+							teachingStaff.setSubRoleObject(sRole);
+							teachingStaff.setSchoolId(school.getSerialNo());
+							teachingStaff.setAdmissionForYear(AsmsHelper.getCurrentAcademicYear());
+							teachingStaff.setEmail(userDetails.getEmail());
+							teachingStaff.setUserPassword(
+									generatePassword(teachingStaff.getFirstName(), teachingStaff.getLastName()));
+
+							teachingStaff.setAccountStatus("InComplete");
+							teachingStaff.setIsNew("true");
+							// teachingStaff.setTeachingSubjects((getTeachingSubjects(userDetails,
+							// teachingStaff, schema)));
+							createDefaultPrivileges(Constants.role_teaching_staff, teachingStaff);
+							insertTeachingStaff(teachingStaff, schema);
+							rReponse.setProgressPercentage(initialValue);
+							rReponse.setUserId(userid);
+
+						} else {
+							logger.debug("role not matched");
+						}
+
+					} else if (userDetails.getRole().equalsIgnoreCase(Constants.role_non_teaching_staff)) {
+						Role role = getRoleObject(userDetails.getRole(), schema);
+						SubRole sRole = getSubRoleObject(userDetails.getSubRole(), schema);
+						if (null != role && null != sRole) {
+							NonTeachingStaff nonTeachingStaff = entityCreator
+									.createNonTeachingStaff(userDetails.getNonTeachingStaffDetails(), user);
+
+							nonTeachingStaff.setUserPassword(
+									generatePassword(nonTeachingStaff.getFirstName(), nonTeachingStaff.getLastName()));
+
+							nonTeachingStaff.setUserId(userid);
+							nonTeachingStaff.setEmail(userDetails.getEmail());
+							nonTeachingStaff.setRoleObject(role);
+							nonTeachingStaff.setSubRoleObject(sRole);
+							nonTeachingStaff.setSchoolId(school.getSerialNo());
+							nonTeachingStaff.setAdmissionForYear(userDetails.getAdmissionForYear());
+							createDefaultPrivileges(Constants.role_non_teaching_staff, nonTeachingStaff);
+							insertNonTeachingStaff(nonTeachingStaff, schema);
+							rReponse.setProgressPercentage(initialValue);
+							rReponse.setUserId(userid);
+						} else {
+							logger.debug("role not matched");
+						}
 					}
-
-				} else if (userDetails.getRole().equalsIgnoreCase(Constants.role_management)) {
-					Role role = getRoleObject(userDetails.getRole(), schema);
-					SubRole sRole = getSubRoleObject(userDetails.getSubRole(), schema);
-					if (null != role && null != sRole) {
-						Management management = entityCreator.createManagement(userDetails.getManagementDetails(),
-								user);
-						management.setUserId(userid);
-						management.setEmail(userDetails.getEmail());
-						management.setRoleObject(role);
-						management.setSubRoleObject(sRole);
-
-						management.setUserPassword(
-								generatePassword(management.getMngmtFirstName(), management.getMngmtLastName()));
-
-						management.setSchoolId(school.getSerialNo());
-						management.setAdmissionForYear(userDetails.getAdmissionForYear());
-						createDefaultPrivileges(Constants.role_management, management);
-						insertManagement(management, schema);
-
-						rReponse.setProgressPercentage(100);
-						rReponse.setUserId(userid);
-
-					} else {
-						logger.debug("role not matched");
-
-					}
-
-				} else if (userDetails.getRole().equalsIgnoreCase(Constants.role_teaching_staff)) {
-					Role role = getRoleObject(userDetails.getRole(), schema);
-					SubRole sRole = getSubRoleObject(userDetails.getSubRole(), schema);
-					if (null != role && null != sRole) {
-						TeachingStaff teachingStaff = entityCreator
-								.createTeachingStaff(userDetails.getTeachingStaffDetails(), user);
-						teachingStaff.setUserId(userid);
-						teachingStaff.setRoleObject(role);
-						teachingStaff.setSubRoleObject(sRole);
-						teachingStaff.setSchoolId(school.getSerialNo());
-						teachingStaff.setAdmissionForYear(AsmsHelper.getCurrentAcademicYear());
-						teachingStaff.setEmail(userDetails.getEmail());
-						teachingStaff.setUserPassword(
-								generatePassword(teachingStaff.getFirstName(), teachingStaff.getLastName()));
-
-						teachingStaff.setAccountStatus("InComplete");
-						teachingStaff.setIsNew("true");
-						// teachingStaff.setTeachingSubjects((getTeachingSubjects(userDetails,
-						// teachingStaff, schema)));
-						createDefaultPrivileges(Constants.role_teaching_staff, teachingStaff);
-						insertTeachingStaff(teachingStaff, schema);
-						rReponse.setProgressPercentage(initialValue);
-						rReponse.setUserId(userid);
-
-					} else {
-						logger.debug("role not matched");
-					}
-
-				} else if (userDetails.getRole().equalsIgnoreCase(Constants.role_non_teaching_staff)) {
-					Role role = getRoleObject(userDetails.getRole(), schema);
-					SubRole sRole = getSubRoleObject(userDetails.getSubRole(), schema);
-					if (null != role && null != sRole) {
-						NonTeachingStaff nonTeachingStaff = entityCreator
-								.createNonTeachingStaff(userDetails.getNonTeachingStaffDetails(), user);
-
-						nonTeachingStaff.setUserPassword(
-								generatePassword(nonTeachingStaff.getFirstName(), nonTeachingStaff.getLastName()));
-
-						nonTeachingStaff.setUserId(userid);
-						nonTeachingStaff.setEmail(userDetails.getEmail());
-						nonTeachingStaff.setRoleObject(role);
-						nonTeachingStaff.setSubRoleObject(sRole);
-						nonTeachingStaff.setSchoolId(school.getSerialNo());
-						nonTeachingStaff.setAdmissionForYear(userDetails.getAdmissionForYear());
-						createDefaultPrivileges(Constants.role_non_teaching_staff, nonTeachingStaff);
-						insertNonTeachingStaff(nonTeachingStaff, schema);
-						rReponse.setProgressPercentage(initialValue);
-						rReponse.setUserId(userid);
-					} else {
-						logger.debug("role not matched");
-					}
+				} else {
+					throw this.exceptionHandler.constructAsmsException(this.messages.getString("USER_EXISTS_CODE"),
+							this.messages.getString("USER_EXISTS_MSG"));
 				}
-			} else {
-				throw this.exceptionHandler.constructAsmsException(this.messages.getString("USER_EXISTS_CODE"),
-						this.messages.getString("USER_EXISTS_MSG"));
+				return rReponse;
 			}
-			return rReponse;
 
 		} catch (Exception e) {
 			logger.error(
