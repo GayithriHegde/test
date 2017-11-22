@@ -182,5 +182,109 @@ public class ReportExcelMaker {
 		}
 
 	}
+	//excelMakerAdmissionEnquiry
+	public void excelMakerAdmissionEnquiry(String title, String subTitle, String[] columnNames, String[] columns) {
 
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet = workbook.createSheet("AdmissionEnquiry");
+		Object[][] rowValues = { { title }, { subTitle },
+
+				columnNames, columns, };
+
+		int rowNum = 0;
+
+		for (Object[] rowValue : rowValues) {
+			Row rows = sheet.createRow(++rowNum);
+			//rows.setHeightInPoints((2 * sheet.getDefaultRowHeightInPoints()));
+			int colNum = 0;
+			for (Object field : rowValue) {
+
+				Cell cell = rows.createCell(++colNum);
+				if (field instanceof String) {
+					cell.setCellValue((String) field);
+				} else if (field instanceof Integer) {
+					cell.setCellValue((Integer) field);
+				}
+			}
+
+		}
+		try {
+			FileOutputStream outputStream = new FileOutputStream(properties.getProperty("AdmissionEnquiry_report_file"));
+			workbook.write(outputStream);
+			workbook.close();
+
+			File pdfFile = new File(properties.getProperty("AdmissionEnquiry_report_file"));
+			if (pdfFile.exists()) {
+
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(pdfFile);
+				} else {
+					throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+							messages.getString("SYSTEM_EXCEPTION"));
+				}
+
+			} else {
+				throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+						messages.getString("SYSTEM_EXCEPTION"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	
+//	excelMakerApplicationStatus
+	public void excelMakerApplicationStatus(String title, String subTitle, String[] columnNames, String[] columns) {
+
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet = workbook.createSheet("ApplicationStatus");
+		Object[][] rowValues = { { title }, { subTitle },
+
+				columnNames, columns, };
+
+		int rowNum = 0;
+
+		for (Object[] rowValue : rowValues) {
+			Row rows = sheet.createRow(++rowNum);
+			//rows.setHeightInPoints((2 * sheet.getDefaultRowHeightInPoints()));
+			int colNum = 0;
+			for (Object field : rowValue) {
+
+				Cell cell = rows.createCell(++colNum);
+				if (field instanceof String) {
+					cell.setCellValue((String) field);
+				} else if (field instanceof Integer) {
+					cell.setCellValue((Integer) field);
+				}
+			}
+
+		}
+		try {
+			FileOutputStream outputStream = new FileOutputStream(properties.getProperty("ApplicationStatus_report_file"));
+			workbook.write(outputStream);
+			workbook.close();
+
+			File pdfFile = new File(properties.getProperty("ApplicationStatus_report_file"));
+			if (pdfFile.exists()) {
+
+				if (Desktop.isDesktopSupported()) {
+					Desktop.getDesktop().open(pdfFile);
+				} else {
+					throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+							messages.getString("SYSTEM_EXCEPTION"));
+				}
+
+			} else {
+				throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+						messages.getString("SYSTEM_EXCEPTION"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 }

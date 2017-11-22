@@ -10,8 +10,9 @@ public class RequestForReports {
 	private CurriculamDetails curriculamDetails;
 	private List<Unit> Unit;//curriculum plan details
 	private List<User> usersList;// list of all teaching staff and non teaching staff users 
-	private List<AdmissionReport> admissionReport;
+	private AdmissionReport admissionReport;
 
+	
 
 
 	public List<User> getUsersList() {
@@ -38,13 +39,14 @@ public class RequestForReports {
 		this.curriculamDetails = curriculamDetails;
 	}
 
-	public List<AdmissionReport> getAdmissionReport() {
+	public AdmissionReport getAdmissionReport() {
 		return admissionReport;
 	}
 
-	public void setAdmissionReport(List<AdmissionReport> admissionReport) {
+	public void setAdmissionReport(AdmissionReport admissionReport) {
 		this.admissionReport = admissionReport;
 	}
+
 
 
 

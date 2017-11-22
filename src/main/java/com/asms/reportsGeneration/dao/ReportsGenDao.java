@@ -13,4 +13,6 @@ public interface ReportsGenDao {
 	
 	public void getAdmissionDetails(String year,String domain)  throws AsmsException;
 
+	public void getAdmissionEnquiryDetails(String s, String d)  throws AsmsException;
+	public void getApplicationStatusDetails(String s, String d)  throws AsmsException;
 }

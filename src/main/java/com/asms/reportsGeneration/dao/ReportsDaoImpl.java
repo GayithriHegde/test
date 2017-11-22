@@ -23,6 +23,8 @@ import com.asms.multitenancy.dao.MultitenancyDao;
 import com.asms.reportsGeneration.helper.ReportExcelMaker;
 import com.asms.reportsGeneration.request.CurriculamDetails;
 import com.asms.studentAdmission.entity.Admission;
+import com.asms.studentAdmission.entity.AdmissionEnquiry;
+import com.asms.studentAdmission.entity.ApplicationStatus;
 import com.asms.usermgmt.entity.Admin;
 import com.asms.usermgmt.entity.User;
 import com.asms.usermgmt.entity.management.Management;
@@ -54,7 +56,7 @@ public class ReportsDaoImpl implements ReportsGenDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void getCurriculamReport(CurriculamDetails curriculamDetails, User user, String tenant) {
+	public void getCurriculamReport(CurriculamDetails curriculamDetails, User user, String domain) {
 
 		messages = AsmsHelper.getMessageFromBundle();
 
@@ -70,7 +72,7 @@ public class ReportsDaoImpl implements ReportsGenDao {
 
 		try {
 			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
-			String schema = multitenancyDao.getSchema(tenant);
+			String schema = multitenancyDao.getSchemaByDomain(domain);
 			List<String> rowData = new ArrayList<String>();
 			if (null != schema) {
 				session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
@@ -118,7 +120,7 @@ public class ReportsDaoImpl implements ReportsGenDao {
 	}
 
 	@Override
-	public void getAllUsers(String year, String tenant) throws AsmsException {
+	public void getAllUsers(String year, String domain) throws AsmsException {
 		messages = AsmsHelper.getMessageFromBundle();
 
 		String[] columns = new String[] { "SINO","Staff Name", "Staff Type", "Staff Id", "Gender", "Qualification",
@@ -132,7 +134,7 @@ public class ReportsDaoImpl implements ReportsGenDao {
 
 		try {
 			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
-			String schema = multitenancyDao.getSchema(tenant);
+			String schema = multitenancyDao.getSchemaByDomain(domain);
 			List<String> rowData = new ArrayList<String>();
 			if (null != schema) {
 				session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
@@ -295,6 +297,113 @@ public class ReportsDaoImpl implements ReportsGenDao {
 				}
 				String[] rowArray = rowData.toArray(new String[rowData.size()]);
 				reportExcelMaker.excelMakerAdmission(title, subTitle, columns, rowArray);
+				
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void getAdmissionEnquiryDetails(String year, String domain) throws AsmsException {
+		// TODO Auto-generated method stub
+		messages = AsmsHelper.getMessageFromBundle();
+
+		String[] columns = new String[] { "SINO","Student Name", "Admission Applied Date",
+				"Gender", "Class Applied","Phone Number","Previous School Name","Previous School Board","D.O.B" };
+
+		String title = "----------------Admission Enquiry Details---------------------";
+		String subTitle = "List of Admissions Enquiry Details for the year " + year;
+
+		Query q = null;
+		Session session = null;
+
+		try {
+			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			String schema = multitenancyDao.getSchemaByDomain(domain);
+			List<String> rowData = new ArrayList<String>();
+			if (null != schema) {
+				session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+
+				String hql = "from AdmissionEnquiry U where U.adminssionYear = ?";
+
+				q = session.createQuery(hql).setParameter(0, year);
+				List<AdmissionEnquiry> admissionEnqList = q.list();
+				
+				
+				for(AdmissionEnquiry admenq : admissionEnqList)
+				{
+					AdmissionEnquiry adm1=admenq;
+					rowData.add(String.valueOf(adm1.getSerialNo()));
+					rowData.add(adm1.getStudentName());
+					rowData.add(adm1.getAdmissionAppliedDate());
+					rowData.add(adm1.getGender());
+					
+					rowData.add(adm1.getClassApplied());
+					rowData.add(String.valueOf(adm1.getPhoneNumber()));
+					rowData.add(adm1.getPreviousSchoolName());
+					rowData.add(adm1.getPreviousSchoolBoard());
+					rowData.add(adm1.getDob().toString());
+					//rowData.add(adm1.getBirthPlcae());
+					//rowData.add(adm1.getCaste());
+					//rowData.
+				}
+				String[] rowArray = rowData.toArray(new String[rowData.size()]);
+				reportExcelMaker.excelMakerAdmissionEnquiry(title, subTitle, columns, rowArray);
+				
+			}
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	@Override
+	public void getApplicationStatusDetails(String year, String domain) throws AsmsException {
+		// TODO Auto-generated method stub
+		messages = AsmsHelper.getMessageFromBundle();
+
+		String[] columns = new String[] { "SINO","Student Name", "Admission Applied Date",
+				"Gender", "Class Applied","Phone Number","Previous School Name","Previous School Board","D.O.B","Status" };
+
+		String title = "----------------Admission Enquiry Details---------------------";
+		String subTitle = "List of Admissions Enquiry Details for the year " + year;
+
+		Query q = null;
+		Session session = null;
+
+		try {
+			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			String schema = multitenancyDao.getSchemaByDomain(domain);
+			List<String> rowData = new ArrayList<String>();
+			if (null != schema) {
+				session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+
+				String hql = "from ApplicationStatus U where U.adminssionYear = ?";
+
+				q = session.createQuery(hql).setParameter(0, year);
+				List<ApplicationStatus> admissionEnqList = q.list();
+				
+				
+				for(ApplicationStatus admenq : admissionEnqList)
+				{
+					ApplicationStatus adm1=admenq;
+					rowData.add(String.valueOf(adm1.getSerialNo()));
+					rowData.add(adm1.getStudentName());
+					rowData.add(adm1.getAdmissionAppliedDate());
+					rowData.add(adm1.getGender());
+					
+					rowData.add(adm1.getClassApplied());
+					rowData.add(String.valueOf(adm1.getPhoneNumber()));
+					rowData.add(adm1.getPreviousSchoolName());
+					rowData.add(adm1.getPreviousSchoolBoard());
+					rowData.add(adm1.getDob().toString());
+					rowData.add(adm1.getStatus());
+					//rowData.add(adm1.getBirthPlcae());
+					//rowData.add(adm1.getCaste());
+					//rowData.
+				}
+				String[] rowArray = rowData.toArray(new String[rowData.size()]);
+				reportExcelMaker.excelMakerApplicationStatus(title, subTitle, columns, rowArray);
 				
 			}
 		}catch (Exception e) {
