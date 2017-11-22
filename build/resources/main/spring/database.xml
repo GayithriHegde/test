@@ -132,6 +132,13 @@
 				
 				
 				<beans:value>com.asms.usermgmt.entity.akacartUser.AkacartUser</beans:value>
+				
+				
+				
+				
+				<beans:value>com.asms.studentAdmission.entity.Admission</beans:value>
+				<beans:value>com.asms.studentAdmission.entity.AdmissionEnquiry</beans:value>
+				<beans:value>com.asms.studentAdmission.entity.ApplicationStatus</beans:value>
 			</beans:list>
 		</beans:property>
 		<beans:property name="hibernateProperties">

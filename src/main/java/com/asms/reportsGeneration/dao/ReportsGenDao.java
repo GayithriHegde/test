@@ -10,5 +10,7 @@ public interface ReportsGenDao {
 	
 	public void getCurriculamReport(CurriculamDetails curriculamDetails, User user, String tenant) throws AsmsException;;
 	public void getAllUsers(String year, String tenant ) throws AsmsException;
+	
+	public void getAdmissionDetails(String year,String domain)  throws AsmsException;
 
 }

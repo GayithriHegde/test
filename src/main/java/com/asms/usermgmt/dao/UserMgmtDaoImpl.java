@@ -120,7 +120,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	// RegistrationResponse rReponse;
 
-	private static final Logger logger = LoggerFactory.getLogger(UserMgmtService.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserMgmtDaoImpl.class);
 
 	/*
 	 * Method : getUserRole : gets the user role from database input : String

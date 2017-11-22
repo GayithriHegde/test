@@ -152,4 +152,58 @@ public class ReportsGenerationService extends BaseService {
 		}
 	}
 
+	
+	
+	
+	
+	//Admission Reports----------------------
+	
+	
+	@Path("/admission")
+	@GET
+	@Consumes("application/json")
+	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+	public Response admissionReport(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse,
+			@QueryParam("year") String year, @QueryParam("domain") String domain) {
+		RegistrationResponse rReponse = new RegistrationResponse();
+		ResourceBundle messages;
+		try {
+			// get bundles for error messages
+			messages = AsmsHelper.getMessageFromBundle();
+			// validate request
+
+			HttpSession session = hRequest.getSession();
+			User user = (User) session.getAttribute("ap_user");
+			// authorize
+
+			// check if logged in user has got rights to create user
+			
+			if (user != null) {
+				if (null == year || year.isEmpty() == true) {
+					throw exceptionHandler.constructAsmsException(messages.getString("year_not_valid_null_code"),
+							messages.getString("year_not_valid_null_msg"));
+				}
+
+				/*if (!(ValidateAcademicYear.validateAcademicYear(year))) {
+					throw exceptionHandler.constructAsmsException(messages.getString("Invalid_year_null_code"),
+							messages.getString("Invalid_year_null_msg"));
+				}*/
+
+				reportsGenDao.getAdmissionDetails(year, domain);
+				
+				return Response.status(Status.OK).entity(rReponse).build();
+
+			} else {
+				FailureResponse failureResponse = new FailureResponse();
+				failureResponse.setCode(Integer.parseInt(messages.getString("NOT_AUTHORIZED_CODE")));
+				failureResponse.setErrorDescription(messages.getString("NOT_AUTHORIZED"));
+				return Response.status(200).entity(failureResponse).build();
+			}
+
+		} catch (AsmsException ex) {
+			// construct failure response
+			FailureResponse failureResponse = new FailureResponse(ex);
+			return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
+		}
+	}
 }

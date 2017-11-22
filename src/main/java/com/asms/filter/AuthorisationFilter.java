@@ -68,9 +68,7 @@ public class AuthorisationFilter implements Filter {
 				logger.info(".....    enetring else...for authorisation header check...");
 				Object user = session.getAttribute("ap_user");
 				boolean result = false;
-				User user1 = null;
 				if (user instanceof User) {
-					 user1 = (User)user;
 					 result = true;
 				}else{
 					result = false;
