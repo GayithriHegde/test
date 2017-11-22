@@ -237,7 +237,7 @@ public class SchoolMgmtService extends BaseService {
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public Response getClass(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse,
-			@QueryParam("tenantId") String tenant) {
+			@QueryParam("domain") String domain) {
 
 		try {
 			FailureResponse failureResponse = new FailureResponse();
@@ -247,7 +247,7 @@ public class SchoolMgmtService extends BaseService {
 
 			if (null != user) {
 
-				List<Class> class1 = schoolMgmtDao.getClasses(tenant);
+				List<Class> class1 = schoolMgmtDao.getClasses(domain);
 
 				GetUserResponse getUserResponse = new GetUserResponse();
 				getUserResponse.setClasses(class1);

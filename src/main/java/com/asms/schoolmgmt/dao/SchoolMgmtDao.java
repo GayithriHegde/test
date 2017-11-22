@@ -37,7 +37,7 @@ public interface SchoolMgmtDao {
 
 	public List<String> getNames() throws AsmsException;
 
-	public List<Class> getClasses(String tenantId) throws AsmsException;
+	public List<Class> getClasses(String domain) throws AsmsException;
 
 	public List<String> getSujects(int boardId) throws AsmsException;
 

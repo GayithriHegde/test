@@ -17,9 +17,7 @@ public class StaffPreviousInformationDetails1 {
 	@{author} mallikarjun.guranna
 	16-Aug-2017
 	*/
-	private int serialNo;
-		
-	private NonTeachingStaff nTeachingObject;
+
 	
 	private boolean experienceFlag;
 	
@@ -29,28 +27,11 @@ public class StaffPreviousInformationDetails1 {
 	
 	private String relievingDate;
 	
-	private String experienceCertificate;
 	
-	private String lastDrawnPayslip;
-	
-	private String resume;
 	
 
-	public int getSerialNo() {
-		return serialNo;
-	}
 
-	public void setSerialNo(int serialNo) {
-		this.serialNo = serialNo;
-	}
 
-	public NonTeachingStaff getnTeachingObject() {
-		return nTeachingObject;
-	}
-
-	public void setnTeachingObject(NonTeachingStaff nTeachingObject) {
-		this.nTeachingObject = nTeachingObject;
-	}
 
 	public boolean isExperienceFlag() {
 		return experienceFlag;
@@ -70,29 +51,7 @@ public class StaffPreviousInformationDetails1 {
 
 	
 
-	public String getExperienceCertificate() {
-		return experienceCertificate;
-	}
 
-	public void setExperienceCertificate(String experienceCertificate) {
-		this.experienceCertificate = experienceCertificate;
-	}
-
-	public String getLastDrawnPayslip() {
-		return lastDrawnPayslip;
-	}
-
-	public void setLastDrawnPayslip(String lastDrawnPayslip) {
-		this.lastDrawnPayslip = lastDrawnPayslip;
-	}
-
-	public String getResume() {
-		return resume;
-	}
-
-	public void setResume(String resume) {
-		this.resume = resume;
-	}
 
 	public String getDateOfJoining() {
 		return dateOfJoining;

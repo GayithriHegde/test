@@ -36,7 +36,26 @@ public class TeachingStaffDetails {
 	private String createdByWadmin;
 	private String creationTime;
 	private String acStatus;
+	private String spouseName;
+	private int spouseContactNo;
 	
+	
+	public String getSpouseName() {
+		return spouseName;
+	}
+
+	public void setSpouseName(String spouseName) {
+		this.spouseName = spouseName;
+	}
+
+	public int getSpouseContactNo() {
+		return spouseContactNo;
+	}
+
+	public void setSpouseContactNo(int spouseContactNo) {
+		this.spouseContactNo = spouseContactNo;
+	}
+
 	private List<TeachingSubjectDetails> teachingSubjectDetailsList;
 	
 	private AddressDetails addressDetails;

@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-
 import com.asms.common.helper.Constants;
 import com.asms.usermgmt.entity.Admin;
 import com.asms.usermgmt.entity.User;
@@ -201,7 +200,7 @@ public class EntityCreator {
 		if (null != student.getSibling()) {
 			SiblingDetails sibDetails = new SiblingDetails();
 			sibDetails.setStudent_id(student.getSerialNo());
-			
+
 		}
 
 		if (null != student.getStudentDocuments()) {
@@ -272,7 +271,7 @@ public class EntityCreator {
 			sDetails.setStudentCreatedByWadmin(student.getStudentCreatedByWadmin());
 			sDetails.setStudentPhoto(student.getStudentPhoto());
 			sDetails.setBloodGroup(student.getBloodGroup());
-			
+
 			sDetails.setStudentDob(dateFormat.format(student.getStudentDob()));
 
 			userDetails.setStudentDetails(sDetails);
@@ -352,13 +351,12 @@ public class EntityCreator {
 
 				sDetails.setPreviousDetails(spDetails);
 			}
-			
-			
+
 			userDetailsList.add(userDetails);
-		
+
 		}
 		return userDetailsList;
-			
+
 	}
 
 	/*
@@ -420,12 +418,10 @@ public class EntityCreator {
 
 		return userDetailsList;
 	}
-	
-	
-	
+
 	/*
-	 * Method: createUserBasicDetails ->Create UserBasicDetails from The UserObject
-	 * input : List Of User(List<User>) Returns : List Of
+	 * Method: createUserBasicDetails ->Create UserBasicDetails from The
+	 * UserObject input : List Of User(List<User>) Returns : List Of
 	 * UserBasicDetails(List<UseBasicDetails>)
 	 * 
 	 */
@@ -439,7 +435,7 @@ public class EntityCreator {
 			userBasicDetails.setRole(user.getRoleObject().getRoleName());
 			userBasicDetails.setSubRole(user.getSubRoleObject().getSubRoleName());
 			userBasicDetails.setUserId(user.getUserId());
-			
+
 			if (user.getRoleObject().getRoleName().equalsIgnoreCase(Constants.role_admin)) {
 				Admin admin = (Admin) user;
 				userBasicDetails.setFirstName(admin.getName());
@@ -474,7 +470,6 @@ public class EntityCreator {
 
 		return userBasicDetailsList;
 	}
-
 
 	/*
 	 * Method: createParent -> maps ui values to entity input : ParentDetails
@@ -583,11 +578,11 @@ public class EntityCreator {
 	 */
 
 	public List<Sibling> createSibling(List<SiblingDetails> SiblingDetails, User user) {
-		
-		List<Sibling> siblings = new  ArrayList<Sibling>();
-		for(int i=0;i<siblings.size();i++) {
-		
-		//sibling.getSectionName(details.getSectionName());
+
+		List<Sibling> siblings = new ArrayList<Sibling>();
+		for (int i = 0; i < siblings.size(); i++) {
+
+			// sibling.getSectionName(details.getSectionName());
 		}
 		return siblings;
 	}
@@ -634,7 +629,7 @@ public class EntityCreator {
 		management.setMngmtCreationTime(new Date());
 		management.setMngmtCreatedByWadmin(user.getUserId());
 		management.setAcStatus("Complete");
-		
+
 		return management;
 	}
 
@@ -668,9 +663,9 @@ public class EntityCreator {
 		teachingStaff.setCasteCategory(teachingStaffDetails.getCasteCategory());
 		teachingStaff.setPhoto(teachingStaffDetails.getPhoto());
 		teachingStaff.setMaritalStatus(teachingStaffDetails.getMaritalStatus());
-		
+
 		teachingStaff.setBloodGroup(teachingStaffDetails.getBloodGroup());
-		
+
 		// hard coded values
 		teachingStaff.setCreatedByWadmin(user.getUserId());
 		// teachingStaff.setCreationTime(new Date());
@@ -683,8 +678,6 @@ public class EntityCreator {
 		 * Before setting this status to incomplete first validate whether all
 		 * teachingStaff details completed or not
 		 */
-
-	
 
 		return teachingStaff;
 	}
@@ -767,10 +760,6 @@ public class EntityCreator {
 
 				// spDetails.setRelievingDate(dateFormat.format(teachingStaff.getStaffPreviousInformation().getRelievingDate()));
 
-				spDetails.setExperienceCertificate(
-						teachingStaff.getStaffPreviousInformation().getExperienceCertificate());
-				spDetails.setLastDrawnPayslip(teachingStaff.getStaffPreviousInformation().getLastDrawnPayslip());
-				spDetails.setResume(teachingStaff.getStaffPreviousInformation().getResume());
 				tDetails.setStaffPreviousInformationDetails1(spDetails);
 				;
 			}
@@ -837,8 +826,7 @@ public class EntityCreator {
 		 * teachingStaff details completed or not
 		 */
 		nonTeachingStaff.setStatus("Incomplete");
-		
-		
+
 		return nonTeachingStaff;
 
 	}
@@ -885,7 +873,7 @@ public class EntityCreator {
 			ntDetails.setSpouseContactNo(nonTeachingStaff.getSpouseContactNo());
 			ntDetails.setCreatedByWadmin(nonTeachingStaff.getCreatedByWadmin());
 			ntDetails.setCreationTime(dateFormat.format(nonTeachingStaff.getCreationTime()));
-			//ntDetails.setBloodGroup(nonTeachingStaff.getBloodGroup());
+			// ntDetails.setBloodGroup(nonTeachingStaff.getBloodGroup());
 			userDetails.setNonTeachingStaffDetails(ntDetails);
 
 			if (null != nonTeachingStaff.getAddress()) {
@@ -999,6 +987,7 @@ public class EntityCreator {
 		StaffPreviousInformation staffPreviousInformation = new StaffPreviousInformation();
 
 		staffPreviousInformation.setExperienceFlag(staffPreviousInformationDetails.isExperienceFlag());
+		if(staffPreviousInformationDetails.isExperienceFlag() == true){
 		staffPreviousInformation.setLastWorkedOrganisation(staffPreviousInformationDetails.getLastWorkedOrganisation());
 		// staffPreviousInformation.setDateOfJoining(staffPreviousInformationDetails.getRelievingDate());
 		String sDate1 = staffPreviousInformationDetails.getDateOfJoining();
@@ -1006,13 +995,7 @@ public class EntityCreator {
 		Date aLD = edtFormat.parse(sDate1);
 		staffPreviousInformation.setDateOfJoining(aLD);
 
-		/*String sDate = staffPreviousInformationDetails.getRelievingDate();
-		DateFormat edtFormat1 = new SimpleDateFormat("yyyy-mm-dd");
-		Date aLD1 = edtFormat1.parse(sDate);
-		staffPreviousInformation.setRelievingDate(aLD1);*/
-		staffPreviousInformation.setExperienceCertificate(staffPreviousInformationDetails.getExperienceCertificate());
-		staffPreviousInformation.setLastDrawnPayslip(staffPreviousInformationDetails.getLastDrawnPayslip());
-		staffPreviousInformation.setResume(staffPreviousInformationDetails.getResume());
+		}
 
 		return staffPreviousInformation;
 
@@ -1080,19 +1063,15 @@ public class EntityCreator {
 		StaffPreviousInformation1 staffPreviousInformation = new StaffPreviousInformation1();
 
 		staffPreviousInformation.setExperienceFlag(staffPreviousInformationDetails.isExperienceFlag());
-		staffPreviousInformation.setLastWorkedOrganisation(staffPreviousInformationDetails.getLastWorkedOrganisation());
-		// staffPreviousInformation.setDateOfJoining(staffPreviousInformationDetails.getRelievingDate());
-		String sDate1 = staffPreviousInformationDetails.getDateOfJoining();
-		DateFormat edtFormat = new SimpleDateFormat("yyyy-mm-dd");
-		Date aLD = edtFormat.parse(sDate1);
-		staffPreviousInformation.setDateOfJoining(aLD);
-/*
-		//String sDate = staffPreviousInformationDetails.getRelievingDate();
-		//DateFormat edtFormat1 = new SimpleDateFormat("yyyy-mm-dd");
-		//Date aLD1 = edtFormat1.parse(sDate);*/
-		staffPreviousInformation.setExperienceCertificate(staffPreviousInformationDetails.getExperienceCertificate());
-		staffPreviousInformation.setLastDrawnPayslip(staffPreviousInformationDetails.getLastDrawnPayslip());
-		staffPreviousInformation.setResume(staffPreviousInformationDetails.getResume());
+		if (staffPreviousInformationDetails.isExperienceFlag() == true) {
+			staffPreviousInformation
+					.setLastWorkedOrganisation(staffPreviousInformationDetails.getLastWorkedOrganisation());
+			// staffPreviousInformation.setDateOfJoining(staffPreviousInformationDetails.getRelievingDate());
+			String sDate1 = staffPreviousInformationDetails.getDateOfJoining();
+			DateFormat edtFormat = new SimpleDateFormat("yyyy-mm-dd");
+			Date aLD = edtFormat.parse(sDate1);
+			staffPreviousInformation.setDateOfJoining(aLD);
+		}
 
 		return staffPreviousInformation;
 
@@ -1115,21 +1094,18 @@ public class EntityCreator {
 		staffStatutory.setPfNo(staffStatutoryDetails.getPfNo());
 		return staffStatutory;
 	}
-	
-	
-	
-	
+
 	/*
 	 * Method: createSubRoleDetails -> maps ui values to entity input :
 	 * SubRoleDetails return : SubRole
 	 * 
 	 */
-public AkacartUser createAkacartUserDetails(AkacartUserDetails akacartUserDetails,User user) {
-	AkacartUser akacartuser = new AkacartUser();
-	akacartuser.setUserId(akacartUserDetails.getUserId());
-	akacartuser.setAkakartAccess(akacartUserDetails.isAkakartAccess());
-	akacartuser.setCreatedOn(akacartUserDetails.getCreatedOn());
-	return akacartuser;
-}
+	public AkacartUser createAkacartUserDetails(AkacartUserDetails akacartUserDetails, User user) {
+		AkacartUser akacartuser = new AkacartUser();
+		akacartuser.setUserId(akacartUserDetails.getUserId());
+		akacartuser.setAkakartAccess(akacartUserDetails.isAkakartAccess());
+		akacartuser.setCreatedOn(akacartUserDetails.getCreatedOn());
+		return akacartuser;
+	}
 
 }

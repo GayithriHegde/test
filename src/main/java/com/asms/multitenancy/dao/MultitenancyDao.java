@@ -63,7 +63,7 @@ public interface MultitenancyDao {
 	
 	public void insertTrust(Trust trust, String schema) throws AsmsException;
 	
-	public String getSchemaByDomain(String tenantId) throws AsmsException;
+	public String getSchemaByDomain(String domain) throws AsmsException;
 
 
 }

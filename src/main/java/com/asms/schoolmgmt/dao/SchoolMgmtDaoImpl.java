@@ -204,12 +204,12 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 	}
 
 	@Override
-	public List<Class> getClasses(String tenantId) throws AsmsException {
+	public List<Class> getClasses(String domain) throws AsmsException {
 		Session session = null;
 		try {
 
 			messages = AsmsHelper.getMessageFromBundle();
-			String schema = multitenancyDao.getSchema(tenantId);
+			String schema = multitenancyDao.getSchemaByDomain(domain);
 			if (null != schema) {
 				session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 				String hql = "from Class C";

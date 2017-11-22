@@ -161,26 +161,26 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 		Transaction tx = null;
 		ResourceBundle messages = AsmsHelper.getMessageFromBundle();
 		try {
-			
+
 			// check if domain is alreaddy there
 			String schema = getSchemaByDomain(subDomain);
-			if(null == schema){
-			
-			name = id + "_" + name;
-			Tenant tenant = new Tenant();
-			tenant.setTenantId("id" + "_" + name);
-			tenant.setName(name);
-			tenant.setSubDomain(subDomain);
-			session = sessionFactory.withOptions().tenantIdentifier(dbProperties.getProperty("default_schema"))
-					.openSession();
-			tx = session.beginTransaction();
+			if (null == schema) {
 
-			session.save(tenant);
+				name = id + "_" + name;
+				Tenant tenant = new Tenant();
+				tenant.setTenantId("id" + "_" + name);
+				tenant.setName(name);
+				tenant.setSubDomain(subDomain);
+				session = sessionFactory.withOptions().tenantIdentifier(dbProperties.getProperty("default_schema"))
+						.openSession();
+				tx = session.beginTransaction();
 
-			tx.commit();
-			session.close();
-			return tenant.getName();
-			}else{
+				session.save(tenant);
+
+				tx.commit();
+				session.close();
+				return tenant.getName();
+			} else {
 				throw exceptionHandler.constructAsmsException(messages.getString("DOMAIN_EXISTS_CODE"),
 						messages.getString("DOMAIN_EXISTS_MSG"));
 			}
@@ -230,11 +230,10 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, tenantId).uniqueResult();
 			session.close();
 			if (null == tenant) {
-				throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
-						messages.getString("TENANT_INVALID_CODE_MSG"));
-
+				return null;
+			} else {
+				return tenant.getName();
 			}
-			return tenant.getName();
 
 		} catch (Exception e) {
 			if (session.isOpen()) {
@@ -255,9 +254,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			}
 		}
 	}
-	
-	
-	
+
 	@Override
 	public String getSchemaByDomain(String domain) throws AsmsException {
 		Session session = null;
@@ -267,9 +264,9 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			String hql = "from Tenant U where U.subDomain=?";
 			Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, domain).uniqueResult();
 			session.close();
-			if(null != tenant){
-			return tenant.getName();
-			}else{
+			if (null != tenant) {
+				return tenant.getName();
+			} else {
 				return null;
 			}
 
@@ -296,35 +293,35 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.multitenancy.dao.MultitenancyDao#createTrust(com.asms.multitenancy.
-	 * request.TrustDetails)
+	 * @see com.asms.multitenancy.dao.MultitenancyDao#createTrust(com.asms.
+	 * multitenancy. request.TrustDetails)
 	 */
-/*	@Override
-	public void createTrust(TrustDetails trustDetails, String schema) throws AsmsException {
-		Trust trust = new Trust();
-
-		trust.setName(trustDetails.getName());
-
-		trust.setAddress(trustDetails.getAddress());
-		trust.setContactNo(Integer.parseInt(trustDetails.getContactNo()));
-
-		trust.setEmail(trustDetails.getEmail());
-
-		trust.setAffiliationId(trustDetails.getAffiliationId());
-
-		trust.setLatitude(trustDetails.getLatitude());
-		trust.setLongitude(trustDetails.getLongitude());
-
-		trust.setCity(trustDetails.getCity());
-
-		trust.setState(trustDetails.getState());
-
-		trust.setCountry(trustDetails.getCountry());
-
-		insertTrust(trust, schema);
-
-	}*/
+	/*
+	 * @Override public void createTrust(TrustDetails trustDetails, String
+	 * schema) throws AsmsException { Trust trust = new Trust();
+	 * 
+	 * trust.setName(trustDetails.getName());
+	 * 
+	 * trust.setAddress(trustDetails.getAddress());
+	 * trust.setContactNo(Integer.parseInt(trustDetails.getContactNo()));
+	 * 
+	 * trust.setEmail(trustDetails.getEmail());
+	 * 
+	 * trust.setAffiliationId(trustDetails.getAffiliationId());
+	 * 
+	 * trust.setLatitude(trustDetails.getLatitude());
+	 * trust.setLongitude(trustDetails.getLongitude());
+	 * 
+	 * trust.setCity(trustDetails.getCity());
+	 * 
+	 * trust.setState(trustDetails.getState());
+	 * 
+	 * trust.setCountry(trustDetails.getCountry());
+	 * 
+	 * insertTrust(trust, schema);
+	 * 
+	 * }
+	 */
 
 	public void insertTrust(Trust trust, String schema) throws AsmsException {
 		Session session = null;

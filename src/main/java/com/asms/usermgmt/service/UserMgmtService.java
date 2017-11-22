@@ -269,7 +269,7 @@ public class UserMgmtService extends BaseService {
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public Response update(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse,
-			UserRequest userRequest, @QueryParam("tenantId") String tenant) {
+			UserRequest userRequest, @QueryParam("domain") String domain) {
 		RegistrationResponse rReponse = new RegistrationResponse();
 		ResourceBundle messages;
 		try {
@@ -290,7 +290,7 @@ public class UserMgmtService extends BaseService {
 				UserDetails userDetails = userRequest.getUserDetails();
 				userDetails.setRole(userRequest.getUserRole());
 				userDetails.setSubRole(userRequest.getSubRole());
-				userMgmtDao.updateUser(userDetails, user, tenant);
+				userMgmtDao.updateUser(userDetails, user, domain);
 				rReponse.setMessage("Updated Successfully");
 				return Response.status(Status.OK).entity(rReponse).build();
 
@@ -505,7 +505,7 @@ public class UserMgmtService extends BaseService {
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public Response registerAdditionalDetails(@Context HttpServletRequest hRequest,
-			@Context HttpServletResponse hResponse, UserRequest userRequest, @QueryParam("tenantId") String tenant) {
+			@Context HttpServletResponse hResponse, UserRequest userRequest, @QueryParam("domain") String domain) {
 		RegistrationResponse rReponse = new RegistrationResponse();
 		try {
 			// get bundles for error messages
@@ -524,7 +524,7 @@ public class UserMgmtService extends BaseService {
 			if (pUser.isPrivileged()) {
 				UserDetails userDetails = userRequest.getUserDetails();
 				userDetails.setRole(userRequest.getUserRole());
-				rReponse = userMgmtDao.addDetails(userRequest.getUserDetails(), user, tenant);
+				rReponse = userMgmtDao.addDetails(userRequest.getUserDetails(), user, domain);
 				// rReponse.setProgressPercentage(20);
 				return Response.status(Status.OK).entity(rReponse).build();
 

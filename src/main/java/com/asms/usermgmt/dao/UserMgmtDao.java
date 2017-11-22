@@ -42,7 +42,7 @@ public interface UserMgmtDao {
 	LoginResponse authenticateAkaperiUser(HttpServletRequest request, HttpServletResponse response, String email, String password)
 			throws AsmsException;
 
-	public RegistrationResponse addDetails(UserDetails userDetails, User user, String tenant) throws AsmsException;
+	public RegistrationResponse addDetails(UserDetails userDetails, User user, String domain) throws AsmsException;
 
 	public User getUserById(String userId, String tenant) throws AsmsException;
 
@@ -63,7 +63,7 @@ public interface UserMgmtDao {
 
 	public List<CasteTypes> getCasteName() throws AsmsException;
 
-	public void updateUser(UserDetails userDetails, User user, String tenant) throws AsmsException;
+	public void updateUser(UserDetails userDetails, User user, String domain) throws AsmsException;
 
 	public UserDetails getUserDetails(String userId, String tenant) throws AsmsException;
 
