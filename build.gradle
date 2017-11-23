@@ -68,7 +68,7 @@ dependencies {
     copy{
         from "build/libs"
 
-         into "k:/apache-tomcat-9.0.0.M21/apache-tomcat-9.0.0.M21/webapps/"
+         into "f:/apache-tomcat-9.0.0.M21/apache-tomcat-9.0.0.M21/webapps/"
 
 
       //into  "f:/apache-tomcat-8.5.14/apache-tomcat-8.5.14/webapps/"

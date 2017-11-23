@@ -27,6 +27,7 @@ import com.asms.Exception.AsmsException;
 import com.asms.Exception.ExceptionHandler;
 import com.asms.common.helper.AsmsHelper;
 import com.asms.common.helper.Constants;
+import com.asms.messagemgmt.entity.Message;
 import com.asms.multitenancy.dao.MultitenancyDao;
 import com.asms.multitenancy.entity.Activity;
 import com.asms.multitenancy.entity.DefaultActivities;
@@ -80,6 +81,7 @@ import com.asms.usermgmt.request.teachingStaff.StaffDocumentsDetails1;
 import com.asms.usermgmt.request.teachingStaff.StaffPreviousInformationDetails1;
 import com.asms.usermgmt.request.teachingStaff.StaffStatutoryDetails1;
 import com.asms.usermgmt.request.teachingStaff.TeachingStaffDetails;
+import com.asms.usermgmt.response.AdminLoginResponse;
 import com.asms.usermgmt.response.LoginResponse;
 import com.asms.usermgmt.response.ParentLoginResponse;
 import com.asms.usermgmt.response.RegistrationResponse;
@@ -881,129 +883,175 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	public LoginResponse authenticate(HttpServletRequest request, HttpServletResponse response, String domain,
 			String email, String password) throws AsmsException {
 		Session session = null;
-		LoginResponse loginResponse = null;
+		  LoginResponse loginResponse = null;
 
-		try {
+		  try {
 
-			String hql;
-			messages = AsmsHelper.getMessageFromBundle();
-			session = sessionFactory.withOptions().tenantIdentifier(dbProperties.getProperty("default_schema"))
-					.openSession();
-			hql = "from Tenant U where U.subDomain=?";
-			Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, domain).uniqueResult();
-			session.close();
-			if (null == tenant) {
-				logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
-						+ "authenticate()" + "   ", "Authentication failed TENANT_INVALID_CODE");
-				throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
-						messages.getString("TENANT_INVALID_CODE_MSG"));
+		   String hql;
+		   messages = AsmsHelper.getMessageFromBundle();
+		   session = sessionFactory.withOptions().tenantIdentifier(dbProperties.getProperty("default_schema"))
+		     .openSession();
+		   hql = "from Tenant U where U.subDomain=?";
+		   Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, domain).uniqueResult();
+		   session.close();
+		   if (null == tenant) {
+		    logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
+		      + "authenticate()" + "   ", "Authentication failed TENANT_INVALID_CODE");
+		    throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
+		      messages.getString("TENANT_INVALID_CODE_MSG"));
 
-			} else {
-				session = sessionFactory.withOptions().tenantIdentifier(tenant.getName()).openSession();
-				hql = "from User U where U.email=? ";
-				User user = (User) session.createQuery(hql).setParameter(0, email).uniqueResult();
+		   } else {
+		    session = sessionFactory.withOptions().tenantIdentifier(tenant.getName()).openSession();
+		    hql = "from User U where U.email=? ";
+		    User user = (User) session.createQuery(hql).setParameter(0, email).uniqueResult();
 
-				loginResponse = new LoginResponse();
+		    loginResponse = new LoginResponse();
 
-				if (null == user) {
-					Parent parent = null;
+		    if (null == user) {
+		     Parent parent = null;
 
-					// check if user there in parent table
+		     // check if user there in parent table
 
-					ParentLoginResponse parentLoginResponse = new ParentLoginResponse();
+		     ParentLoginResponse parentLoginResponse = new ParentLoginResponse();
 
-					hql = "from Parent P where P.fEmail=? and P.fpassword=?";
-					parent = (Parent) session.createQuery(hql).setParameter(0, email).setParameter(1, password)
-							.uniqueResult();
-					if (null != parent) {
-						parentLoginResponse.setParent(true);
-						parentLoginResponse.setFather(true);
-					} else {
+		     hql = "from Parent P where P.fEmail=? and P.fpassword=?";
+		     parent = (Parent) session.createQuery(hql).setParameter(0, email).setParameter(1, password)
+		       .uniqueResult();
+		     if (null != parent) {
+		      parentLoginResponse.setParent(true);
+		      parentLoginResponse.setFather(true);
+		     } else {
 
-						hql = "from Parent P where P.mEmail=? and P.mpassword=?";
-						parent = (Parent) session.createQuery(hql).setParameter(0, email).setParameter(1, password)
-								.uniqueResult();
-						if (null != parent) {
-							parentLoginResponse.setParent(true);
-							parentLoginResponse.setMother(true);
-						}
+		      hql = "from Parent P where P.mEmail=? and P.mpassword=?";
+		      parent = (Parent) session.createQuery(hql).setParameter(0, email).setParameter(1, password)
+		        .uniqueResult();
+		      if (null != parent) {
+		       parentLoginResponse.setParent(true);
+		       parentLoginResponse.setMother(true);
+		      }
 
-					}
+		     }
 
-					session.close();
+		     session.close();
 
-					if (null == parent) {
-						logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: "
-								+ this.getClass().getName() + "." + "authenticate()" + "   ", "Authentication failed");
-						throw exceptionHandler.constructAsmsException(messages.getString("AUTHENTICATION_FAILED_CODE"),
-								messages.getString("AUTHENTICATION_FAILED_MSG"));
-					}
+		     if (null == parent) {
+		      logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: "
+		        + this.getClass().getName() + "." + "authenticate()" + "   ", "Authentication failed");
+		      throw exceptionHandler.constructAsmsException(messages.getString("AUTHENTICATION_FAILED_CODE"),
+		        messages.getString("AUTHENTICATION_FAILED_MSG"));
+		     }
 
-					user = new User();
-					Role role = new Role();
-					role.setRoleName(Constants.role_parent);
-					user.setRoleObject(role);
-					user.setPrivileges(parent.getStudentObject().getPrivileges());
-					user.setIsNew(parent.getIsNew());
+		     user = new User();
+		     Role role = new Role();
+		     role.setRoleName(Constants.role_parent);
+		     user.setRoleObject(role);
+		     user.setPrivileges(parent.getStudentObject().getPrivileges());
+		     user.setIsNew(parent.getIsNew());
 
-					HttpSession httpSession = request.getSession(false);
-					httpSession.setAttribute("ap_user", user);
-					loginResponse.setParent(true);
+		     HttpSession httpSession = request.getSession(false);
+		     httpSession.setAttribute("ap_user", user);
+		     loginResponse.setParent(true);
+		     loginResponse.setPrivileges(new ArrayList<Privilege>(user.getPrivileges()));
+		     List<UserBasicDetails> sDetails = getStudentFromParent(parent, tenant.getName());
+		     parentLoginResponse.setStudentDetails(sDetails);
+		     loginResponse.setNew(user.getIsNew());
+
+		     return parentLoginResponse;
+
+		    } else {
+
+		     boolean isPasswaordSame = AsmsHelper.checkPassword(password, user.getUserPassword());
+		     if (isPasswaordSame) {
+		      HttpSession httpSession = request.getSession(false);
+
+		      // set in session
+		      user.setDomain(domain);
+		      httpSession.setAttribute("ap_user", user);
+
+		   // check user role
+				String roleName = user.getRoleObject().getRoleName();
+				// if admin
+				if (Constants.role_admin.equalsIgnoreCase(roleName)) {
+					AdminLoginResponse aLoginResponse = new AdminLoginResponse();
+					
+					//String status="complete";
+					hql = "select count (*) from Student S ";
+					int noofStudent =  (int)(long) session.createQuery(hql).uniqueResult();
+					
+
+					
+				
+					hql = "select count (*) from ClassSubjects C  ";
+					int noofSubjects =  (int)(long) session.createQuery(hql).uniqueResult();
+					
+					
+					
+					hql = "from MessageReceiver M where M.userId=? and M.isRead= ?";
+					@SuppressWarnings("unchecked")
+					List<Message> ureadmessages = (List<Message>) session.createQuery(hql).setParameter(0, user.getUserId())
+				      .setParameter(1, false).list();
+					
+					
+					
+				      hql = "from MessageReceiver M where M.userId=? ORDER BY M.messageObject.date";
+					
+					@SuppressWarnings("unchecked")
+					List<Message> toptenmessages = (List<Message>) session.createQuery(hql).setFirstResult(0).setMaxResults(9).setParameter(0, user.getUserId())
+				         .list();
+					
+					
+					
+					
+					loginResponse.setParent(false);
 					loginResponse.setPrivileges(new ArrayList<Privilege>(user.getPrivileges()));
-					List<UserBasicDetails> sDetails = getStudentFromParent(parent, tenant.getName());
-					parentLoginResponse.setStudentDetails(sDetails);
 					loginResponse.setNew(user.getIsNew());
-
-					return parentLoginResponse;
-
+					aLoginResponse.setNoOfStudents(noofStudent);
+					aLoginResponse.setNoOfSubjects(noofSubjects);
+					aLoginResponse.setUnreadMessages(ureadmessages);
+					aLoginResponse.setTopTenMessages(toptenmessages);
+					return aLoginResponse;
 				} else {
-
-					boolean isPasswaordSame = AsmsHelper.checkPassword(password, user.getUserPassword());
-					if (isPasswaordSame) {
-						HttpSession httpSession = request.getSession(false);
-
-						// set in session
-						user.setDomain(domain);
-						httpSession.setAttribute("ap_user", user);
-
-						// user = (User)httpSession.getAttribute("ap_user");
-						loginResponse.setParent(false);
-						loginResponse.setPrivileges(new ArrayList<Privilege>(user.getPrivileges()));
-						loginResponse.setNew(user.getIsNew());
-						loginResponse.setAuthToken(user.getUserPassword());
-						return loginResponse;
-					} else {
-						logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: "
-								+ this.getClass().getName() + "." + "authenticate()" + "   ", "Authentication failed");
-						throw exceptionHandler.constructAsmsException(messages.getString("AUTHENTICATION_FAILED_CODE"),
-								messages.getString("AUTHENTICATION_FAILED_MSG"));
-					}
+					// user = (User)httpSession.getAttribute("ap_user");
+					loginResponse.setParent(false);
+					loginResponse.setPrivileges(new ArrayList<Privilege>(user.getPrivileges()));
+					loginResponse.setNew(user.getIsNew());
+					return loginResponse;
+					
 				}
 
-			}
-		} catch (Exception e) {
-			if (null != session && session.isOpen()) {
-				session.close();
-			}
-			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
-					+ "authenticate()" + "   ", e);
-			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
-			if (e instanceof AsmsException) {
-				throw exceptionHandler.constructAsmsException(((AsmsException) e).getCode(),
-						((AsmsException) e).getDescription());
-			} else {
-				throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
-						messages.getString("SYSTEM_EXCEPTION"));
-			}
 
-		} finally {
-			if (null != session && session.isOpen()) {
-				session.close();
-			}
-		}
+		
+		     } else {
+			      logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: "
+			        + this.getClass().getName() + "." + "authenticate()" + "   ", "Authentication failed");
+			      throw exceptionHandler.constructAsmsException(messages.getString("AUTHENTICATION_FAILED_CODE"),
+			        messages.getString("AUTHENTICATION_FAILED_MSG"));
+			     }
+			    }
 
-	}
+			   }
+			  } catch (Exception e) {
+			   if (session.isOpen()) {
+			    session.close();
+			   }
+			   logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
+			     + "authenticate()" + "   ", e);
+			   ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			   if (e instanceof AsmsException) {
+			    throw exceptionHandler.constructAsmsException(((AsmsException) e).getCode(),
+			      ((AsmsException) e).getDescription());
+			   } else {
+			    throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+			      messages.getString("SYSTEM_EXCEPTION"));
+			   }
 
+			  } finally {
+			   if (session.isOpen()) {
+			    session.close();
+			   }
+			  }
+
+			 }
 	/*
 	 * (non-Javadoc)
 	 * 

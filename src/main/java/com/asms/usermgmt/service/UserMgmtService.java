@@ -28,6 +28,7 @@ import com.asms.common.helper.Constants;
 import com.asms.common.response.FailureResponse;
 import com.asms.common.response.SuccessResponse;
 import com.asms.common.service.BaseService;
+import com.asms.messagemgmt.entity.Message;
 import com.asms.usermgmt.auth.PrivilegesManager;
 import com.asms.usermgmt.dao.UserMgmtDao;
 import com.asms.usermgmt.entity.StudentType;
@@ -41,6 +42,7 @@ import com.asms.usermgmt.request.UserDetails;
 import com.asms.usermgmt.request.UserRequest;
 import com.asms.usermgmt.request.AkacartUserDetails.AkacartUserDetails;
 import com.asms.usermgmt.request.student.StudentDetails;
+import com.asms.usermgmt.response.AdminLoginResponse;
 import com.asms.usermgmt.response.GetUserResponse;
 import com.asms.usermgmt.response.LoginResponse;
 import com.asms.usermgmt.response.RegistrationResponse;
@@ -64,6 +66,8 @@ public class UserMgmtService extends BaseService {
 
 	@Autowired
 	private Validator validator;
+
+	private int noOfStudents;
 
 	
 	@Path("{userId}")
@@ -561,6 +565,7 @@ public class UserMgmtService extends BaseService {
 		// get the error code and description from resource bundles
 		ResourceBundle messages = AsmsHelper.getMessageFromBundle();
 		LoginResponse loginResponse = null;
+		AdminLoginResponse adminLoginResponse = null;
 		try {
 
 			// validate user details
@@ -568,11 +573,19 @@ public class UserMgmtService extends BaseService {
 
 			loginResponse = userMgmtDao.authenticate(hRequest, hResponse, domain, userDetails.getEmail(),
 					userDetails.getUserPassword());
+			adminLoginResponse = new AdminLoginResponse();
 			if (loginResponse != null) {
 				HttpSession session = hRequest.getSession();
 				Object user = session.getAttribute("ap_user");
 				if (user instanceof User) {
 					loginResponse.setRole(((User) user).getRoleObject().getRoleName());
+					adminLoginResponse.setRole(((User) user).getRoleObject().getRoleName());
+					adminLoginResponse.setNoOfStudents(noOfStudents);
+					adminLoginResponse.setNoOfSubjects(noOfStudents);
+					List<Message> unreadMessages = null;
+					adminLoginResponse.setUnreadMessages(unreadMessages);
+					List<Message> topTenMessages = null;
+					adminLoginResponse.setTopTenMessages(topTenMessages);
 				}
 
 				return Response.status(Status.OK).entity(loginResponse).build();
@@ -589,6 +602,7 @@ public class UserMgmtService extends BaseService {
 		}
 
 	}
+
 
 	// method comments
 
