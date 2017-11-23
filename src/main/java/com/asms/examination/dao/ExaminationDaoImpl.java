@@ -117,7 +117,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -127,7 +127,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -207,7 +207,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -217,7 +217,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -248,7 +248,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -261,7 +261,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -294,7 +294,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -307,7 +307,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -358,7 +358,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -368,7 +368,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -433,7 +433,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -443,7 +443,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -491,7 +491,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -504,7 +504,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -558,7 +558,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -571,7 +571,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -623,7 +623,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 							messages.getString("TENANT_INVALID_CODE_MSG"));
 				}
 			} catch (Exception e) {
-				if (session.isOpen()) {
+				if (null != session && session.isOpen()) {
 					session.close();
 				}
 				logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -636,7 +636,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 							messages.getString("SYSTEM_EXCEPTION"));
 				}
 			} finally {
-				if (session.isOpen()) {
+				if (null != session && session.isOpen()) {
 					session.close();
 				}
 			
@@ -689,7 +689,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -702,7 +702,7 @@ public class ExaminationDaoImpl implements ExaminationDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

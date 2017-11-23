@@ -120,7 +120,7 @@ public class LessonPlanMgmtDaoImpl implements LessonPlanMgmtDao {
 
 			}
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -132,7 +132,7 @@ public class LessonPlanMgmtDaoImpl implements LessonPlanMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -167,7 +167,7 @@ public class LessonPlanMgmtDaoImpl implements LessonPlanMgmtDao {
 		}
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -182,7 +182,7 @@ public class LessonPlanMgmtDaoImpl implements LessonPlanMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

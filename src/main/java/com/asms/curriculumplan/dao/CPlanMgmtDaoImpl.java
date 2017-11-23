@@ -113,7 +113,7 @@ public class CPlanMgmtDaoImpl implements CPlanMgmtDao {
 		}
 
 		catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -127,7 +127,7 @@ public class CPlanMgmtDaoImpl implements CPlanMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

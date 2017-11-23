@@ -197,7 +197,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 		}
 
 		catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -211,7 +211,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -268,7 +268,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 			return userDetails;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -282,7 +282,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -343,7 +343,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 			return messageDetailsList;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -357,7 +357,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -402,7 +402,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 			return messageDetailsList;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -416,7 +416,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1064,7 +1064,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1077,7 +1077,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 
@@ -1107,7 +1107,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 		} catch (
 
 		Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1119,7 +1119,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1155,7 +1155,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 			}
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1170,7 +1170,7 @@ public class MessageMgmtDaoImpl implements MessageMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

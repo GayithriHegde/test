@@ -80,7 +80,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -90,7 +90,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -170,7 +170,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -182,7 +182,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -243,7 +243,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -253,7 +253,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -316,7 +316,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -326,7 +326,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -374,7 +374,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -384,7 +384,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -428,7 +428,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -440,7 +440,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -485,7 +485,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -495,7 +495,7 @@ public class FeeMgmtDaoImpl implements FeeMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

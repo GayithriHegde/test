@@ -72,8 +72,10 @@ import com.asms.usermgmt.request.nonTeachingStaff.StaffDocumentsDetails;
 import com.asms.usermgmt.request.nonTeachingStaff.StaffPreviousInformationDetails;
 import com.asms.usermgmt.request.nonTeachingStaff.StaffStatutoryDetails;
 import com.asms.usermgmt.request.student.ParentDetails;
+import com.asms.usermgmt.request.student.StudentAddressDetails;
 import com.asms.usermgmt.request.student.StudentDetails;
 import com.asms.usermgmt.request.student.StudentDocumentDetails;
+import com.asms.usermgmt.request.student.StudentPreviousDetails;
 import com.asms.usermgmt.request.teachingStaff.StaffDocumentsDetails1;
 import com.asms.usermgmt.request.teachingStaff.StaffPreviousInformationDetails1;
 import com.asms.usermgmt.request.teachingStaff.StaffStatutoryDetails1;
@@ -146,7 +148,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -160,7 +162,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -184,7 +186,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -197,7 +199,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -227,7 +229,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return user;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -241,7 +243,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -276,7 +278,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -289,7 +291,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -314,7 +316,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -327,7 +329,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -345,7 +347,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return student;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -358,7 +360,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -378,7 +380,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return role;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -391,7 +393,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -410,7 +412,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return sRole;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -423,7 +425,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -481,9 +483,9 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 			School school = schoolMgmtDao.getSchool(schema);
 			if (null != userDetails.getUserId()) {
-					updateUser(userDetails, user, domain);
-					rReponse.setUserId(userDetails.getUserId());
-					return rReponse;
+				updateUser(userDetails, user, domain);
+				rReponse.setUserId(userDetails.getUserId());
+				return rReponse;
 			} else {
 				String userid = generateUserId();
 				String email = userDetails.getEmail();
@@ -695,7 +697,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -709,7 +711,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -760,7 +762,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -777,7 +779,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -804,7 +806,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -821,7 +823,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -869,7 +871,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -981,7 +983,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -996,7 +998,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1026,7 +1028,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1043,7 +1045,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1075,7 +1077,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1092,14 +1094,14 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
 
 	}
 
-	private void insertParent(Parent parent, String schema) throws AsmsException {
+	private void insertParent(Parent parent, Student st, String schema) throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
 		try {
@@ -1107,7 +1109,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			tx = session.beginTransaction();
 			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
 
-			String hql = "from Parent P where P.fEmail=? or P.fpassword=?";
+			String hql = "from Parent P where P.fEmail=? or P.mEmail=?";
 			// get List of parents with the new father email and mother email
 			@SuppressWarnings("unchecked")
 
@@ -1116,22 +1118,31 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 			if (parents.isEmpty()) {
 				// Register parent
-
+				// if parent is there in db but still reuest comes to regisrrter
+				// update parent
+				Parent pDB = st.getParentObject();
 				session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 				tx = session.beginTransaction();
+				if (null == pDB) {
+					session.save(parent);
+				} else {
+					pDB = (Parent) session.load(Parent.class, pDB.getSerialNo());
+					updateParentDetails(pDB, parent);
+					session.update(pDB);
+				}
 
-				session.save(parent);
+				tx.commit();
+				session.close();
 			} else {
 				throw exceptionHandler.constructAsmsException(messages.getString("FEMAIL_ALREADY_EXIST_EXCEPTION_CODE"),
 						messages.getString("FEMAIL_ALREADY_EXIST_EXCEPTION_MSG"));
 			}
-			tx.commit();
-			session.close();
+
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1148,28 +1159,35 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
 
 	}
 
-	private void insertStudentAddress(StudentAddress address, String schema) throws AsmsException {
+	private void insertStudentAddress(StudentAddress address, Student st, String schema) throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
 		try {
 
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 			tx = session.beginTransaction();
-			session.save(address);
+			StudentAddress aDB = st.getStudentAddress();
+			if (null == aDB) {
+				session.save(address);
+			} else {
+				aDB = (StudentAddress) session.load(StudentAddress.class, aDB.getSerialNo());
+				updateStudentAddress(aDB, address);
+				session.update(aDB);
+			}
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1185,22 +1203,31 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
 
 	}
 
-	private void insertStudentDocs(StudentDocuments docs, String schema) throws AsmsException {
+	private void insertStudentDocs(StudentDocuments docs, Student st, String schema) throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
 		try {
 
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
-			tx = session.beginTransaction();
 
-			session.save(docs);
+			tx = session.beginTransaction();
+			StudentDocuments ddb = st.getStudentDocuments();
+
+			if (null == ddb) {
+
+				session.save(docs);
+			} else {
+				ddb = (StudentDocuments) session.load(StudentDocuments.class, ddb.getSerialNo());
+				updateStudentDocumentDetails(ddb, docs);
+				session.update(ddb);
+			}
 
 			tx.commit();
 			session.close();
@@ -1208,7 +1235,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1225,7 +1252,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1252,7 +1279,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1268,22 +1295,28 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
 
 	}
 
-	private void insertPreviousInfo(StudentPreviousInfo details, String schema) throws AsmsException {
+	private void insertPreviousInfo(StudentPreviousInfo details, Student st, String schema) throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
 		try {
 
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 			tx = session.beginTransaction();
-
-			session.save(details);
+			StudentPreviousInfo dbInfo = st.getStudentPreviousInfo();
+			if (null == dbInfo) {
+				session.save(details);
+			} else {
+				dbInfo = (StudentPreviousInfo) session.load(StudentPreviousInfo.class, dbInfo.getSerialNo());
+				updateStudentPreviousInfo(dbInfo, details);
+				session.update(dbInfo);
+			}
 
 			tx.commit();
 			session.close();
@@ -1291,7 +1324,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1308,7 +1341,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1341,6 +1374,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("USER_INVALID_MSG"));
 
 			}
+			Student st = (Student) studentUser;
 
 			if (null != sDetails.getParentDetails()) {
 				Parent parent = entityCreator.createParent(sDetails.getParentDetails(), user);
@@ -1348,45 +1382,33 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 				// check if parent is already added
 
-				Student st = (Student) studentUser;
-				Parent parentFromDb = st.getParentObject();
-				if (null == parentFromDb) {
+				insertParent(parent, st, schema);
+				initialValue = 1 + 1;
+				Student s = (Student) studentUser;
 
-					insertParent(parent, schema);
-					initialValue = 1 + 1;
-					Student s = (Student) studentUser;
+				if (null != s.getStudentPreviousInfo()) {
+					initialValue = initialValue + 1;
+				}
+				if (null != s.getStudentAddress()) {
+					initialValue = initialValue + 1;
+				}
 
-					if (null != s.getStudentPreviousInfo()) {
-						initialValue = initialValue + 1;
-					}
-					if (null != s.getStudentAddress()) {
-						initialValue = initialValue + 1;
-					}
+				if (null != s.getStudentDocuments()) {
+					initialValue = initialValue + 1;
+				}
+				if (null != s.getSibling()) {
+					initialValue = initialValue + 1;
+				}
 
-					if (null != s.getStudentDocuments()) {
-						initialValue = initialValue + 1;
-					}
-					if (null != s.getSibling()) {
-						initialValue = initialValue + 1;
-					}
-
-					if (initialValue == 6) {
-						s.setStatus("Complete");
-					}
-
-					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
-				} else {
-
-					throw exceptionHandler.constructAsmsException(
-							messages.getString("PARENT_ALREADY_EXIST_INVALID_CODE"),
-							messages.getString("PARENT_ALREADY_EXIST_INVALID_CODE_MSG"));
+				if (initialValue == 6) {
+					s.setStatus("Complete");
 				}
 
 			}
 			if (null != sDetails.getAddressDetails()) {
 				StudentAddress address = entityCreator.createStudentAddress(sDetails.getAddressDetails(), user);
 				address.setStudentObject((Student) studentUser);
-				insertStudentAddress(address, schema);
+				insertStudentAddress(address, st, schema);
 
 				initialValue = 1 + 1;
 				Student s = (Student) studentUser;
@@ -1414,8 +1436,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 			if (null != sDetails.getDocumentDetails()) {
 				StudentDocuments docs = entityCreator.createStudentDocuments(sDetails.getDocumentDetails(), user);
-				docs.setStudentObject((Student) studentUser);
-				insertStudentDocs(docs, schema);
+				docs.setStudentObject(st);
+				insertStudentDocs(docs, st, schema);
 				initialValue = 1 + 1;
 				Student s = (Student) studentUser;
 
@@ -1449,8 +1471,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					throw exceptionHandler.constructAsmsException(messages.getString("DATE_INVALID_CODE"),
 							messages.getString("DATE_INVALID_MSG"));
 				}
-				si.setStudentObject((Student) studentUser);
-				insertPreviousInfo(si, schema);
+				si.setStudentObject(st);
+				insertPreviousInfo(si, st, schema);
 
 				initialValue = 1 + 1;
 				Student s = (Student) studentUser;
@@ -1483,6 +1505,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			userId = details.getUserId();
 
 			User nonTechingUser = getUserById(userId, schema);
+			NonTeachingStaff nts = (NonTeachingStaff) nonTechingUser;
 
 			if (null == nonTechingUser) {
 
@@ -1492,7 +1515,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (null != nonTeachingStaffDetails.getAddressDetails()) {
 				Address address = entityCreator.createAddressDetails(nonTeachingStaffDetails.getAddressDetails(), user);
 				address.setnTeachingObject((NonTeachingStaff) nonTechingUser);
-				insertaddressDetails(address, schema);
+				insertaddressDetails(address, nts, schema);
 				initialValue = 1 + 1;
 				NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
 
@@ -1518,7 +1541,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				StaffDocuments StaffDocuments = entityCreator
 						.createDocumentDetails(nonTeachingStaffDetails.getStaffDocumentsDetails(), user);
 				StaffDocuments.setnTeachingObject((NonTeachingStaff) nonTechingUser);
-				insertDocumentDetails(StaffDocuments, schema);
+				insertDocumentDetails(StaffDocuments, nts, schema);
 
 				initialValue = 1 + 1;
 				NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
@@ -1547,7 +1570,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					staffPreviousInformation = entityCreator.createStaffPreviousInformationDetails(
 							nonTeachingStaffDetails.getStaffPreviousInformationDetails(), user);
 					staffPreviousInformation.setnTeachingObject((NonTeachingStaff) nonTechingUser);
-					insertPreviousInformationDetails(staffPreviousInformation, schema);
+					insertPreviousInformationDetails(staffPreviousInformation, nts, schema);
 
 					initialValue = 1 + 1;
 					NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
@@ -1577,7 +1600,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				StaffStatutory staffStatutory = entityCreator
 						.createStaffStatutoryDetails(nonTeachingStaffDetails.getStaffStatutoryDetails(), user);
 				staffStatutory.setnTeachingObject((NonTeachingStaff) nonTechingUser);
-				insertStatutoryDetails(staffStatutory, schema);
+				insertStatutoryDetails(staffStatutory, nts, schema);
 
 				initialValue = 1 + 1;
 				NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
@@ -1616,13 +1639,13 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				throw exceptionHandler.constructAsmsException(messages.getString("USER_INVALID_CODE"),
 						messages.getString("USER_INVALID_MSG"));
 			}
+			TeachingStaff T = (TeachingStaff) techingUser;
 			if (null != teachingStaffDetails.getAddressDetails()) {
 				Address1 address = entityCreator.createAddressDetails1(teachingStaffDetails.getAddressDetails(), user);
 				address.setTeachingObject((TeachingStaff) techingUser);
-				insertaddressDetails1(address, schema);
+				insertaddressDetails1(address, T, schema);
 
 				initialValue = 1 + 1;
-				TeachingStaff T = (TeachingStaff) techingUser;
 
 				if (null != T.getStaffDocuments()) {
 					initialValue = initialValue + 1;
@@ -1648,10 +1671,9 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				StaffDocuments1 StaffDocuments = entityCreator
 						.createDocumentDetails1(teachingStaffDetails.getStaffDocumentsDetails(), user);
 				StaffDocuments.setTeachingObject((TeachingStaff) techingUser);
-				insertDocumentDetails1(StaffDocuments, schema);
+				insertDocumentDetails1(StaffDocuments, T, schema);
 
 				initialValue = 1 + 1;
-				TeachingStaff T = (TeachingStaff) techingUser;
 
 				if (null != T.getAddress()) {
 					initialValue = initialValue + 1;
@@ -1680,9 +1702,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					staffPreviousInformation = entityCreator.createStaffPreviousInformationDetails1(
 							teachingStaffDetails.getStaffPreviousInformationDetails(), user);
 					staffPreviousInformation.setTeachingObject((TeachingStaff) techingUser);
-					insertPreviousInformationDetails1(staffPreviousInformation, schema);
+					insertPreviousInformationDetails1(staffPreviousInformation, T, schema);
 					initialValue = 1 + 1;
-					TeachingStaff T = (TeachingStaff) techingUser;
 
 					if (null != T.getAddress()) {
 						initialValue = initialValue + 1;
@@ -1712,9 +1733,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				StaffStatutory1 staffStatutory = entityCreator
 						.createStaffStatutoryDetails1(teachingStaffDetails.getStaffStatutoryDetails(), user);
 				staffStatutory.setTeachingObject((TeachingStaff) techingUser);
-				insertStatutoryDetails1(staffStatutory, schema);
+				insertStatutoryDetails1(staffStatutory, T, schema);
 				initialValue = 1 + 1;
-				TeachingStaff T = (TeachingStaff) techingUser;
 
 				if (null != T.getAddress()) {
 					initialValue = initialValue + 1;
@@ -1749,20 +1769,27 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * 
 	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertaddressDetails()
 	 */
-	private void insertaddressDetails(Address address, String schema) throws AsmsException {
+	private void insertaddressDetails(Address address, NonTeachingStaff ntu, String schema) throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 			tx = session.beginTransaction();
-			session.save(address);
+			Address dAadd = ntu.getAddress();
+			if (null == dAadd) {
+				session.save(address);
+			} else {
+				dAadd = (Address) session.load(Address.class, dAadd.getSerialNo());
+				updateNonTeachingStaffAddressDetails(dAadd, address);
+				session.update(dAadd);
+			}
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1779,7 +1806,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1793,20 +1820,28 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * com.asms.usermgmt.dao.UserMgmtDao#insertDocumentDetails(com.asms.usermgmt
 	 * .entity.StaffDocuments)
 	 */
-	private void insertDocumentDetails(StaffDocuments staffDocuments, String schema) throws AsmsException {
+	private void insertDocumentDetails(StaffDocuments staffDocuments, NonTeachingStaff nts, String schema)
+			throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 			tx = session.beginTransaction();
-			session.save(staffDocuments);
+			StaffDocuments dbsd = nts.getStaffDocuments();
+			if (null == dbsd) {
+				session.save(staffDocuments);
+			} else {
+				dbsd = (StaffDocuments) session.load(StaffDocuments.class, dbsd.getSerialNo());
+				updateNonTeachingStaffDocumentsDetails(dbsd, staffDocuments);
+				session.update(dbsd);
+			}
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1823,7 +1858,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1837,21 +1872,28 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails(com.
 	 * asms.usermgmt.entity.StaffPreviousInformation)
 	 */
-	private void insertPreviousInformationDetails(StaffPreviousInformation staffPreviousInformation, String schema)
-			throws AsmsException {
+	private void insertPreviousInformationDetails(StaffPreviousInformation staffPreviousInformation,
+			NonTeachingStaff nts, String schema) throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 			tx = session.beginTransaction();
-			session.save(staffPreviousInformation);
+			StaffPreviousInformation dbp = nts.getStaffPreviousInformation();
+			if (null == dbp) {
+				session.save(staffPreviousInformation);
+			} else {
+				dbp = (StaffPreviousInformation) session.load(StaffPreviousInformation.class, dbp.getSerialNo());
+				updateNonTeachingStaffPreviousInformationDetails(dbp, staffPreviousInformation);
+				session.update(dbp);
+			}
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1868,7 +1910,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -1881,20 +1923,28 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertStatutoryDetails(com.asms.
 	 * usermgmt.entity.StaffStatutory)
 	 */
-	private void insertStatutoryDetails(StaffStatutory staffStatutory, String schema) throws AsmsException {
+	private void insertStatutoryDetails(StaffStatutory staffStatutory, NonTeachingStaff nts, String schema)
+			throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 			tx = session.beginTransaction();
-			session.save(staffStatutory);
+			StaffStatutory dbs = nts.getStaffStatutory();
+			if (null == dbs) {
+				session.save(staffStatutory);
+			} else {
+				dbs = (StaffStatutory) session.load(StaffStatutory.class, dbs.getSerialNo());
+				updateNonTeachingStaffStatutoryDetails(dbs, staffStatutory);
+				session.update(dbs);
+			}
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -1911,7 +1961,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2029,7 +2079,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -2042,7 +2092,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2084,7 +2134,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -2093,7 +2143,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2113,7 +2163,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return studentTypes;
 
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -2127,7 +2177,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2141,20 +2191,29 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * com.asms.usermgmt.dao.UserMgmtDao#insertaddressDetails1(com.asms.usermgmt
 	 * .entity.teachingStaff.Address1)
 	 */
-	private void insertaddressDetails1(Address1 address, String schema) throws AsmsException {
+	private void insertaddressDetails1(Address1 address, TeachingStaff ts, String schema) throws AsmsException {
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+
+			Address1 add1 = ts.getAddress();
+
 			tx = session.beginTransaction();
-			session.save(address);
+			if (null == add1) {
+				session.save(address);
+			} else {
+				add1 = (Address1) session.load(Address1.class, add1.getSerialNo());
+				updateTeachingStaffAddressDetails(add1, address);
+				session.update(add1);
+			}
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -2171,7 +2230,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2184,21 +2243,29 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertDocumentDetails1(com.asms.
 	 * usermgmt.entity.teachingStaff.StaffDocuments1)
 	 */
-	private void insertDocumentDetails1(StaffDocuments1 staffDocuments, String schema) throws AsmsException {
+	private void insertDocumentDetails1(StaffDocuments1 staffDocuments, TeachingStaff ts, String schema)
+			throws AsmsException {
 
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+			StaffDocuments1 dbs = ts.getStaffDocuments();
 			tx = session.beginTransaction();
-			session.save(staffDocuments);
+			if (null == dbs) {
+				session.save(staffDocuments);
+			} else {
+				dbs = (StaffDocuments1) session.load(StaffDocuments1.class, dbs.getSerialNo());
+				updateTeachingStaffDocuments(dbs, staffDocuments);
+				session.update(dbs);
+			}
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -2215,7 +2282,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2229,22 +2296,29 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails1(com.
 	 * asms.usermgmt.entity.teachingStaff.StaffPreviousInformation1)
 	 */
-	private void insertPreviousInformationDetails1(StaffPreviousInformation1 staffPreviousInformation, String schema)
-			throws AsmsException {
+	private void insertPreviousInformationDetails1(StaffPreviousInformation1 staffPreviousInformation, TeachingStaff ts,
+			String schema) throws AsmsException {
 		//
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+			StaffPreviousInformation1 dbs = ts.getStaffPreviousInformation();
 			tx = session.beginTransaction();
-			session.save(staffPreviousInformation);
+			if (null == dbs) {
+				session.save(staffPreviousInformation);
+			} else {
+				dbs = (StaffPreviousInformation1) session.load(StaffPreviousInformation1.class, dbs.getSerialNo());
+				updateTeachingStaffPreviousInfo(dbs, staffPreviousInformation);
+				session.update(dbs);
+			}
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -2261,7 +2335,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2274,21 +2348,30 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertStatutoryDetails1(com.asms.
 	 * usermgmt.entity.teachingStaff.StaffStatutory1)
 	 */
-	private void insertStatutoryDetails1(StaffStatutory1 staffStatutory, String schema) throws AsmsException {
+	private void insertStatutoryDetails1(StaffStatutory1 staffStatutory, TeachingStaff T, String schema)
+			throws AsmsException {
 
 		Session session = null;
 		Transaction tx = null;
 		try {
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+			StaffStatutory1 dbs = T.getStaffStatutory();
+
 			tx = session.beginTransaction();
-			session.save(staffStatutory);
+			if (null == dbs) {
+				session.save(staffStatutory);
+			} else {
+				dbs = (StaffStatutory1) session.load(StaffStatutory1.class, dbs.getSerialNo());
+				updateTeachingStaffStatutoryDetails(dbs, staffStatutory);
+				session.update(dbs);
+			}
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -2305,7 +2388,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2368,13 +2451,13 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				if (null != userDetails.getStudentDetails().getStudentPreviousInfo()
 						&& null != student.getStudentPreviousInfo()) {
 					updateStudentPreviousInfo(student.getStudentPreviousInfo(),
-							userDetails.getStudentDetails().getStudentPreviousInfo());
+							userDetails.getStudentDetails().getPreviousDetails());
 				}
 
 				if (null != userDetails.getStudentDetails().getStudentAddress()
 						&& null != student.getStudentAddress()) {
 					updateStudentAddress(student.getStudentAddress(),
-							userDetails.getStudentDetails().getStudentAddress());
+							userDetails.getStudentDetails().getAddressDetails());
 				}
 
 				session.update(student);
@@ -2518,7 +2601,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -2531,7 +2614,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2559,7 +2642,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -2572,7 +2655,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -2773,6 +2856,62 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 	}
 
+	private void updateParentDetails(Parent pDB, Parent p) {
+
+		/**
+		 * @{author} karishma.k 01-Sep-2017
+		 */
+
+		if (null != p.getfFirstName()) {
+			pDB.setfFirstName(p.getfFirstName());
+		}
+		if (null != p.getfMiddleName()) {
+			pDB.setfMiddleName(p.getfMiddleName());
+		}
+		if (null != p.getfLastName()) {
+			pDB.setfLastName(p.getfLastName());
+		}
+		if (null != p.getfEmail()) {
+			pDB.setfEmail(p.getfEmail());
+		}
+		if (p.getfContactNumber() > 0) {
+			pDB.setfContactNumber(p.getfContactNumber());
+		}
+		if (p.getfIncome() > 0) {
+			pDB.setfIncome(p.getfIncome());
+		}
+		if (null != p.getfOccupation()) {
+			pDB.setfOccupation(p.getfOccupation());
+		}
+		if (null != p.getfQualification()) {
+			pDB.setfQualification(p.getfQualification());
+		}
+		if (null != p.getmFirstName()) {
+			pDB.setmFirstName(p.getmFirstName());
+		}
+		if (null != p.getmMiddleName()) {
+			pDB.setmOccupation(p.getmQualification());
+		}
+		if (null != p.getmLastName()) {
+			pDB.setmLastName(p.getmLastName());
+		}
+		if (null != p.getmEmail()) {
+			pDB.setmEmail(p.getmEmail());
+		}
+		if (p.getmContactNumber() > 0) {
+			pDB.setmContactNumber(p.getmContactNumber());
+		}
+		if (null != p.getmQualification()) {
+			pDB.setmQualification(p.getmQualification());
+		}
+		if (null != p.getmOccupation()) {
+			pDB.setmOccupation(p.getmOccupation());
+		}
+		if (p.getmIncome() > 0) {
+			pDB.setmIncome(p.getmIncome());
+		}
+	}
+
 	/*
 	 * getUserById : This method retrieves user object from database using
 	 * userid
@@ -2822,6 +2961,24 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 	}
 
+	private void updateStudentDocumentDetails(StudentDocuments dbsd, StudentDocuments sd) {
+		if (null != sd.getAadhaarNo()) {
+			dbsd.setAadhaarNo(sd.getAadhaarNo());
+		}
+		if (null != sd.getAadhaarCard()) {
+			dbsd.setAadhaarCard(sd.getAadhaarCard());
+		}
+		if (null != sd.getBirthCertificate()) {
+			dbsd.setBirthCertificate(sd.getBirthCertificate());
+		}
+		if (null != sd.getOtherCertificate()) {
+			dbsd.setOtherCertificate(sd.getOtherCertificate());
+		}
+		if (null != sd.getRemarks()) {
+			dbsd.setRemarks(sd.getRemarks());
+		}
+	}
+
 	/*
 	 * getUserById : This method retrieves user object from database using
 	 * userid
@@ -2845,6 +3002,24 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 		if (null != detail.getSchoolName()) {
 			studentPreviousInfo.setSchoolName(detail.getSchoolName());
+		}
+		if (detail.getTotalMarks() > 0) {
+			studentPreviousInfo.setTotalMarks(detail.getTotalMarks());
+		}
+	}
+
+	private void updateStudentPreviousInfo(StudentPreviousInfo studentPreviousInfo, StudentPreviousDetails detail) {
+		if (detail.getNoOfYears() > 0) {
+			studentPreviousInfo.setNoOfYears(detail.getNoOfYears());
+		}
+		if (detail.getObtainedMarks() > 0) {
+			studentPreviousInfo.setObtainedMarks(detail.getObtainedMarks());
+		}
+		if (null != detail.getPreviousClass()) {
+			studentPreviousInfo.setPreviousClass(detail.getPreviousClass());
+		}
+		if (null != detail.getSchool()) {
+			studentPreviousInfo.setSchoolName(detail.getSchool());
 		}
 		if (detail.getTotalMarks() > 0) {
 			studentPreviousInfo.setTotalMarks(detail.getTotalMarks());
@@ -2889,34 +3064,88 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	}
 
+	private void updateTeachingStaffAddressDetails(Address1 dbAddress, Address1 inputAddress) {
+
+		if (null != inputAddress.getAddressLine1() || !inputAddress.getAddressLine1().isEmpty()) {
+			dbAddress.setAddressLine1(inputAddress.getAddressLine1());
+		}
+		if (null != inputAddress.getAddressLine2() || !inputAddress.getAddressLine2().isEmpty()) {
+			dbAddress.setAddressLine2(inputAddress.getAddressLine2());
+		}
+		if (null != inputAddress.getCountry() || !inputAddress.getCountry().isEmpty()) {
+			dbAddress.setCountry(inputAddress.getCountry());
+		}
+		if (null != inputAddress.getState() || !inputAddress.getState().isEmpty()) {
+			dbAddress.setCountry(inputAddress.getState());
+		}
+		if (null != inputAddress.getDistrict() || !inputAddress.getDistrict().isEmpty()) {
+			dbAddress.setDistrict(inputAddress.getDistrict());
+		}
+		if (null != inputAddress.getSubDivision() || !inputAddress.getSubDivision().isEmpty()) {
+			dbAddress.setSubDivision(inputAddress.getSubDivision());
+		}
+		if (null != inputAddress.getTehsil() || !inputAddress.getTehsil().isEmpty()) {
+			dbAddress.setTehsil(inputAddress.getTehsil());
+		}
+		if (null != inputAddress.getVillage() || !inputAddress.getVillage().isEmpty()) {
+			dbAddress.setVillage(inputAddress.getVillage());
+		}
+		if (0 < inputAddress.getPincode()) {
+			dbAddress.setPincode(inputAddress.getPincode());
+		}
+
+	}
+
 	/*
 	 * Method: updateTeachingStaffDocumentsDetails ->This Method is used to
 	 * update TeachingStaffDocumentsDetails. input : StaffDocuments1,
 	 * StaffDocumentsDetails1. Returns : no return Type
 	 * 
 	 */
-	private void updateTeachingStaffDocuments(StaffDocuments1 staffDocuments1,
-			StaffDocumentsDetails1 staffDocumentsDetails) {
+	private void updateTeachingStaffDocuments(StaffDocuments1 dbs, StaffDocuments1 staffDocumentsDetails) {
+		if (null != staffDocumentsDetails.getTen10thCertificate()
+				|| !staffDocumentsDetails.getTen10thCertificate().isEmpty()) {
+			dbs.setTen10thCertificate(staffDocumentsDetails.getTen10thCertificate());
+		}
+		if (null != staffDocumentsDetails.getTwelve12thCertificate()
+				|| !staffDocumentsDetails.getTwelve12thCertificate().isEmpty()) {
+			dbs.setTwelve12thCertificate(staffDocumentsDetails.getTwelve12thCertificate());
+		}
+		if (null != staffDocumentsDetails.getPgDegreeCertificate()
+				|| !staffDocumentsDetails.getPgDegreeCertificate().isEmpty()) {
+			dbs.setDegreeCertificate(staffDocumentsDetails.getPgDegreeCertificate());
+		}
+		if (null != staffDocumentsDetails.getPgDegreeCertificate()
+				|| !staffDocumentsDetails.getPgDegreeCertificate().isEmpty()) {
+			dbs.setPgDegreeCertificate(staffDocumentsDetails.getPgDegreeCertificate());
+		}
+		if (null != staffDocumentsDetails.getMedicalFitnessCertificate()
+				|| !staffDocumentsDetails.getMedicalFitnessCertificate().isEmpty()) {
+			dbs.setMedicalFitnessCertificate(staffDocumentsDetails.getMedicalFitnessCertificate());
+		}
+
+	}
+
+	private void updateTeachingStaffDocuments(StaffDocuments1 dbs, StaffDocumentsDetails1 staffDocumentsDetails) {
 		if (null != staffDocumentsDetails.getNt_staff_10th_certificate()
 				|| !staffDocumentsDetails.getNt_staff_10th_certificate().isEmpty()) {
-			staffDocuments1.setTen10thCertificate(staffDocumentsDetails.getNt_staff_10th_certificate());
+			dbs.setTen10thCertificate(staffDocumentsDetails.getNt_staff_10th_certificate());
 		}
 		if (null != staffDocumentsDetails.getNt_staff_12th_certificate()
 				|| !staffDocumentsDetails.getNt_staff_12th_certificate().isEmpty()) {
-			staffDocuments1.setTwelve12thCertificate(staffDocumentsDetails.getNt_staff_12th_certificate());
+			dbs.setTwelve12thCertificate(staffDocumentsDetails.getNt_staff_12th_certificate());
 		}
 		if (null != staffDocumentsDetails.getNt_staff_degree_certificate()
 				|| !staffDocumentsDetails.getNt_staff_degree_certificate().isEmpty()) {
-			staffDocuments1.setDegreeCertificate(staffDocumentsDetails.getNt_staff_degree_certificate());
+			dbs.setDegreeCertificate(staffDocumentsDetails.getNt_staff_degree_certificate());
 		}
 		if (null != staffDocumentsDetails.getNt_staff_pg_degree_certificate()
 				|| !staffDocumentsDetails.getNt_staff_pg_degree_certificate().isEmpty()) {
-			staffDocuments1.setPgDegreeCertificate(staffDocumentsDetails.getNt_staff_pg_degree_certificate());
+			dbs.setPgDegreeCertificate(staffDocumentsDetails.getNt_staff_pg_degree_certificate());
 		}
 		if (null != staffDocumentsDetails.getNt_staff_medical_fitness_certificate()
 				|| !staffDocumentsDetails.getNt_staff_medical_fitness_certificate().isEmpty()) {
-			staffDocuments1
-					.setMedicalFitnessCertificate(staffDocumentsDetails.getNt_staff_medical_fitness_certificate());
+			dbs.setMedicalFitnessCertificate(staffDocumentsDetails.getNt_staff_medical_fitness_certificate());
 		}
 
 	}
@@ -2930,6 +3159,17 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 */
 	private void updateTeachingStaffPreviousInfo(StaffPreviousInformation1 previousInformation1,
 			StaffPreviousInformationDetails1 pIDetails1) {
+
+		pIDetails1.setExperienceFlag(false);
+
+		if (null != pIDetails1.getLastWorkedOrganisation() || !pIDetails1.getLastWorkedOrganisation().isEmpty()) {
+			previousInformation1.setLastWorkedOrganisation(pIDetails1.getLastWorkedOrganisation());
+		}
+
+	}
+
+	private void updateTeachingStaffPreviousInfo(StaffPreviousInformation1 previousInformation1,
+			StaffPreviousInformation1 pIDetails1) {
 
 		pIDetails1.setExperienceFlag(false);
 
@@ -2974,7 +3214,99 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	}
 
+	private void updateTeachingStaffStatutoryDetails(StaffStatutory1 staffStatutory1,
+			StaffStatutory1 statutoryDetails1) {
+		if (null != statutoryDetails1.getBankName() || !statutoryDetails1.getBankName().isEmpty()) {
+			staffStatutory1.setBankName(statutoryDetails1.getBankName());
+		}
+		if (null != statutoryDetails1.getBankAccountNo() || !statutoryDetails1.getBankAccountNo().isEmpty()) {
+			staffStatutory1.setBankAccountNo(statutoryDetails1.getBankAccountNo());
+		}
+		if (null != statutoryDetails1.getBankIfscCode() || !statutoryDetails1.getBankIfscCode().isEmpty()) {
+			staffStatutory1.setBankIfscCode(statutoryDetails1.getBankIfscCode());
+		}
+		if (null != statutoryDetails1.getPanNo() || !statutoryDetails1.getPanNo().isEmpty()) {
+			staffStatutory1.setPanNo(statutoryDetails1.getPanNo());
+		}
+		if (null != statutoryDetails1.getPanCard() || !statutoryDetails1.getPanCard().isEmpty()) {
+			staffStatutory1.setPanCard(statutoryDetails1.getPanCard());
+		}
+		if (null != statutoryDetails1.getAadhaarNo() || !statutoryDetails1.getAadhaarNo().isEmpty()) {
+			staffStatutory1.setAadhaarNo(statutoryDetails1.getAadhaarNo());
+		}
+		if (null != statutoryDetails1.getAadhaarCard() || !statutoryDetails1.getAadhaarCard().isEmpty()) {
+			staffStatutory1.setAadhaarCard(statutoryDetails1.getAadhaarCard());
+		}
+		if (null != statutoryDetails1.getPfNo() || !statutoryDetails1.getPfNo().isEmpty()) {
+			staffStatutory1.setPfNo(statutoryDetails1.getPfNo());
+		}
+
+	}
+
 	private void updateStudentAddress(StudentAddress studentAddress, StudentAddress detail) {
+		if (null != detail.getpAddressLine1()) {
+			studentAddress.setpAddressLine1(detail.getpAddressLine1());
+		}
+		if (null != detail.getpAddressLine2()) {
+			studentAddress.setpAddressLine2(detail.getpAddressLine2());
+		}
+		if (null != detail.getpCountry()) {
+			studentAddress.setpCountry(detail.getpCountry());
+		}
+		if (null != detail.getpDistrict()) {
+			studentAddress.setpDistrict(detail.getpDistrict());
+		}
+		if (null != detail.getpState()) {
+			studentAddress.setpState(detail.getpState());
+		}
+		if (null != detail.getpSubDivision()) {
+			studentAddress.setpSubDivision(detail.getpSubDivision());
+		}
+		if (null != detail.getpTehsil()) {
+			studentAddress.setpTehsil(detail.getpTehsil());
+		}
+		if (null != detail.getpVillage()) {
+			studentAddress.setpVillage(detail.getpVillage());
+		}
+		if (null != detail.getpPincode()) {
+			studentAddress.setcPincode(detail.getcPincode());
+		}
+		if (null != detail.getpLocation()) {
+			studentAddress.setpLocation(detail.getpLocation());
+		}
+		if (null != detail.getcAddressLine1()) {
+			studentAddress.setcAddressLine1(detail.getcAddressLine1());
+		}
+		if (null != detail.getcAddressLine2()) {
+			studentAddress.setcAddressLine2(detail.getcAddressLine2());
+		}
+		if (null != detail.getcCountry()) {
+			studentAddress.setcCountry(detail.getcCountry());
+		}
+		if (null != detail.getcDistrict()) {
+			studentAddress.setcDistrict(detail.getcDistrict());
+		}
+		if (null != detail.getcState()) {
+			studentAddress.setcState(detail.getcState());
+		}
+		if (null != detail.getcSubDivision()) {
+			studentAddress.setcSubDivision(detail.getcSubDivision());
+		}
+		if (null != detail.getcTehsil()) {
+			studentAddress.setcTehsil(detail.getcTehsil());
+		}
+		if (null != detail.getcVillage()) {
+			studentAddress.setcVillage(detail.getcVillage());
+		}
+		if (null != detail.getcPincode()) {
+			studentAddress.setcPincode(detail.getcPincode());
+		}
+		if (null != detail.getcLocation()) {
+			studentAddress.setcLocation(detail.getcLocation());
+		}
+	}
+
+	private void updateStudentAddress(StudentAddress studentAddress, StudentAddressDetails detail) {
 		if (null != detail.getpAddressLine1()) {
 			studentAddress.setpAddressLine1(detail.getpAddressLine1());
 		}
@@ -3137,6 +3469,36 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 	}
 
+	private void updateNonTeachingStaffAddressDetails(Address dba, Address addressDetails) {
+		if (null != addressDetails.getAddressLine1()) {
+			dba.setAddressLine1(addressDetails.getAddressLine1());
+		}
+		if (null != addressDetails.getAddressLine2()) {
+			dba.setAddressLine2(addressDetails.getAddressLine2());
+		}
+		if (null != addressDetails.getCountry()) {
+			dba.setCountry(addressDetails.getCountry());
+		}
+		if (null != addressDetails.getDistrict()) {
+			dba.setDistrict(addressDetails.getDistrict());
+		}
+		if (null != addressDetails.getState()) {
+			dba.setState(addressDetails.getState());
+		}
+		if (null != addressDetails.getTehsil()) {
+			dba.setTehsil(addressDetails.getTehsil());
+		}
+		if (null != addressDetails.getSubDivision()) {
+			dba.setSubDivision(addressDetails.getSubDivision());
+		}
+		if (null != addressDetails.getVillage()) {
+			dba.setVillage(addressDetails.getVillage());
+		}
+		if (addressDetails.getPincode() > 0) {
+			dba.setPincode(addressDetails.getPincode());
+		}
+	}
+
 	/*
 	 * getUserById : This method retrieves user object from database using
 	 * userid
@@ -3165,6 +3527,24 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 		if (null != staffDocumentsDetails.getNt_staff_pg_degree_certificate()) {
 			staffDocuments.setPgDegreeCertificate(staffDocumentsDetails.getNt_staff_pg_degree_certificate());
+		}
+	}
+
+	private void updateNonTeachingStaffDocumentsDetails(StaffDocuments dbsd, StaffDocuments staffDocumentsDetails) {
+		if (null != staffDocumentsDetails.getTen10thCertificate()) {
+			dbsd.setTen10thCertificate(staffDocumentsDetails.getTen10thCertificate());
+		}
+		if (null != staffDocumentsDetails.getTwelve12thCertificate()) {
+			dbsd.setTwelve12thCertificate(staffDocumentsDetails.getTwelve12thCertificate());
+		}
+		if (null != staffDocumentsDetails.getPgDegreeCertificate()) {
+			dbsd.setDegreeCertificate(staffDocumentsDetails.getPgDegreeCertificate());
+		}
+		if (null != staffDocumentsDetails.getMedicalFitnessCertificate()) {
+			dbsd.setMedicalFitnessCertificate(staffDocumentsDetails.getMedicalFitnessCertificate());
+		}
+		if (null != staffDocumentsDetails.getPgDegreeCertificate()) {
+			dbsd.setPgDegreeCertificate(staffDocumentsDetails.getPgDegreeCertificate());
 		}
 	}
 
@@ -3207,6 +3587,33 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 	}
 
+	private void updateNonTeachingStaffStatutoryDetails(StaffStatutory dbs, StaffStatutory staffStatutoryDetails) {
+		if (null != staffStatutoryDetails.getAadhaarCard()) {
+			dbs.setAadhaarCard(staffStatutoryDetails.getAadhaarCard());
+		}
+		if (null != staffStatutoryDetails.getAadhaarNo()) {
+			dbs.setAadhaarNo(staffStatutoryDetails.getAadhaarNo());
+		}
+		if (null != staffStatutoryDetails.getBankAccountNo()) {
+			dbs.setBankAccountNo(staffStatutoryDetails.getBankAccountNo());
+		}
+		if (null != staffStatutoryDetails.getBankIfscCode()) {
+			dbs.setBankIfscCode(staffStatutoryDetails.getBankIfscCode());
+		}
+		if (null != staffStatutoryDetails.getBankName()) {
+			dbs.setBankName(staffStatutoryDetails.getBankName());
+		}
+		if (null != staffStatutoryDetails.getPanCard()) {
+			dbs.setPanCard(staffStatutoryDetails.getPanCard());
+		}
+		if (null != staffStatutoryDetails.getPanNo()) {
+			dbs.setPanNo(staffStatutoryDetails.getPanNo());
+		}
+		if (null != staffStatutoryDetails.getPfNo()) {
+			dbs.setPfNo(staffStatutoryDetails.getPfNo());
+		}
+	}
+
 	/*
 	 * getUserById : This method retrieves user object from database using
 	 * userid
@@ -3236,6 +3643,22 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 	}
 
+	private void updateNonTeachingStaffPreviousInformationDetails(StaffPreviousInformation dbp,
+			StaffPreviousInformation staffPreviousInformationDetails) {
+		if (null != staffPreviousInformationDetails.getExperienceCertificate()) {
+			dbp.setExperienceCertificate(staffPreviousInformationDetails.getExperienceCertificate());
+		}
+		if (null != staffPreviousInformationDetails.getLastDrawnPayslip()) {
+			dbp.setLastDrawnPayslip(staffPreviousInformationDetails.getLastDrawnPayslip());
+		}
+		if (null != staffPreviousInformationDetails.getResume()) {
+			dbp.setResume(staffPreviousInformationDetails.getResume());
+		}
+		if (null != staffPreviousInformationDetails.getLastWorkedOrganisation()) {
+			dbp.setLastWorkedOrganisation(staffPreviousInformationDetails.getLastWorkedOrganisation());
+		}
+	}
+
 	@Override
 	public List<QualificationType> getQualification() throws AsmsException {
 		Session session = null;
@@ -3250,7 +3673,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return user;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3259,7 +3682,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3279,7 +3702,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 		} catch (Exception e) {
 
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3288,7 +3711,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3401,7 +3824,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			session.close();
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3410,7 +3833,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3458,7 +3881,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3467,7 +3890,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3493,7 +3916,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			}
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3507,7 +3930,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3550,7 +3973,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3563,7 +3986,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3616,7 +4039,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 			}
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3628,7 +4051,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3682,7 +4105,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return studentDetails;
 
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3696,7 +4119,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3729,7 +4152,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return ud.getStudentDetails();
 
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + " " + "Method: " + this.getClass().getName() + "."
@@ -3743,7 +4166,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3764,7 +4187,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return siblings;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3778,7 +4201,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -3856,7 +4279,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 			return entityCreator.createUserBasicDetails(users);
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -3869,7 +4292,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

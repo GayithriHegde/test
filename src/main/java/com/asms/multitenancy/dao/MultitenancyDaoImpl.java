@@ -203,7 +203,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -236,7 +236,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			}
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -249,7 +249,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -271,7 +271,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			}
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -284,7 +284,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -337,7 +337,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -349,7 +349,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -379,7 +379,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			return trust;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -393,7 +393,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -430,7 +430,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -440,7 +440,7 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
 
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

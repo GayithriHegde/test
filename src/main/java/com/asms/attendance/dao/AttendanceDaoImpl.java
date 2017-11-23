@@ -101,7 +101,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 			// return entityCreator.createUserBasicDetails(users);
 
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -114,7 +114,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -152,7 +152,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -196,7 +196,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -279,7 +279,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 			// return entityCreator.createUserBasicDetails(users);
 
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -292,7 +292,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -364,7 +364,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 			// return entityCreator.createUserBasicDetails(users);
 
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -377,7 +377,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -452,7 +452,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 			// return entityCreator.createUserBasicDetails(users);
 
 		} catch (Exception ex) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -465,7 +465,7 @@ public class AttendanceDaoImpl implements AttendanceDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

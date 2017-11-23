@@ -114,7 +114,7 @@ public class CalendarMgmtDaoImp implements CalendarMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -128,7 +128,7 @@ public class CalendarMgmtDaoImp implements CalendarMgmtDao {
 			}
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -155,7 +155,7 @@ public class CalendarMgmtDaoImp implements CalendarMgmtDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -170,7 +170,7 @@ public class CalendarMgmtDaoImp implements CalendarMgmtDao {
 			}
 		} finally {
 
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -205,7 +205,7 @@ public class CalendarMgmtDaoImp implements CalendarMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -218,7 +218,7 @@ public class CalendarMgmtDaoImp implements CalendarMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

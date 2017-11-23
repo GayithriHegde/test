@@ -60,7 +60,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			session.close();
 			return countries;
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 
@@ -71,7 +71,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -92,7 +92,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			session.close();
 			return states;
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 
@@ -102,7 +102,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -124,7 +124,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			return districts;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -133,7 +133,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -153,7 +153,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			return tehsil;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -162,7 +162,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -182,7 +182,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			return villages;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -191,7 +191,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -210,7 +210,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			return subDivisions;
 
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -219,7 +219,7 @@ public class CountryMgmtDaoImpl implements CountryNamesDao {
 			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
 					messages.getString("SYSTEM_EXCEPTION"));
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}

@@ -105,13 +105,13 @@ public class ReportsDaoImpl implements ReportsGenDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
 					+ "getCurriculamReport()" + "   ", e);
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 
@@ -235,13 +235,13 @@ public class ReportsDaoImpl implements ReportsGenDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
 					+ "getCurriculamReport()" + "   ", e);
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 

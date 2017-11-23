@@ -170,7 +170,7 @@ public class RoleMgmtDaoImpl implements RoleMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -182,7 +182,7 @@ public class RoleMgmtDaoImpl implements RoleMgmtDao {
 					messages.getString("SYSTEM_EXCEPTION"));
 
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -209,7 +209,7 @@ public class RoleMgmtDaoImpl implements RoleMgmtDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -224,7 +224,7 @@ public class RoleMgmtDaoImpl implements RoleMgmtDao {
 			}
 		} finally {
 
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
@@ -273,7 +273,7 @@ public class RoleMgmtDaoImpl implements RoleMgmtDao {
 			if (tx != null) {
 				tx.rollback();
 			}
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -287,12 +287,13 @@ public class RoleMgmtDaoImpl implements RoleMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<SubRole> getSubRole(String Role, String tenant) throws AsmsException {
 		Session session = null;
@@ -310,7 +311,7 @@ public class RoleMgmtDaoImpl implements RoleMgmtDao {
 						messages.getString("TENANT_INVALID_CODE_MSG"));
 			}
 		} catch (Exception e) {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
@@ -323,7 +324,7 @@ public class RoleMgmtDaoImpl implements RoleMgmtDao {
 						messages.getString("SYSTEM_EXCEPTION"));
 			}
 		} finally {
-			if (session.isOpen()) {
+			if (null != session && session.isOpen()) {
 				session.close();
 			}
 		}
