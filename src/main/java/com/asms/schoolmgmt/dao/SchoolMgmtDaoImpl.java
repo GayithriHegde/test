@@ -665,12 +665,12 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 	 * @see com.asms.schoolmgmt.dao.SchoolMgmtDao#getSections()
 	 */
 	@Override
-	public List<Section> getSections(String tenantId) throws AsmsException {
+	public List<Section> getSections(String domain) throws AsmsException {
 		Session session = null;
 		try {
 
 			messages = AsmsHelper.getMessageFromBundle();
-			String schema = multitenancyDao.getSchema(tenantId);
+			String schema = multitenancyDao.getSchemaByDomain(domain);
 			if (null != schema) {
 				session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
 				String hql = "from Section S";
