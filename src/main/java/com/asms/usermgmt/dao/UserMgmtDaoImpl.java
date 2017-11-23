@@ -577,12 +577,11 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 							management.setEmail(userDetails.getEmail());
 							management.setRoleObject(role);
 							management.setSubRoleObject(sRole);
-
+							management.setAdmissionForYear(AsmsHelper.getCurrentAcademicYear());
 							management.setUserPassword(
 									generatePassword(management.getMngmtFirstName(), management.getMngmtLastName()));
 
 							management.setSchoolId(school.getSerialNo());
-							management.setAdmissionForYear(userDetails.getAdmissionForYear());
 							createDefaultPrivileges(Constants.role_management, management);
 							insertManagement(management, schema);
 
