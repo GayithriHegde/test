@@ -900,8 +900,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 			} else {
 				session = sessionFactory.withOptions().tenantIdentifier(tenant.getName()).openSession();
-				hql = "from User U where U.email=? ";
-				User user = (User) session.createQuery(hql).setParameter(0, email).uniqueResult();
+				hql = "from User U where U.email=? and  userPassword=?";
+				User user = (User) session.createQuery(hql).setParameter(0, email).setParameter(1, password).uniqueResult();
 
 				loginResponse = new LoginResponse();
 
