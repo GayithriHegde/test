@@ -597,7 +597,7 @@ public class SchoolMgmtDaoImpl implements SchoolMgmtDao {
 									sub.setSectionObject(section);
 									subList.add(sub);
 								}
-								section.setSubjects(subList);
+								//section.setSubjects(subList);
 							}
 							List<AdditionalSubjectsDetails> addSubjectDetails = se.getAdditionalSubjectsDetails();
 							addSubsList = new HashSet<AdditionalSubjects>();

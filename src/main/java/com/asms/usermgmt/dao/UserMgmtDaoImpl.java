@@ -674,7 +674,6 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 
 	}
-
 	/*
 	 * <<<<<<< HEAD Method : insertUser : inserts User entity into database
 	 * input : user return : void ======= Method : insertStudent : inserts
@@ -883,12 +882,30 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	@Override
+//	public LoginResponse authenticate(HttpServletRequest request, HttpServletResponse response, String subDomain, String email,
+		//	String password) throws AsmsException {
 	public LoginResponse authenticate(HttpServletRequest request, HttpServletResponse response, String domain,
 			String email, String password) throws AsmsException {
 		Session session = null;
 		  LoginResponse loginResponse = null;
 
 		  try {
+
+
+//			String hql;
+//			messages = AsmsHelper.getMessageFromBundle();
+//			session = sessionFactory.withOptions().tenantIdentifier(dbProperties.getProperty("default_schema"))
+//					.openSession();
+//			hql = "from Tenant U where U.subDomain=?";
+//			//Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, subDomain).uniqueResult();
+//		//	hql = "from Tenant U where U.subDomain=?";
+//			Tenant tenant = (Tenant) session.createQuery(hql).setParameter(0, domain).uniqueResult();
+//			session.close();
+//			if (null == tenant) {
+//				logger.info("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
+//						+ "authenticate()" + "   ", "Authentication failed TENANT_INVALID_CODE");
+//				throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
+//						messages.getString("TENANT_INVALID_CODE_MSG"));
 
 		   String hql;
 		   messages = AsmsHelper.getMessageFromBundle();
@@ -902,6 +919,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		      + "authenticate()" + "   ", "Authentication failed TENANT_INVALID_CODE");
 		    throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
 		      messages.getString("TENANT_INVALID_CODE_MSG"));
+
 
 		   } else {
 		    session = sessionFactory.withOptions().tenantIdentifier(tenant.getName()).openSession();
@@ -2491,8 +2509,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		Transaction tx = null;
 		try {
 			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
-			List<TeachingClasses> dbtc = T.getTeachingClasses();
-			List<TeachingSubjects> dbts = T.getTeachingSubjects();
+			Set<TeachingClasses> dbtc = T.getTeachingClasses();
+			Set<TeachingSubjects> dbts = T.getTeachingSubjects();
 
 			tx = session.beginTransaction();
 			if (null == dbtc || dbtc.isEmpty()) {
@@ -4392,7 +4410,6 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		}
 
 	}
-
 	@SuppressWarnings("unused")
 	private boolean isUserStatusComplete(User user) {
 		if (Constants.role_admin.equalsIgnoreCase(user.getRoleObject().getRoleName())) {

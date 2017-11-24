@@ -49,12 +49,7 @@ public class Section {
 	private String name;
 	
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sectionObject")
-	private List<TeachingSubjects> teachingSubjects = new ArrayList<TeachingSubjects>();
 	
-	@XmlElement
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sectionObject", fetch = FetchType.EAGER)
-	private Set<ClassSubjects> Subjects = new HashSet<ClassSubjects>();
 	
 	@XmlElement
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "sectionObject", fetch = FetchType.EAGER)
@@ -103,29 +98,6 @@ public class Section {
 
 
 
-
-
-
-	
-
-
-
-
-	@JsonIgnore
-	public List<TeachingSubjects> getTeachingSubjects() {
-		return teachingSubjects;
-	}
-
-
-
-
-
-
-	public void setTeachingSubjects(List<TeachingSubjects> teachingSubjects) {
-		this.teachingSubjects = teachingSubjects;
-	}
-
-
     
 
 
@@ -137,27 +109,6 @@ public class Section {
 
 
 
-
-
-
-	
-
-
-
-
-	@JsonIgnore
-	public Set<ClassSubjects> getSubjects() {
-		return Subjects;
-	}
-
-
-
-
-
-
-	public void setSubjects(Set<ClassSubjects> subjects) {
-		Subjects = subjects;
-	}
 
 
 

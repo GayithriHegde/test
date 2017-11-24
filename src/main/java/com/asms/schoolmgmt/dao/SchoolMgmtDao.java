@@ -20,7 +20,7 @@ import com.asms.schoolmgmt.request.TimeTableOnchangeDetails;
 
 public interface SchoolMgmtDao {
 
-	public List<Section> getSections(String tenantId) throws AsmsException;
+	public List<Section> getSections(String domain) throws AsmsException;
 
 	public Class getClassByName(String name, String tenantId) throws AsmsException;
 

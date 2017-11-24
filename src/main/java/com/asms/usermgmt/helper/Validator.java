@@ -629,22 +629,22 @@ public class Validator {
 			throw exceptionHandler.constructAsmsException(messages.getString("EMAIL_INVALID_CODE"),
 					messages.getString("EMAIL_INVALID"));
 		}
-		if (null == details.getFpassword() || details.getFpassword().trim().isEmpty()) {
+		/*if (null == details.getFpassword() || details.getFpassword().trim().isEmpty()) {
 			throw exceptionHandler.constructAsmsException(messages.getString("FPASSWORD_NULL_CODE"),
 					messages.getString("FPASSWORD_NULL_MSG"));
-		}
+		}*/
 		if (null == details.getFpassword() || details.getFpassword().trim().isEmpty()) {
 			throw exceptionHandler.constructAsmsException(messages.getString("FEMAIL_ALREADY_EXIST_EXCEPTION_CODE "),
 					messages.getString("FEMAIL_ALREADY_EXIST_EXCEPTION_MSG "));
 		}
-		if (null == details.getMpassword() || details.getMpassword().trim().isEmpty()) {
+	/*	if (null == details.getMpassword() || details.getMpassword().trim().isEmpty()) {
 			throw exceptionHandler.constructAsmsException(messages.getString("MPASSWORD_NULL_CODE"),
 					messages.getString("MPASSWORD_NULL_MSG"));
 		}
 		if (null == details.getIsNew() || details.getIsNew().trim().isEmpty()) {
 			throw exceptionHandler.constructAsmsException(messages.getString("ISNEW_NULL_CODE"),
 					messages.getString("ISNEW_NULL_MSG"));
-		}
+		}*/
 	}
 
 	/*

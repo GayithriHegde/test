@@ -30,6 +30,7 @@
 		<mapping class="com.asms.usermgmt.entity.teachingStaff.TeachingStaff" />
 		<mapping class="com.asms.usermgmt.entity.nonTeachingStaff.NonTeachingStaff" />
 		<mapping class="com.asms.usermgmt.entity.teachingStaff.TeachingSubjects" />
+		<mapping class="com.asms.usermgmt.entity.teachingStaff.TeachingClasses" />
 		<mapping class="com.asms.usermgmt.entity.student.StudentDocuments" />
 		<mapping class="com.asms.schoolmgmt.entity.ClassGroup" />
 		<mapping class="com.asms.schoolmgmt.entity.Class" />
@@ -85,6 +86,7 @@
 		<mapping class="com.asms.studentAdmission.entity.Admission" />
 		<mapping class="com.asms.studentAdmission.entity.AdmissionEnquiry" />
 		<mapping class="com.asms.studentAdmission.entity.ApplicationStatus" />
+		<mapping class="com.asms.multitenancy.entity.Nationality"/>
 
 	</session-factory>
 </hibernate-configuration>

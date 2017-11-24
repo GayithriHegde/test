@@ -130,6 +130,7 @@
 				<beans:value>com.asms.feemgmt.entity.TutionFee</beans:value>
 				<beans:value>com.asms.feemgmt.entity.InstallmentAmount</beans:value>
 			
+			<beans:value>com.asms.multitenancy.entity.Nationality</beans:value>
 				
 				
 				<beans:value>com.asms.usermgmt.entity.akacartUser.AkacartUser</beans:value>

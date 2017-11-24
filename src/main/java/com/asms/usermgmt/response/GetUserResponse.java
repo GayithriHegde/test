@@ -3,6 +3,7 @@ package com.asms.usermgmt.response;
 import java.util.List;
 
 import com.asms.common.response.SuccessResponse;
+import com.asms.multitenancy.entity.Nationality;
 import com.asms.multitenancy.entity.Trust;
 import com.asms.schoolmgmt.entity.AdditionalSubjects;
 import com.asms.schoolmgmt.entity.Class;
@@ -79,8 +80,16 @@ public class GetUserResponse extends SuccessResponse {
 	
 	private List<SubjectDetails> subjectDetails;
 	
+	private List<Nationality> nationalities;
 	
-	
+	public List<Nationality> getNationalities() {
+		return nationalities;
+	}
+
+	public void setNationalities(List<Nationality> nationalities) {
+		this.nationalities = nationalities;
+	}
+
 	public List<SubjectDetails> getSubjectDetails() {
 		return subjectDetails;
 	}

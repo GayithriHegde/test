@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.asms.Exception.AsmsException;
 import com.asms.Exception.ExceptionHandler;
 import com.asms.common.helper.AsmsHelper;
+import com.asms.multitenancy.entity.Nationality;
 import com.asms.multitenancy.entity.Tenant;
 import com.asms.multitenancy.entity.Trust;
 import com.asms.rolemgmt.dao.RoleMgmtDao;
@@ -445,6 +446,39 @@ public class MultitenancyDaoImpl implements MultitenancyDao {
 			}
 		}
 
+	}
+
+	@Override
+	public List<Nationality> getNationality(String schema) throws AsmsException {
+		Session session = null;
+		try {
+			
+			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+			String hql = "from Nationality";
+			
+			@SuppressWarnings("unchecked")
+			List<Nationality> nationalities =  session.createQuery(hql).list();
+			session.close();
+			
+         return nationalities;
+		} catch (Exception e) {
+			if (session.isOpen()) {
+				session.close();
+			}
+			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
+					+ "getNationality()" + "   ", e);
+			if ((e instanceof AsmsException)) {
+				throw this.exceptionHandler.constructAsmsException(((AsmsException) e).getCode(),
+						((AsmsException) e).getDescription());
+			}
+			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+					messages.getString("SYSTEM_EXCEPTION"));
+		} finally {
+			if (session.isOpen()) {
+				session.close();
+			}
+		}
 	}
 
 }

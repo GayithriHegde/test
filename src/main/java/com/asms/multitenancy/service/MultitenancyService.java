@@ -26,6 +26,7 @@ import com.asms.Exception.AsmsException;
 import com.asms.common.response.FailureResponse;
 import com.asms.common.service.BaseService;
 import com.asms.multitenancy.dao.MultitenancyDao;
+import com.asms.multitenancy.entity.Nationality;
 import com.asms.multitenancy.entity.Trust;
 import com.asms.usermgmt.entity.User;
 import com.asms.usermgmt.response.GetUserResponse;
@@ -178,4 +179,50 @@ public class MultitenancyService extends BaseService{
 		}
 
 	}
+	
+	
+	
+	
+	/*
+	 * api : /common/nationality  Request type :GET
+	 * 
+	 * Method :getNationalities -> This method is used to get Nationality. Input:No
+	 * input Output: Response object *
+	 * 
+	 * 
+	 */
+	@Path("/nationality")
+	@GET 
+	@Consumes("application/json")
+	@Produces(MediaType.APPLICATION_JSON+";charset=utf-8")
+	public Response getNationalities(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse)
+	{
+		try {
+			//FailureResponse failureResponse = new FailureResponse();
+			// get bundles for error messages
+
+			FailureResponse failureResponse = new FailureResponse();
+			// get bundles for error messages
+			HttpSession session = hRequest.getSession();
+			User user = (User) session.getAttribute("ap_user");
+			if (null != user) {
+
+			
+				List<Nationality> nationalities = multitenancyDao.getNationality(dbProperties.getProperty("default_schema"));
+
+				GetUserResponse getUserResponse = new GetUserResponse();
+				getUserResponse.setNationalities(nationalities);
+				return Response.status(Status.OK).entity(getUserResponse).build();
+
+			}	else {
+					return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
+				}
+
+		} catch (AsmsException ex) {
+			// construct failure response
+			FailureResponse failureResponse = new FailureResponse(ex);
+			return Response.status(Status.EXPECTATION_FAILED).entity(failureResponse).build();
+		}
+	}
+	
 }

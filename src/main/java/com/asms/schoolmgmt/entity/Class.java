@@ -65,8 +65,7 @@ public class Class {
 		this.classGroupObject = classGroupObject;
 	}
 
-	@OneToMany(mappedBy = "classObject")
-	private List<TeachingSubjects> teachingSubjects = new ArrayList<TeachingSubjects>();
+	
 
 	@XmlElement
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "classObject", fetch = FetchType.EAGER)
@@ -96,15 +95,7 @@ public class Class {
 		this.id = id;
 	}
 
-	
-	@JsonIgnore
-	public List<TeachingSubjects> getTeachingSubjects() {
-		return teachingSubjects;
-	}
 
-	public void setTeachingSubjects(List<TeachingSubjects> teachingSubjects) {
-		this.teachingSubjects = teachingSubjects;
-	}
 
 	
 	@JsonIgnore

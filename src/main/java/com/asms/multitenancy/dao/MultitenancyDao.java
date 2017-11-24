@@ -2,6 +2,7 @@ package com.asms.multitenancy.dao;
 import java.util.List;
 
 import com.asms.Exception.AsmsException;
+import com.asms.multitenancy.entity.Nationality;
 import com.asms.multitenancy.entity.Trust;
 import com.asms.schoolmgmt.entity.AcademicYear;
 
@@ -65,5 +66,9 @@ public interface MultitenancyDao {
 	
 	public String getSchemaByDomain(String domain) throws AsmsException;
 
+	
+	//public String getSchemaByDomain(String domain) throws AsmsException;
+
+	public List<Nationality> getNationality(String schema) throws AsmsException;
 
 }

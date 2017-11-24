@@ -370,17 +370,18 @@ public class SchoolMgmtService extends BaseService {
 	@Consumes("application/json")
 	@Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 	public Response getSections(@Context HttpServletRequest hRequest, @Context HttpServletResponse hResponse,
-			@QueryParam("tenantId") String tenant) {
+			@QueryParam("domain") String domain) {
 
 		try {
 			FailureResponse failureResponse = new FailureResponse();
 			// get bundles for error messages
 			HttpSession session = hRequest.getSession();
-			User user = (User) session.getAttribute("ap_user");
+			Object userObject = session.getAttribute("ap_user");
+			User user = (User)userObject;
 
 			if (null != user) {
 
-				List<Section> sections = schoolMgmtDao.getSections(tenant);
+				List<Section> sections = schoolMgmtDao.getSections(domain);
 
 				SchoolSuccessResponse schoolSuccessResponse = new SchoolSuccessResponse();
 				schoolSuccessResponse.setSections(sections);

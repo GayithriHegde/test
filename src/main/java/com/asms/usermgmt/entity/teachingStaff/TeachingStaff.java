@@ -122,23 +122,26 @@ public class TeachingStaff extends User {
 	
 	@XmlElement
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "teachingObject", fetch = FetchType.EAGER)
-	private List<TeachingSubjects> teachingSubjects = new ArrayList<TeachingSubjects>();
+	private Set<TeachingSubjects> teachingSubjects = new HashSet<TeachingSubjects>();
 	
 	
 	@XmlElement
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "teachingObject", fetch = FetchType.EAGER)
-	private List<TeachingClasses> teachingClasses = new ArrayList<TeachingClasses>();
+	private Set<TeachingClasses> teachingClasses = new HashSet<TeachingClasses>();
 	
 	
 
 	@JsonIgnore
-	public List<TeachingSubjects> getTeachingSubjects() {
+	public Set<TeachingSubjects> getTeachingSubjects() {
 		return teachingSubjects;
 	}
 
-	public void setTeachingSubjects(List<TeachingSubjects> teachingSubjects) {
+	public void setTeachingSubjects(Set<TeachingSubjects> teachingSubjects) {
 		this.teachingSubjects = teachingSubjects;
 	}
+
+	
+
 	@JsonIgnore
 	public Address1 getAddress() {
 		return address;
@@ -154,6 +157,15 @@ public class TeachingStaff extends User {
 
 	public void setStaffDocuments(StaffDocuments1 staffDocuments) {
 		this.staffDocuments = staffDocuments;
+	}
+
+	@JsonIgnore
+	public Set<TeachingClasses> getTeachingClasses() {
+		return teachingClasses;
+	}
+
+	public void setTeachingClasses(Set<TeachingClasses> teachingClasses) {
+		this.teachingClasses = teachingClasses;
 	}
 
 	public StaffPreviousInformation1 getStaffPreviousInformation() {
@@ -353,14 +365,6 @@ public class TeachingStaff extends User {
 		this.staffId = staffId;
 	}
 
-	@JsonIgnore
-	public List<TeachingClasses> getTeachingClasses() {
-		return teachingClasses;
-	}
-
-	public void setTeachingClasses(List<TeachingClasses> teachingClasses) {
-		this.teachingClasses = teachingClasses;
-	}
 
 	
 
