@@ -109,6 +109,9 @@ public class EntityCreator {
 		student.setStudentSubCaste(details.getStudentSubCaste());
 		student.setStudentType(details.getStudentType());
 		student.setBloodGroup(details.getBloodGroup());
+		student.setFirstlanguage(details.getFirstlanguage());
+		student.setSecondlanguage(details.getSecondlanguage());
+		student.setThirdlanguage(details.getThirdlanguage());
 		return student;
 	}
 
@@ -152,6 +155,9 @@ public class EntityCreator {
 		sDetails.setStudentCreatedByWadmin(student.getStudentCreatedByWadmin());
 		sDetails.setStudentPhoto(student.getStudentPhoto());
 		sDetails.setBloodGroup(student.getBloodGroup());
+		sDetails.setFirstlanguage(student.getFirstlanguage());
+		sDetails.setSecondlanguage(student.getSecondlanguage());
+		sDetails.setThirdlanguage(student.getThirdlanguage());
 		sDetails.setStudentDob(dateFormat.format(student.getStudentDob()));
 
 		userDetails.setStudentDetails(sDetails);
@@ -277,7 +283,9 @@ public class EntityCreator {
 			sDetails.setStudentCreatedByWadmin(student.getStudentCreatedByWadmin());
 			sDetails.setStudentPhoto(student.getStudentPhoto());
 			sDetails.setBloodGroup(student.getBloodGroup());
-
+			sDetails.setFirstlanguage(student.getFirstlanguage());
+			sDetails.setSecondlanguage(student.getSecondlanguage());
+			sDetails.setThirdlanguage(student.getThirdlanguage());
 			sDetails.setStudentDob(dateFormat.format(student.getStudentDob()));
 
 			userDetails.setStudentDetails(sDetails);

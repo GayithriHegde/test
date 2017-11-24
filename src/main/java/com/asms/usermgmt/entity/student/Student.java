@@ -101,6 +101,15 @@ public class Student extends User {
 	@Column(name ="blood_group")
 	private String bloodGroup;
 	
+	@Column(name ="first_language")
+	private String firstlanguage;
+	
+	@Column(name ="sencond_language")
+	private String secondlanguage;
+	
+	@Column(name ="third_language")
+	private String thirdlanguage;
+	
 	@XmlElement
 	@OneToOne(mappedBy="studentObject", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Parent parentObject;
@@ -363,6 +372,30 @@ public class Student extends User {
 
 	public void setBloodGroup(String bloodGroup) {
 		this.bloodGroup = bloodGroup;
+	}
+
+	public String getFirstlanguage() {
+		return firstlanguage;
+	}
+
+	public void setFirstlanguage(String firstlanguage) {
+		this.firstlanguage = firstlanguage;
+	}
+
+	public String getSecondlanguage() {
+		return secondlanguage;
+	}
+
+	public void setSecondlanguage(String secondlanguage) {
+		this.secondlanguage = secondlanguage;
+	}
+
+	public String getThirdlanguage() {
+		return thirdlanguage;
+	}
+
+	public void setThirdlanguage(String thirdlanguage) {
+		this.thirdlanguage = thirdlanguage;
 	}
 
 //	public List<Sibling> getSibling() {

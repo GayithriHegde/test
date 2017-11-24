@@ -64,6 +64,12 @@ public class StudentDetails {
 	
 	private String bloodGroup;
 	
+	private String firstlanguage;
+	
+	private String secondlanguage;
+	
+	private String thirdlanguage;
+	
 	private ParentDetails parentDetails;
 	
 	private StudentAddressDetails addressDetails;
@@ -356,6 +362,30 @@ public class StudentDetails {
 
 	public void setStudentAddress(StudentAddress studentAddress) {
 		this.studentAddress = studentAddress;
+	}
+
+	public String getFirstlanguage() {
+		return firstlanguage;
+	}
+
+	public void setFirstlanguage(String firstlanguage) {
+		this.firstlanguage = firstlanguage;
+	}
+
+	public String getSecondlanguage() {
+		return secondlanguage;
+	}
+
+	public void setSecondlanguage(String secondlanguage) {
+		this.secondlanguage = secondlanguage;
+	}
+
+	public String getThirdlanguage() {
+		return thirdlanguage;
+	}
+
+	public void setThirdlanguage(String thirdlanguage) {
+		this.thirdlanguage = thirdlanguage;
 	}
 
 

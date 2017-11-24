@@ -212,8 +212,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -256,8 +255,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -267,21 +265,17 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 */
 
 	@Override
-	public User getUserDetailsById(String userId, String tenant) throws AsmsException {
+	public User getUserDetailsById(String userId, String schema) throws AsmsException {
 		Session session = null;
 		try {
 			messages = AsmsHelper.getMessageFromBundle();
-			String schema = multitenancyDao.getSchema(tenant);
-			if (null != schema) {
-				session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
-				String hql = "from User U where U.userId=?";
-				User user = (User) session.createQuery(hql).setParameter(0, userId).uniqueResult();
-				session.close();
-				return user;
-			} else {
-				throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
-						messages.getString("TENANT_INVALID_CODE_MSG"));
-			}
+
+			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+			String hql = "from User U where U.userId=?";
+			User user = (User) session.createQuery(hql).setParameter(0, userId).uniqueResult();
+			session.close();
+			return user;
+
 		} catch (Exception e) {
 			if (null != session && session.isOpen()) {
 				session.close();
@@ -507,12 +501,10 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 							student.setRoleObject(role);
 							student.setSubRoleObject(sRole);
 							student.setStatus("incomplete");
-
+							student.setAdmissionForYear(AsmsHelper.getCurrentAcademicYear());
 							student.setUserPassword(
 									generatePassword(student.getStudentFirstName(), student.getStudentLastName()));
-
 							student.setSchoolId(school.getSerialNo());
-							student.setAdmissionForYear(userDetails.getAdmissionForYear());
 							createDefaultPrivileges(Constants.role_student, student);
 
 							// attach sibling
@@ -675,10 +667,10 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	}
 	/*
-	 * <<<<<<< HEAD Method : insertUser : inserts User entity into database
-	 * input : user return : void ======= Method : insertStudent : inserts
-	 * Student entity into database input : student return : void >>>>>>> branch
-	 * 'master' of https://github.com/akaperi/asms-services
+	 * <<<<<<< HEAD Method : insertUser : inserts User entity into database input :
+	 * user return : void ======= Method : insertStudent : inserts Student entity
+	 * into database input : student return : void >>>>>>> branch 'master' of
+	 * https://github.com/akaperi/asms-services
 	 *
 	 */
 
@@ -722,8 +714,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method : insertStudent : inserts Student entity into database input :
-	 * student return : void
+	 * Method : insertStudent : inserts Student entity into database input : student
+	 * return : void
 	 *
 	 */
 
@@ -792,8 +784,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#insertManagement(com.asms.usermgmt.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertManagement(com.asms.usermgmt.
 	 * entity.Management)
 	 */
 	private void insertManagement(Management management, String schema) throws AsmsException {
@@ -1123,8 +1114,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#insertTeachingStaff(com.asms.usermgmt.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertTeachingStaff(com.asms.usermgmt.
 	 * entity.TeachingStaff)
 	 */
 	private void insertTeachingStaff(TeachingStaff teachingStaff, String schema) throws AsmsException {
@@ -1975,8 +1965,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails(com.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails(com.
 	 * asms.usermgmt.entity.StaffPreviousInformation)
 	 */
 	private void insertPreviousInformationDetails(StaffPreviousInformation staffPreviousInformation,
@@ -2080,8 +2069,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	/*
 	 * Method: search ->This Method is used to search Userdetails Based On
-	 * role,admissionNo firstName , lastName. input : role , admissionNo
-	 * firstName , lastName. Returns : List Of UserDetails(List<UserDetails>)
+	 * role,admissionNo firstName , lastName. input : role , admissionNo firstName ,
+	 * lastName. Returns : List Of UserDetails(List<UserDetails>)
 	 * 
 	 */
 	@Override
@@ -2207,8 +2196,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method: searchForPrivileges ->This Method is used to search Userds Based
-	 * On role,subrole Returns : List Of UserDetails(List<UserDetails>)
+	 * Method: searchForPrivileges ->This Method is used to search Userds Based On
+	 * role,subrole Returns : List Of UserDetails(List<UserDetails>)
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -2399,8 +2388,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails1(com.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#insertPreviousInformationDetails1(com.
 	 * asms.usermgmt.entity.teachingStaff.StaffPreviousInformation1)
 	 */
 	private void insertPreviousInformationDetails1(StaffPreviousInformation1 staffPreviousInformation, TeachingStaff ts,
@@ -2580,8 +2568,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.asms.usermgmt.dao.UserMgmtDao#updateUser(com.asms.usermgmt.request.
+	 * @see com.asms.usermgmt.dao.UserMgmtDao#updateUser(com.asms.usermgmt.request.
 	 * UserDetails, com.asms.usermgmt.entity.User)
 	 */
 	@Override
@@ -2845,8 +2832,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method: updateStudentDetails ->This Method is used to update
-	 * StudentDetails. input : . Returns : no return Type
+	 * Method: updateStudentDetails ->This Method is used to update StudentDetails.
+	 * input : . Returns : no return Type
 	 * 
 	 */
 	private void updateStudentDetails(Student student, StudentDetails studentDetails) {
@@ -2909,6 +2896,19 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 		if (null != studentDetails.getStudentMotherTongue() || !studentDetails.getStudentMotherTongue().isEmpty()) {
 			student.setStudentMotherTongue(studentDetails.getStudentMotherTongue());
 		}
+		
+		if (null != studentDetails.getFirstlanguage() || !studentDetails.getFirstlanguage().isEmpty()) {
+			student.setFirstlanguage(studentDetails.getFirstlanguage());
+		}
+		
+		if (null != studentDetails.getSecondlanguage() || !studentDetails.getSecondlanguage().isEmpty()) {
+			student.setSecondlanguage(studentDetails.getSecondlanguage());
+		}
+		
+		if (null != studentDetails.getThirdlanguage() || !studentDetails.getThirdlanguage().isEmpty()) {
+			student.setThirdlanguage(studentDetails.getThirdlanguage());
+		}
+		
 		if (null != studentDetails.getStatus() || !studentDetails.getStatus().isEmpty()) {
 			student.setStatus(studentDetails.getStatus());
 		}
@@ -2917,8 +2917,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	/*
 	 * Method: updateTeachingStaffDetails ->This Method is used to update
-	 * TeachingStaffDetails. input : TeachingStaff, TeachingStaffDetails.
-	 * Returns : No ReturnType
+	 * TeachingStaffDetails. input : TeachingStaff, TeachingStaffDetails. Returns :
+	 * No ReturnType
 	 * 
 	 */
 	private void updateTeachingStaffDetails(TeachingStaff teachingStaff, TeachingStaffDetails teachingStaffDetails) {
@@ -2972,8 +2972,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3095,8 +3094,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3108,15 +3106,14 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * private void updatesiblingDetails(List<Sibling> sibling, SiblingDetails
 	 * details) { if (null != details.getName()) { ((Sibling)
 	 * sibling).setName(details.getName()); } if (null != details.getGender()) {
-	 * ((Sibling) sibling).setGender(details.getGender()); } if
-	 * (details.getAge() > 0) { ((Sibling) sibling).setAge(details.getAge()); }
-	 * if (null != details.getSchool()) { ((Sibling)
-	 * sibling).setSchool(details.getSchool()); } }
+	 * ((Sibling) sibling).setGender(details.getGender()); } if (details.getAge() >
+	 * 0) { ((Sibling) sibling).setAge(details.getAge()); } if (null !=
+	 * details.getSchool()) { ((Sibling) sibling).setSchool(details.getSchool()); }
+	 * }
 	 */
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3162,8 +3159,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3210,8 +3206,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	/*
 	 * Method: updateTeachingStaffAddressDetails ->This Method is used to update
-	 * TeachingStaffAddressDetails. input : Address1, AddressDetails. Returns :
-	 * no return Type
+	 * TeachingStaffAddressDetails. input : Address1, AddressDetails. Returns : no
+	 * return Type
 	 * 
 	 */
 	private void updateTeachingStaffAddressDetails(Address1 address1, AddressDetails addressDetails) {
@@ -3279,8 +3275,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method: updateTeachingStaffDocumentsDetails ->This Method is used to
-	 * update TeachingStaffDocumentsDetails. input : StaffDocuments1,
+	 * Method: updateTeachingStaffDocumentsDetails ->This Method is used to update
+	 * TeachingStaffDocumentsDetails. input : StaffDocuments1,
 	 * StaffDocumentsDetails1. Returns : no return Type
 	 * 
 	 */
@@ -3383,8 +3379,8 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * Method: updateTeachingStaffStatutoryDetails ->This Method is used to
-	 * update TeachingStaffStatutoryDetails. input : StaffStatutory1,
+	 * Method: updateTeachingStaffStatutoryDetails ->This Method is used to update
+	 * TeachingStaffStatutoryDetails. input : StaffStatutory1,
 	 * StaffStatutoryDetails1. Returns : no return Type
 	 * 
 	 */
@@ -3573,8 +3569,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3632,8 +3627,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3703,8 +3697,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3752,8 +3745,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
@@ -3818,8 +3810,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	}
 
 	/*
-	 * getUserById : This method retrieves user object from database using
-	 * userid
+	 * getUserById : This method retrieves user object from database using userid
 	 * 
 	 * parameters: String userid
 	 * 
