@@ -6,6 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
 
@@ -60,6 +63,9 @@ import com.asms.usermgmt.request.teachingStaff.TeachingStaffDetails;
 
 @Component
 public class EntityCreator {
+	
+	@Resource(name = "asmsProperties")
+	private Properties properties;
 
 	/*
 	 * Method: createStudent -> maps ui values to entity input : StudentDetails
@@ -72,7 +78,7 @@ public class EntityCreator {
 
 		String sDate1 = details.getAdmissionDate();
 
-		DateFormat edtFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat edtFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 		Date aLD = edtFormat.parse(sDate1);
 		student.setAdmissionDate(aLD);
 
@@ -85,7 +91,7 @@ public class EntityCreator {
 		student.setStudentCreatedByWadmin(user.getUserId());
 
 		String sDate = details.getStudentDob();
-		DateFormat edtFormat1 = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat edtFormat1 = new SimpleDateFormat(properties.getProperty("date_format"));
 		Date aLD1 = edtFormat1.parse(sDate);
 		student.setStudentDob(aLD1);
 
@@ -113,7 +119,7 @@ public class EntityCreator {
 	 */
 
 	public UserDetails createStudentDetail(User user) throws ParseException {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat dateFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 
 		UserDetails userDetails;
 		userDetails = new UserDetails();
@@ -236,7 +242,7 @@ public class EntityCreator {
 	 * 
 	 */
 	public List<UserDetails> createStudentDetails(List<User> users) throws ParseException {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat dateFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 		UserDetails userDetails;
 		List<UserDetails> userDetailsList = new ArrayList<UserDetails>();
 		for (User user : users) {
@@ -602,12 +608,12 @@ public class EntityCreator {
 		info.setSchoolName(details.getSchool());
 
 		String sDate1 = details.getStudiedFrom();
-		DateFormat edtFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat edtFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 		Date aLD = edtFormat.parse(sDate1);
 		info.setStudiedFrom((aLD));
 
 		String sDate = details.getStudiedTo();
-		DateFormat edtFormat1 = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat edtFormat1 = new SimpleDateFormat(properties.getProperty("date_format"));
 		Date aLD1 = edtFormat1.parse(sDate);
 		info.setStudiedTo(aLD1);
 
@@ -651,7 +657,7 @@ public class EntityCreator {
 
 		// teachingStaff.setDob(teachingStaffDetails.getDateOfBirth());
 		String sDate1 = teachingStaffDetails.getDateOfBirth();
-		DateFormat edtFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat edtFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 		Date aLD = edtFormat.parse(sDate1);
 		teachingStaff.setDob(aLD);
 
@@ -689,7 +695,7 @@ public class EntityCreator {
 	 * 
 	 */
 	public List<UserDetails> createTeachingStaffDetails(List<User> users) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat dateFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 		UserDetails userDetails;
 
 		List<UserDetails> userDetailsList = new ArrayList<UserDetails>();
@@ -801,7 +807,7 @@ public class EntityCreator {
 		// nonTeachingStaff.setDob(nonTeachingStaffDetails.getDob());
 		String sDate1 = nonTeachingStaffDetails.getDob();
 
-		DateFormat edtFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat edtFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 		Date aLD = edtFormat.parse(sDate1);
 		nonTeachingStaff.setDob(aLD);
 
@@ -838,7 +844,7 @@ public class EntityCreator {
 	 * 
 	 */
 	public List<UserDetails> createNonTeachingStaffDetails(List<User> users) {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat dateFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 		UserDetails userDetails;
 
 		List<UserDetails> userDetailsList = new ArrayList<UserDetails>();
@@ -991,7 +997,7 @@ public class EntityCreator {
 		staffPreviousInformation.setLastWorkedOrganisation(staffPreviousInformationDetails.getLastWorkedOrganisation());
 		// staffPreviousInformation.setDateOfJoining(staffPreviousInformationDetails.getRelievingDate());
 		String sDate1 = staffPreviousInformationDetails.getDateOfJoining();
-		DateFormat edtFormat = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat edtFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 		Date aLD = edtFormat.parse(sDate1);
 		staffPreviousInformation.setDateOfJoining(aLD);
 
@@ -1068,9 +1074,13 @@ public class EntityCreator {
 					.setLastWorkedOrganisation(staffPreviousInformationDetails.getLastWorkedOrganisation());
 			// staffPreviousInformation.setDateOfJoining(staffPreviousInformationDetails.getRelievingDate());
 			String sDate1 = staffPreviousInformationDetails.getDateOfJoining();
-			DateFormat edtFormat = new SimpleDateFormat("yyyy-mm-dd");
+			DateFormat edtFormat = new SimpleDateFormat(properties.getProperty("date_format"));
 			Date aLD = edtFormat.parse(sDate1);
 			staffPreviousInformation.setDateOfJoining(aLD);
+			
+			String sDate2 = staffPreviousInformationDetails.getRelievingDate();
+			Date aLD1 = edtFormat.parse(sDate2);
+			staffPreviousInformation.setRelievingDate(aLD1);
 		}
 
 		return staffPreviousInformation;

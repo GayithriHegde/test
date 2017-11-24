@@ -6,7 +6,7 @@ package com.asms.usermgmt.request.teachingStaff;
 
 import java.util.List;
 
-import com.asms.usermgmt.request.TeachingSubjectDetails;
+import com.asms.usermgmt.request.TeachingClassAndSubjectDetails;
 import com.asms.usermgmt.request.nonTeachingStaff.AddressDetails;
 import com.asms.usermgmt.request.nonTeachingStaff.StaffDocumentsDetails;
 import com.asms.usermgmt.request.nonTeachingStaff.StaffPreviousInformationDetails;
@@ -56,7 +56,7 @@ public class TeachingStaffDetails {
 		this.spouseContactNo = spouseContactNo;
 	}
 
-	private List<TeachingSubjectDetails> teachingSubjectDetailsList;
+	private TeachingClassAndSubjectDetails teachingClassAndSubjectDetails;
 	
 	private AddressDetails addressDetails;
 	
@@ -201,12 +201,13 @@ public class TeachingStaffDetails {
 		this.acStatus = acStatus;
 	}
 
-	public List<TeachingSubjectDetails> getTeachingSubjectDetailsList() {
-		return teachingSubjectDetailsList;
+
+	public TeachingClassAndSubjectDetails getTeachingClassAndSubjectDetails() {
+		return teachingClassAndSubjectDetails;
 	}
 
-	public void setTeachingSubjectDetailsList(List<TeachingSubjectDetails> teachingSubjectDetailsList) {
-		this.teachingSubjectDetailsList = teachingSubjectDetailsList;
+	public void setTeachingClassAndSubjectDetails(TeachingClassAndSubjectDetails teachingClassAndSubjectDetails) {
+		this.teachingClassAndSubjectDetails = teachingClassAndSubjectDetails;
 	}
 
 	public AddressDetails getAddressDetails() {

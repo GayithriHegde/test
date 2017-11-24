@@ -78,7 +78,8 @@
 				</beans:value>
 				<beans:value>com.asms.usermgmt.entity.teachingStaff.TeachingSubjects
 				</beans:value>
-
+				<beans:value>com.asms.usermgmt.entity.teachingStaff.TeachingClasses
+				</beans:value>
 
 				<beans:value>com.asms.CountryMgmt.Entity.Country</beans:value>
 				<beans:value>com.asms.CountryMgmt.Entity.StateEntity</beans:value>

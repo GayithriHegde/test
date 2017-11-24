@@ -14,7 +14,6 @@ import com.asms.Exception.AsmsException;
 import com.asms.Exception.ExceptionHandler;
 import com.asms.common.helper.Constants;
 import com.asms.usermgmt.request.ChangePasswordDetails;
-import com.asms.usermgmt.request.TeachingSubjectDetails;
 import com.asms.usermgmt.request.UserDetails;
 import com.asms.usermgmt.request.UserRequest;
 import com.asms.usermgmt.request.management.ManagementDetails;

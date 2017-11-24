@@ -1,7 +1,10 @@
 package com.asms.usermgmt.dao;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -59,11 +62,11 @@ import com.asms.usermgmt.entity.teachingStaff.Address1;
 import com.asms.usermgmt.entity.teachingStaff.StaffDocuments1;
 import com.asms.usermgmt.entity.teachingStaff.StaffPreviousInformation1;
 import com.asms.usermgmt.entity.teachingStaff.StaffStatutory1;
+import com.asms.usermgmt.entity.teachingStaff.TeachingClasses;
 import com.asms.usermgmt.entity.teachingStaff.TeachingStaff;
 import com.asms.usermgmt.entity.teachingStaff.TeachingSubjects;
 import com.asms.usermgmt.helper.EntityCreator;
 import com.asms.usermgmt.request.ChangePasswordDetails;
-import com.asms.usermgmt.request.TeachingSubjectDetails;
 import com.asms.usermgmt.request.UserBasicDetails;
 import com.asms.usermgmt.request.UserDetails;
 import com.asms.usermgmt.request.AkacartUserDetails.AkacartUserDetails;
@@ -434,7 +437,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 	}
 
-	@SuppressWarnings("unused")
+	/*@SuppressWarnings("unused")
 	private List<TeachingSubjects> getTeachingSubjects(UserDetails details, TeachingStaff tStaff, String tenant)
 			throws AsmsException {
 
@@ -466,7 +469,7 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 
 		}
 		return teachingSubjects;
-	}
+	}*/
 
 	/*
 	 * Method : registerUser : inserts user details into database input :
@@ -1398,226 +1401,257 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	// this method adds additional details to the db
 	@Override
 	public RegistrationResponse addDetails(UserDetails details, User user, String domain) throws AsmsException {
+		try {
+			RegistrationResponse rReponse = new RegistrationResponse();
+			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			// get userid
+			String userId = details.getUserId();
+			String schema = multitenancyDao.getSchemaByDomain(domain);
 
-		RegistrationResponse rReponse = new RegistrationResponse();
-		ResourceBundle messages = AsmsHelper.getMessageFromBundle();
-		// get userid
-		String userId = details.getUserId();
-		String schema = multitenancyDao.getSchemaByDomain(domain);
-
-		if (null == schema) {
-			throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
-					messages.getString("TENANT_INVALID_CODE_MSG"));
-
-		}
-
-		if (details.getRole().equalsIgnoreCase(Constants.role_student)) {
-			StudentDetails sDetails = details.getStudentDetails();
-			User studentUser = getUserById(userId, schema);
-
-			if (null == studentUser) {
-
-				throw exceptionHandler.constructAsmsException(messages.getString("USER_INVALID_CODE"),
-						messages.getString("USER_INVALID_MSG"));
-
-			}
-			Student st = (Student) studentUser;
-
-			if (null != sDetails.getParentDetails()) {
-				Parent parent = entityCreator.createParent(sDetails.getParentDetails(), user);
-				parent.setStudentObject((Student) studentUser);
-
-				// check if parent is already added
-
-				insertParent(parent, st, schema);
-				initialValue = 1 + 1;
-				Student s = (Student) studentUser;
-
-				if (null != s.getStudentPreviousInfo()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != s.getStudentAddress()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (null != s.getStudentDocuments()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != s.getSibling()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (initialValue == 6) {
-					s.setStatus("Complete");
-				}
-
-			}
-			if (null != sDetails.getAddressDetails()) {
-				StudentAddress address = entityCreator.createStudentAddress(sDetails.getAddressDetails(), user);
-				address.setStudentObject((Student) studentUser);
-				insertStudentAddress(address, st, schema);
-
-				initialValue = 1 + 1;
-				Student s = (Student) studentUser;
-
-				if (null != s.getStudentPreviousInfo()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != s.getParentObject()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (null != s.getStudentDocuments()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != s.getSibling()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (initialValue == 6) {
-					s.setStatus("Complete");
-				}
-
-				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
-
-			}
-			if (null != sDetails.getDocumentDetails()) {
-				StudentDocuments docs = entityCreator.createStudentDocuments(sDetails.getDocumentDetails(), user);
-				docs.setStudentObject(st);
-				insertStudentDocs(docs, st, schema);
-				initialValue = 1 + 1;
-				Student s = (Student) studentUser;
-
-				if (null != s.getStudentPreviousInfo()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != s.getParentObject()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (null != s.getStudentAddress()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != s.getSibling()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (initialValue == 6) {
-					s.setStatus("Complete");
-				}
-
-				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
+			if (null == schema) {
+				throw exceptionHandler.constructAsmsException(messages.getString("TENANT_INVALID_CODE"),
+						messages.getString("TENANT_INVALID_CODE_MSG"));
 
 			}
 
-			if (null != sDetails.getPreviousDetails()) {
-				StudentPreviousInfo si;
-				try {
-					si = entityCreator.createPreviousDetails(sDetails.getPreviousDetails(), user);
-				} catch (ParseException e) {
-					throw exceptionHandler.constructAsmsException(messages.getString("DATE_INVALID_CODE"),
-							messages.getString("DATE_INVALID_MSG"));
+			if (details.getRole().equalsIgnoreCase(Constants.role_student)) {
+				StudentDetails sDetails = details.getStudentDetails();
+				User studentUser = getUserById(userId, schema);
+
+				if (null == studentUser) {
+
+					throw exceptionHandler.constructAsmsException(messages.getString("USER_INVALID_CODE"),
+							messages.getString("USER_INVALID_MSG"));
+
 				}
-				si.setStudentObject(st);
-				insertPreviousInfo(si, st, schema);
+				Student st = (Student) studentUser;
 
-				initialValue = 1 + 1;
-				Student s = (Student) studentUser;
+				if (null != sDetails.getParentDetails()) {
+					Parent parent = entityCreator.createParent(sDetails.getParentDetails(), user);
+					parent.setStudentObject((Student) studentUser);
 
-				if (null != s.getStudentPreviousInfo()) {
-					initialValue = initialValue + 1;
+					// check if parent is already added
+
+					insertParent(parent, st, schema);
+					initialValue = 1 + 1;
+					Student s = (Student) studentUser;
+
+					if (null != s.getStudentPreviousInfo()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != s.getStudentAddress()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (null != s.getStudentDocuments()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != s.getSibling()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (initialValue == 6) {
+						s.setStatus("Complete");
+					}
+
 				}
-				if (null != s.getParentObject()) {
-					initialValue = initialValue + 1;
+				if (null != sDetails.getAddressDetails()) {
+					StudentAddress address = entityCreator.createStudentAddress(sDetails.getAddressDetails(), user);
+					address.setStudentObject((Student) studentUser);
+					insertStudentAddress(address, st, schema);
+
+					initialValue = 1 + 1;
+					Student s = (Student) studentUser;
+
+					if (null != s.getStudentPreviousInfo()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != s.getParentObject()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (null != s.getStudentDocuments()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != s.getSibling()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (initialValue == 6) {
+						s.setStatus("Complete");
+					}
+
+					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
+
+				}
+				if (null != sDetails.getDocumentDetails()) {
+					StudentDocuments docs = entityCreator.createStudentDocuments(sDetails.getDocumentDetails(), user);
+					docs.setStudentObject(st);
+					insertStudentDocs(docs, st, schema);
+					initialValue = 1 + 1;
+					Student s = (Student) studentUser;
+
+					if (null != s.getStudentPreviousInfo()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != s.getParentObject()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (null != s.getStudentAddress()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != s.getSibling()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (initialValue == 6) {
+						s.setStatus("Complete");
+					}
+
+					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
+
 				}
 
-				if (null != s.getStudentAddress()) {
-					initialValue = initialValue + 1;
+				if (null != sDetails.getPreviousDetails()) {
+					StudentPreviousInfo si;
+					try {
+						si = entityCreator.createPreviousDetails(sDetails.getPreviousDetails(), user);
+					} catch (ParseException e) {
+						throw exceptionHandler.constructAsmsException(messages.getString("DATE_INVALID_CODE"),
+								messages.getString("DATE_INVALID_MSG"));
+					}
+					si.setStudentObject(st);
+					insertPreviousInfo(si, st, schema);
+
+					initialValue = 1 + 1;
+					Student s = (Student) studentUser;
+
+					if (null != s.getStudentPreviousInfo()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != s.getParentObject()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (null != s.getStudentAddress()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != s.getSibling()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (initialValue == 6) {
+						s.setStatus("Complete");
+					}
+
+					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
+
 				}
-				if (null != s.getSibling()) {
-					initialValue = initialValue + 1;
+			} else if (details.getRole().equalsIgnoreCase(Constants.role_non_teaching_staff)) {
+
+				NonTeachingStaffDetails nonTeachingStaffDetails = details.getNonTeachingStaffDetails();
+
+				userId = details.getUserId();
+
+				User nonTechingUser = getUserById(userId, schema);
+				NonTeachingStaff nts = (NonTeachingStaff) nonTechingUser;
+
+				if (null == nonTechingUser) {
+
+					throw exceptionHandler.constructAsmsException(messages.getString("USER_INVALID_CODE"),
+							messages.getString("USER_INVALID_MSG"));
+				}
+				if (null != nonTeachingStaffDetails.getAddressDetails()) {
+					Address address = entityCreator.createAddressDetails(nonTeachingStaffDetails.getAddressDetails(),
+							user);
+					address.setnTeachingObject((NonTeachingStaff) nonTechingUser);
+					insertaddressDetails(address, nts, schema);
+					initialValue = 1 + 1;
+					NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
+
+					if (null != nT.getStaffDocuments()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (null != nT.getStaffPreviousInformation()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != nT.getStaffStatutory()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (initialValue == 6) {
+						nT.setStatus("Complete");
+					}
+
+					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 5));
+
+				}
+				if (null != nonTeachingStaffDetails.getStaffDocumentsDetails()) {
+					StaffDocuments StaffDocuments = entityCreator
+							.createDocumentDetails(nonTeachingStaffDetails.getStaffDocumentsDetails(), user);
+					StaffDocuments.setnTeachingObject((NonTeachingStaff) nonTechingUser);
+					insertDocumentDetails(StaffDocuments, nts, schema);
+
+					initialValue = 1 + 1;
+					NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
+
+					if (null != nT.getAddress()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (null != nT.getStaffPreviousInformation()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != nT.getStaffStatutory()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (initialValue == 6) {
+						nT.setStatus("Complete");
+					}
+
+					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 5));
+
+				}
+				if (null != nonTeachingStaffDetails.getStaffPreviousInformationDetails()) {
+					StaffPreviousInformation staffPreviousInformation;
+					try {
+						staffPreviousInformation = entityCreator.createStaffPreviousInformationDetails(
+								nonTeachingStaffDetails.getStaffPreviousInformationDetails(), user);
+						staffPreviousInformation.setnTeachingObject((NonTeachingStaff) nonTechingUser);
+						insertPreviousInformationDetails(staffPreviousInformation, nts, schema);
+
+						initialValue = 1 + 1;
+						NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
+
+						if (null != nT.getAddress()) {
+							initialValue = initialValue + 1;
+						}
+
+						if (null != nT.getStaffDocuments()) {
+							initialValue = initialValue + 1;
+						}
+						if (null != nT.getStaffStatutory()) {
+							initialValue = initialValue + 1;
+						}
+						if (initialValue == 6) {
+							nT.setStatus("Complete");
+						}
+
+						rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 5));
+					} catch (ParseException e) {
+						throw exceptionHandler.constructAsmsException(messages.getString("DATE_INVALID_CODE"),
+								messages.getString("DATE_INVALID_MSG"));
+					}
 				}
 
-				if (initialValue == 6) {
-					s.setStatus("Complete");
-				}
-
-				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
-
-			}
-		} else if (details.getRole().equalsIgnoreCase(Constants.role_non_teaching_staff)) {
-
-			NonTeachingStaffDetails nonTeachingStaffDetails = details.getNonTeachingStaffDetails();
-
-			userId = details.getUserId();
-
-			User nonTechingUser = getUserById(userId, schema);
-			NonTeachingStaff nts = (NonTeachingStaff) nonTechingUser;
-
-			if (null == nonTechingUser) {
-
-				throw exceptionHandler.constructAsmsException(messages.getString("USER_INVALID_CODE"),
-						messages.getString("USER_INVALID_MSG"));
-			}
-			if (null != nonTeachingStaffDetails.getAddressDetails()) {
-				Address address = entityCreator.createAddressDetails(nonTeachingStaffDetails.getAddressDetails(), user);
-				address.setnTeachingObject((NonTeachingStaff) nonTechingUser);
-				insertaddressDetails(address, nts, schema);
-				initialValue = 1 + 1;
-				NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
-
-				if (null != nT.getStaffDocuments()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (null != nT.getStaffPreviousInformation()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != nT.getStaffStatutory()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (initialValue == 6) {
-					nT.setStatus("Complete");
-				}
-
-				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 5));
-
-			}
-			if (null != nonTeachingStaffDetails.getStaffDocumentsDetails()) {
-				StaffDocuments StaffDocuments = entityCreator
-						.createDocumentDetails(nonTeachingStaffDetails.getStaffDocumentsDetails(), user);
-				StaffDocuments.setnTeachingObject((NonTeachingStaff) nonTechingUser);
-				insertDocumentDetails(StaffDocuments, nts, schema);
-
-				initialValue = 1 + 1;
-				NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
-
-				if (null != nT.getAddress()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (null != nT.getStaffPreviousInformation()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != nT.getStaffStatutory()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (initialValue == 6) {
-					nT.setStatus("Complete");
-				}
-
-				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 5));
-
-			}
-			if (null != nonTeachingStaffDetails.getStaffPreviousInformationDetails()) {
-				StaffPreviousInformation staffPreviousInformation;
-				try {
-					staffPreviousInformation = entityCreator.createStaffPreviousInformationDetails(
-							nonTeachingStaffDetails.getStaffPreviousInformationDetails(), user);
-					staffPreviousInformation.setnTeachingObject((NonTeachingStaff) nonTechingUser);
-					insertPreviousInformationDetails(staffPreviousInformation, nts, schema);
+				if (null != nonTeachingStaffDetails.getStaffStatutoryDetails()) {
+					StaffStatutory staffStatutory = entityCreator
+							.createStaffStatutoryDetails(nonTeachingStaffDetails.getStaffStatutoryDetails(), user);
+					staffStatutory.setnTeachingObject((NonTeachingStaff) nonTechingUser);
+					insertStatutoryDetails(staffStatutory, nts, schema);
 
 					initialValue = 1 + 1;
 					NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
@@ -1629,134 +1663,47 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					if (null != nT.getStaffDocuments()) {
 						initialValue = initialValue + 1;
 					}
-					if (null != nT.getStaffStatutory()) {
+					if (null != nT.getStaffPreviousInformation()) {
 						initialValue = initialValue + 1;
 					}
+
 					if (initialValue == 6) {
 						nT.setStatus("Complete");
 					}
 
 					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 5));
-				} catch (ParseException e) {
-					throw exceptionHandler.constructAsmsException(messages.getString("DATE_INVALID_CODE"),
-							messages.getString("DATE_INVALID_MSG"));
+
 				}
 			}
 
-			if (null != nonTeachingStaffDetails.getStaffStatutoryDetails()) {
-				StaffStatutory staffStatutory = entityCreator
-						.createStaffStatutoryDetails(nonTeachingStaffDetails.getStaffStatutoryDetails(), user);
-				staffStatutory.setnTeachingObject((NonTeachingStaff) nonTechingUser);
-				insertStatutoryDetails(staffStatutory, nts, schema);
+			// -------------
 
-				initialValue = 1 + 1;
-				NonTeachingStaff nT = (NonTeachingStaff) nonTechingUser;
+			else if (details.getRole().equalsIgnoreCase(Constants.role_teaching_staff)) {
 
-				if (null != nT.getAddress()) {
-					initialValue = initialValue + 1;
+				TeachingStaffDetails teachingStaffDetails = details.getTeachingStaffDetails();
+
+				userId = details.getUserId();
+
+				User techingUser = getUserById(userId, schema);
+				if (null == techingUser) {
+
+					throw exceptionHandler.constructAsmsException(messages.getString("USER_INVALID_CODE"),
+							messages.getString("USER_INVALID_MSG"));
 				}
+				TeachingStaff T = (TeachingStaff) techingUser;
+				if (null != teachingStaffDetails.getAddressDetails()) {
+					Address1 address = entityCreator.createAddressDetails1(teachingStaffDetails.getAddressDetails(),
+							user);
+					address.setTeachingObject((TeachingStaff) techingUser);
+					insertaddressDetails1(address, T, schema);
 
-				if (null != nT.getStaffDocuments()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != nT.getStaffPreviousInformation()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (initialValue == 6) {
-					nT.setStatus("Complete");
-				}
-
-				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 5));
-
-			}
-		}
-
-		// -------------
-
-		else if (details.getRole().equalsIgnoreCase(Constants.role_teaching_staff)) {
-
-			TeachingStaffDetails teachingStaffDetails = details.getTeachingStaffDetails();
-
-			userId = details.getUserId();
-
-			User techingUser = getUserById(userId, schema);
-			if (null == techingUser) {
-
-				throw exceptionHandler.constructAsmsException(messages.getString("USER_INVALID_CODE"),
-						messages.getString("USER_INVALID_MSG"));
-			}
-			TeachingStaff T = (TeachingStaff) techingUser;
-			if (null != teachingStaffDetails.getAddressDetails()) {
-				Address1 address = entityCreator.createAddressDetails1(teachingStaffDetails.getAddressDetails(), user);
-				address.setTeachingObject((TeachingStaff) techingUser);
-				insertaddressDetails1(address, T, schema);
-
-				initialValue = 1 + 1;
-
-				if (null != T.getStaffDocuments()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (null != T.getStaffPreviousInformation()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != T.getStaffStatutory()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != T.getTeachingSubjects()) {
-					initialValue = initialValue + 1;
-				}
-				if (initialValue == 6) {
-					T.setAcStatus("Complete");
-				}
-
-				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
-
-			}
-			if (null != teachingStaffDetails.getStaffDocumentsDetails()) {
-				StaffDocuments1 StaffDocuments = entityCreator
-						.createDocumentDetails1(teachingStaffDetails.getStaffDocumentsDetails(), user);
-				StaffDocuments.setTeachingObject((TeachingStaff) techingUser);
-				insertDocumentDetails1(StaffDocuments, T, schema);
-
-				initialValue = 1 + 1;
-
-				if (null != T.getAddress()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (null != T.getStaffPreviousInformation()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != T.getStaffStatutory()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != T.getTeachingSubjects()) {
-					initialValue = initialValue + 1;
-				}
-				if (initialValue == 6) {
-					T.setAcStatus("Complete");
-				}
-
-				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
-
-			}
-			if (null != teachingStaffDetails.getStaffPreviousInformationDetails()) {
-
-				StaffPreviousInformation1 staffPreviousInformation;
-				try {
-					staffPreviousInformation = entityCreator.createStaffPreviousInformationDetails1(
-							teachingStaffDetails.getStaffPreviousInformationDetails(), user);
-					staffPreviousInformation.setTeachingObject((TeachingStaff) techingUser);
-					insertPreviousInformationDetails1(staffPreviousInformation, T, schema);
 					initialValue = 1 + 1;
 
-					if (null != T.getAddress()) {
+					if (null != T.getStaffDocuments()) {
 						initialValue = initialValue + 1;
 					}
 
-					if (null != T.getStaffDocuments()) {
+					if (null != T.getStaffPreviousInformation()) {
 						initialValue = initialValue + 1;
 					}
 					if (null != T.getStaffStatutory()) {
@@ -1770,44 +1717,139 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 					}
 
 					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
-				} catch (ParseException e) {
-					throw exceptionHandler.constructAsmsException(messages.getString("DATE_INVALID_CODE"),
-							messages.getString("DATE_INVALID_MSG"));
+
 				}
+				if (null != teachingStaffDetails.getStaffDocumentsDetails()) {
+					StaffDocuments1 StaffDocuments = entityCreator
+							.createDocumentDetails1(teachingStaffDetails.getStaffDocumentsDetails(), user);
+					StaffDocuments.setTeachingObject((TeachingStaff) techingUser);
+					insertDocumentDetails1(StaffDocuments, T, schema);
+
+					initialValue = 1 + 1;
+
+					if (null != T.getAddress()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (null != T.getStaffPreviousInformation()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != T.getStaffStatutory()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != T.getTeachingSubjects()) {
+						initialValue = initialValue + 1;
+					}
+					if (initialValue == 6) {
+						T.setAcStatus("Complete");
+					}
+
+					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
+
+				}
+				if (null != teachingStaffDetails.getStaffPreviousInformationDetails()) {
+
+					StaffPreviousInformation1 staffPreviousInformation;
+					try {
+						staffPreviousInformation = entityCreator.createStaffPreviousInformationDetails1(
+								teachingStaffDetails.getStaffPreviousInformationDetails(), user);
+						staffPreviousInformation.setTeachingObject((TeachingStaff) techingUser);
+						insertPreviousInformationDetails1(staffPreviousInformation, T, schema);
+						initialValue = 1 + 1;
+
+						if (null != T.getAddress()) {
+							initialValue = initialValue + 1;
+						}
+
+						if (null != T.getStaffDocuments()) {
+							initialValue = initialValue + 1;
+						}
+						if (null != T.getStaffStatutory()) {
+							initialValue = initialValue + 1;
+						}
+						if (null != T.getTeachingSubjects()) {
+							initialValue = initialValue + 1;
+						}
+						if (initialValue == 6) {
+							T.setAcStatus("Complete");
+						}
+
+						rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
+					} catch (ParseException e) {
+						throw exceptionHandler.constructAsmsException(messages.getString("DATE_INVALID_CODE"),
+								messages.getString("DATE_INVALID_MSG"));
+					}
+				}
+
+				if (null != teachingStaffDetails.getStaffStatutoryDetails()) {
+					StaffStatutory1 staffStatutory = entityCreator
+							.createStaffStatutoryDetails1(teachingStaffDetails.getStaffStatutoryDetails(), user);
+					staffStatutory.setTeachingObject((TeachingStaff) techingUser);
+					insertStatutoryDetails1(staffStatutory, T, schema);
+					initialValue = 1 + 1;
+
+					if (null != T.getAddress()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (null != T.getStaffDocuments()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != T.getStaffPreviousInformation()) {
+						initialValue = initialValue + 1;
+					}
+					if (null != T.getTeachingSubjects()) {
+						initialValue = initialValue + 1;
+					}
+
+					if (initialValue == 6) {
+						T.setAcStatus("Complete");
+					}
+					rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
+
+				}
+				if (null != teachingStaffDetails.getTeachingClassAndSubjectDetails()) {
+					String[] classes = teachingStaffDetails.getTeachingClassAndSubjectDetails().getClasses();
+					String[] subjects = teachingStaffDetails.getTeachingClassAndSubjectDetails().getSubjects();
+					ArrayList<TeachingClasses> teachingClasses = new ArrayList<TeachingClasses>();
+					TeachingClasses tc = new TeachingClasses();
+					for (String className : classes) {
+						tc = new TeachingClasses();
+						tc.setTeachingObject(T);
+						tc.setClassName(className);
+						teachingClasses.add(tc);
+					}
+					ArrayList<TeachingSubjects> teachingSubjects = new ArrayList<TeachingSubjects>();
+					TeachingSubjects ts = new TeachingSubjects();
+					for (String sub : subjects) {
+						ts = new TeachingSubjects();
+						ts.setTeachingObject(T);
+						ts.setSubject(sub);
+						teachingSubjects.add(ts);
+					}
+					insertTeachingClassesAndSubjects(teachingClasses, teachingSubjects, T, schema);
+
+				}
+			} else {
+				throw exceptionHandler.constructAsmsException(messages.getString("ROLE_INVALID_CODE"),
+						messages.getString("ROLE_INVALID"));
 			}
-
-			if (null != teachingStaffDetails.getStaffStatutoryDetails()) {
-				StaffStatutory1 staffStatutory = entityCreator
-						.createStaffStatutoryDetails1(teachingStaffDetails.getStaffStatutoryDetails(), user);
-				staffStatutory.setTeachingObject((TeachingStaff) techingUser);
-				insertStatutoryDetails1(staffStatutory, T, schema);
-				initialValue = 1 + 1;
-
-				if (null != T.getAddress()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (null != T.getStaffDocuments()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != T.getStaffPreviousInformation()) {
-					initialValue = initialValue + 1;
-				}
-				if (null != T.getTeachingSubjects()) {
-					initialValue = initialValue + 1;
-				}
-
-				if (initialValue == 6) {
-					T.setAcStatus("Complete");
-				}
-				rReponse.setProgressPercentage(calulateRegistrationProgress(initialValue, 6));
-
+			return rReponse;
+		} catch (Exception e) {
+			logger.error(
+					"Session Id: " + MDC.get("sessionId") + "   Method: " + getClass().getName() + ".addDetails()   ",
+					e);
+			if ((e instanceof AsmsException)) {
+				throw this.exceptionHandler.constructAsmsException(((AsmsException) e).getCode(),
+						((AsmsException) e).getDescription());
 			}
-		} else {
-			throw exceptionHandler.constructAsmsException(messages.getString("ROLE_INVALID_CODE"),
-					messages.getString("ROLE_INVALID"));
+			if ((e instanceof ParseException)) {
+				throw this.exceptionHandler.constructAsmsException(this.messages.getString("DATE_INVALID_CODE"),
+						this.messages.getString("DATE_INVALID_MSG"));
+			}
+			throw this.exceptionHandler.constructAsmsException(this.messages.getString("SYSTEM_EXCEPTION_CODE"),
+					this.messages.getString("SYSTEM_EXCEPTION"));
 		}
-		return rReponse;
 
 	}
 
@@ -2412,6 +2454,81 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 				updateTeachingStaffStatutoryDetails(dbs, staffStatutory);
 				session.update(dbs);
 			}
+			tx.commit();
+			session.close();
+		} catch (Exception ex) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+			logger.error("Session Id: " + MDC.get("sessionId") + "   " + "Method: " + this.getClass().getName() + "."
+
+					+ "insertStatutoryDetails1TeachingStaff()" + "   ", ex);
+
+			ResourceBundle messages = AsmsHelper.getMessageFromBundle();
+			if (ex instanceof AsmsException) {
+				throw exceptionHandler.constructAsmsException(((AsmsException) ex).getCode(),
+						((AsmsException) ex).getDescription());
+			} else {
+				throw exceptionHandler.constructAsmsException(messages.getString("SYSTEM_EXCEPTION_CODE"),
+						messages.getString("SYSTEM_EXCEPTION"));
+			}
+
+		} finally {
+			if (null != session && session.isOpen()) {
+				session.close();
+			}
+		}
+
+	}
+
+	private void insertTeachingClassesAndSubjects(ArrayList<TeachingClasses> tcs, ArrayList<TeachingSubjects> tss,
+			TeachingStaff T, String schema) throws AsmsException {
+
+		Session session = null;
+		Transaction tx = null;
+		try {
+			session = sessionFactory.withOptions().tenantIdentifier(schema).openSession();
+			List<TeachingClasses> dbtc = T.getTeachingClasses();
+			List<TeachingSubjects> dbts = T.getTeachingSubjects();
+
+			tx = session.beginTransaction();
+			if (null == dbtc || dbtc.isEmpty()) {
+				for (TeachingClasses tc : tcs) {
+					session.save(tc);
+				}
+			} else {
+				// if already existing delete all and save
+				TeachingClasses tcLoaded = null;
+				for (TeachingClasses tc : dbtc) {
+
+					tcLoaded = (TeachingClasses) session.load(TeachingClasses.class, tc.getSerialNo());
+					session.delete(tcLoaded);
+				}
+				for (TeachingClasses tc : tcs) {
+					session.save(tc);
+				}
+			}
+
+			if (null == dbts || dbts.isEmpty()) {
+				for (TeachingSubjects ts : tss) {
+					session.save(ts);
+				}
+			} else {
+				// if already existing delete all and save
+				TeachingSubjects tsLoaded = null;
+				for (TeachingSubjects ts : dbts) {
+
+					tsLoaded = (TeachingSubjects) session.load(TeachingSubjects.class, ts.getSerialNo());
+					session.delete(tsLoaded);
+				}
+				for (TeachingSubjects ts : tss) {
+					session.save(ts);
+				}
+			}
+
 			tx.commit();
 			session.close();
 		} catch (Exception ex) {
@@ -3205,12 +3322,25 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	 * 
 	 */
 	private void updateTeachingStaffPreviousInfo(StaffPreviousInformation1 previousInformation1,
-			StaffPreviousInformationDetails1 pIDetails1) {
+			StaffPreviousInformationDetails1 pIDetails1) throws ParseException {
 
-		pIDetails1.setExperienceFlag(false);
-
-		if (null != pIDetails1.getLastWorkedOrganisation() || !pIDetails1.getLastWorkedOrganisation().isEmpty()) {
-			previousInformation1.setLastWorkedOrganisation(pIDetails1.getLastWorkedOrganisation());
+		if (pIDetails1.isExperienceFlag() == false) {
+			previousInformation1.setExperienceFlag(false);
+		} else {
+			previousInformation1.setExperienceFlag(true);
+			if (null != pIDetails1.getDateOfJoining() || !pIDetails1.getDateOfJoining().isEmpty()) {
+				DateFormat edtFormat = new SimpleDateFormat(properties.getProperty("date_format"));
+				Date aLD = edtFormat.parse(pIDetails1.getDateOfJoining());
+				previousInformation1.setDateOfJoining(aLD);
+			}
+			if (null != pIDetails1.getRelievingDate() || !pIDetails1.getRelievingDate().isEmpty()) {
+				DateFormat edtFormat = new SimpleDateFormat(properties.getProperty("date_format"));
+				Date aLD = edtFormat.parse(pIDetails1.getRelievingDate());
+				previousInformation1.setRelievingDate(aLD);
+			}
+			if (null != pIDetails1.getLastWorkedOrganisation() || !pIDetails1.getLastWorkedOrganisation().isEmpty()) {
+				previousInformation1.setLastWorkedOrganisation(pIDetails1.getLastWorkedOrganisation());
+			}
 		}
 
 	}
@@ -3218,12 +3348,20 @@ public class UserMgmtDaoImpl implements UserMgmtDao {
 	private void updateTeachingStaffPreviousInfo(StaffPreviousInformation1 previousInformation1,
 			StaffPreviousInformation1 pIDetails1) {
 
-		pIDetails1.setExperienceFlag(false);
-
+		if (pIDetails1.isExperienceFlag() == false) {
+			previousInformation1.setExperienceFlag(false);
+		} else {
+			previousInformation1.setExperienceFlag(true);
+			if (null != pIDetails1.getDateOfJoining()) {
+				previousInformation1.setDateOfJoining(pIDetails1.getDateOfJoining());
+			}
+			if (null != pIDetails1.getRelievingDate())
+				;
+			previousInformation1.setRelievingDate(pIDetails1.getRelievingDate());
+		}
 		if (null != pIDetails1.getLastWorkedOrganisation() || !pIDetails1.getLastWorkedOrganisation().isEmpty()) {
 			previousInformation1.setLastWorkedOrganisation(pIDetails1.getLastWorkedOrganisation());
 		}
-
 	}
 
 	/*

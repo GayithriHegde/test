@@ -23,16 +23,24 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @XmlRootElement
 @Entity
-@Table(name = "teaching_staff_subjects")
-public class TeachingSubjects {
+@Table(name = "teaching_staff_classes")
+public class TeachingClasses {
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "serial_no")
 	private int serialNo;
 
-	@Column(name = "subject_name")
-	private String subject;
+	@Column(name = "class_name")
+	private String className;
 	
 	
 	@ManyToOne
@@ -60,13 +68,6 @@ public class TeachingSubjects {
 		this.teachingObject = teachingObject;
 	}
 
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
 
 	
 

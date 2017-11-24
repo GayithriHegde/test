@@ -125,6 +125,11 @@ public class TeachingStaff extends User {
 	private List<TeachingSubjects> teachingSubjects = new ArrayList<TeachingSubjects>();
 	
 	
+	@XmlElement
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "teachingObject", fetch = FetchType.EAGER)
+	private List<TeachingClasses> teachingClasses = new ArrayList<TeachingClasses>();
+	
+	
 
 	@JsonIgnore
 	public List<TeachingSubjects> getTeachingSubjects() {
@@ -346,6 +351,15 @@ public class TeachingStaff extends User {
 
 	public void setStaffId(String staffId) {
 		this.staffId = staffId;
+	}
+
+	@JsonIgnore
+	public List<TeachingClasses> getTeachingClasses() {
+		return teachingClasses;
+	}
+
+	public void setTeachingClasses(List<TeachingClasses> teachingClasses) {
+		this.teachingClasses = teachingClasses;
 	}
 
 	
