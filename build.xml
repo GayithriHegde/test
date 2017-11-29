@@ -23,7 +23,7 @@
 	
 	<target name="war" depends="compile">
 		<!-- <war destfile="dist/asms-services.war" webxml="src/main/webapp/WEB-INF/web.xml">-->
-			<war destfile="c:/apache-tomcat-8.5.23/webapps/asms-services.war" webxml="src/main/webapp/WEB-INF/web.xml">
+			<war destfile="asms-services.war" webxml="src/main/webapp/WEB-INF/web.xml">
 			<fileset dir="src/main/webapp"/>
 			<lib dir="lib"/>
 			<classes dir="build/ant_classes"/>
